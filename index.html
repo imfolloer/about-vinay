@@ -512,60 +512,241 @@
   </section>
 
   <!-- ─── SKILLS ──────────────────────────────────────────────────────────────────── -->
-<section id="skills" class="py-32 bg-white/[0.015]">
+<section id="skills" class="py-24 bg-white/[0.015]">
   <div class="container mx-auto px-6">
-    <div class="text-center mb-16 space-y-5">
+    <div class="text-center mb-10 space-y-4">
       <span class="text-blue-500 font-bold text-sm uppercase tracking-widest">Expertise</span>
       <h2 class="text-4xl md:text-5xl font-extrabold">
-        Skills <span class="gradient-text">Matrix</span>
+        Skills <span class="gradient-text">Overview</span>
       </h2>
     </div>
 
-    <div class="space-y-12">
+    <!-- Filter Pills -->
+    <div class="flex flex-wrap justify-center gap-3 mb-12">
+      <button 
+        data-filter="all" 
+        class="skill-filter px-6 py-2.5 rounded-full text-sm font-medium transition-all bg-blue-600 text-white shadow-md shadow-blue-500/20 active:scale-95"
+      >
+        All
+      </button>
+      <button 
+        data-filter="technical" 
+        class="skill-filter px-6 py-2.5 rounded-full text-sm font-medium transition-all bg-white/10 border border-white/20 hover:bg-white/15 text-gray-300"
+      >
+        Technical
+      </button>
+      <button 
+        data-filter="leadership" 
+        class="skill-filter px-6 py-2.5 rounded-full text-sm font-medium transition-all bg-white/10 border border-white/20 hover:bg-white/15 text-gray-300"
+      >
+        Leadership
+      </button>
+    </div>
+
+    <!-- Skills Grid -->
+    <div id="skills-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5">
+
       <!-- Technical Skills -->
-      <div>
-        <h3 class="text-2xl font-bold mb-6 text-center md:text-left">Technical Skills</h3>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Advanced Excel</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Power BI</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">SQL</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Python</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Data Visualization</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Financial Modelling</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Tableau</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Alteryx</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">VBA & Macros</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Dashboard Design</div>
+      <div class="glass p-5 rounded-2xl skill-card" data-category="technical">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-blue-500/10 rounded-lg text-blue-400">
+            <i data-lucide="spreadsheet" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Advanced Excel</h3>
         </div>
       </div>
 
-      <!-- Soft & Strategy Skills -->
-      <div>
-        <h3 class="text-2xl font-bold mb-6 text-center md:text-left">Strategy & Consulting Skills</h3>
-        <div class="grid sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Strategic Planning</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Digital Transformation</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Process Optimization</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Stakeholder Management</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Hypothesis-Driven Problem Solving</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">M&A Strategy</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Due Diligence</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Deal Structuring</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Business Case Development</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Value Creation Analysis</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Operating Model Design</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Change Management</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Executive Communication</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Go-to-Market Strategy</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Market Entry Analysis</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Cost Optimization</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Commercial Due Diligence</div>
-          <div class="glass px-5 py-3 rounded-xl text-center text-sm font-medium">Post-Merger Integration</div>
+      <div class="glass p-5 rounded-2xl skill-card" data-category="technical">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-blue-500/10 rounded-lg text-blue-400">
+            <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Power BI / Tableau</h3>
         </div>
       </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="technical">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-blue-500/10 rounded-lg text-blue-400">
+            <i data-lucide="database" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">SQL</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="technical">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-blue-500/10 rounded-lg text-blue-400">
+            <i data-lucide="code" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Python (Data Analysis)</h3>
+        </div>
+      </div>
+
+      <!-- Leadership / Soft Skills -->
+      <div class="glass p-5 rounded-2xl skill-card" data-category="leadership">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-purple-500/10 rounded-lg text-purple-400">
+            <i data-lucide="handshake" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Stakeholder Management</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="leadership">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-purple-500/10 rounded-lg text-purple-400">
+            <i data-lucide="target" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Strategic Planning</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="leadership">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-purple-500/10 rounded-lg text-purple-400">
+            <i data-lucide="lightbulb" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Hypothesis-Driven Problem Solving</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="leadership">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-purple-500/10 rounded-lg text-purple-400">
+            <i data-lucide="users" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Cross-Functional Team Leadership</h3>
+        </div>
+      </div>
+
+      <!-- Domain / Strategy Skills (shown in All view) -->
+      <div class="glass p-5 rounded-2xl skill-card" data-category="all">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Digital Transformation</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="all">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+            <i data-lucide="cog" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Process Optimization</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="all">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+            <i data-lucide="scale" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">M&A Due Diligence</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="all">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+            <i data-lucide="calculator" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Financial Modelling</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="all">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+            <i data-lucide="briefcase" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Corporate Finance</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="all">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+            <i data-lucide="file-text" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Business Case Development</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="all">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+            <i data-lucide="rocket" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Go-to-Market Strategy</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="all">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+            <i data-lucide="map" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Market Entry & Expansion</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="all">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+            <i data-lucide="leaf" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">Impact Investing & ESG</h3>
+        </div>
+      </div>
+
+      <div class="glass p-5 rounded-2xl skill-card" data-category="all">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-emerald-500/10 rounded-lg text-emerald-400">
+            <i data-lucide="cpu" class="w-5 h-5"></i>
+          </div>
+          <h3 class="font-semibold text-base">IT Strategy & Digital Roadmap</h3>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
+
+<!-- Add this script at the bottom of your <body>, before </body> or merge with existing script -->
+<script>
+  // Skills filter
+  document.querySelectorAll('.skill-filter').forEach(button => {
+    button.addEventListener('click', () => {
+      // Remove active style from all buttons
+      document.querySelectorAll('.skill-filter').forEach(btn => {
+        btn.classList.remove('bg-blue-600', 'text-white', 'shadow-md', 'shadow-blue-500/20');
+        btn.classList.add('bg-white/10', 'border-white/20', 'text-gray-300', 'hover:bg-white/15');
+      });
+
+      // Add active style to clicked button
+      button.classList.remove('bg-white/10', 'border-white/20', 'text-gray-300', 'hover:bg-white/15');
+      button.classList.add('bg-blue-600', 'text-white', 'shadow-md', 'shadow-blue-500/20');
+
+      const filter = button.getAttribute('data-filter');
+      const cards = document.querySelectorAll('.skill-card');
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        if (filter === 'all' || category === filter) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+  });
+
+  // Optional: Initialize with "All" selected
+  document.querySelector('[data-filter="all"]').click();
+</script>
 
   <!-- ─── CONTACT ─────────────────────────────────────────────────────────────────── -->
   <section id="contact" class="py-32 relative">
@@ -692,5 +873,6 @@
 </body>
 
 </html>
+
 
 
