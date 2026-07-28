@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CaseMath Pro v3 — Consulting Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0d11;--bg2:#111318;--bg3:#181b22;--bd:#242830;--bd2:#2e3340;--tx:#e2e6f0;--mu:#5a6072;--mu2:#7a8296;--go:#f0b429;--cy:#38bdf8;--re:#f87171;--gr:#4ade80;--pu:#a78bfa;--or:#fb923c;--te:#2dd4bf}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(255,255,255,.011) 2px,rgba(255,255,255,.011) 4px);pointer-events:none;z-index:9999}
+/* HEADER */
+.hd{background:var(--bg2);border-bottom:1px solid var(--bd);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:200}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;letter-spacing:-.01em}
+.logo em{color:var(--go);font-style:normal}
+.hdr{display:flex;align-items:center;gap:.9rem}
+.clk{font-family:'IBM Plex Mono',monospace;font-size:.68rem;color:var(--mu2);letter-spacing:.08em}
+.vtag{font-family:'IBM Plex Mono',monospace;font-size:.58rem;background:rgba(240,180,41,.1);color:var(--go);padding:.14rem .48rem;border-radius:2px;border:1px solid rgba(240,180,41,.2)}
+/* NAV */
+.nav{background:var(--bg2);border-bottom:1px solid var(--bd);display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:56px;z-index:190}
+.nav::-webkit-scrollbar{display:none}
+.nb{padding:0 .95rem;height:44px;border:none;background:none;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--mu);letter-spacing:.06em;border-bottom:2px solid transparent;transition:all .12s;white-space:nowrap;text-transform:uppercase}
+.nb:hover{color:var(--tx);background:rgba(255,255,255,.02)}.nb.active{color:var(--go);border-bottom-color:var(--go)}
+/* LAYOUT */
+.main{max-width:960px;margin:0 auto;padding:1.8rem 1.4rem 5rem}
+.view{display:none;animation:fU .2s ease}.view.active{display:block}
+@keyframes fU{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sh{margin-bottom:1.6rem}.sh-t{font-family:'Syne',sans-serif;font-weight:700;font-size:1.5rem;line-height:1.1;margin-bottom:.28rem}.sh-s{color:var(--mu2);font-size:.8rem}
+/* TAGS */
+.tag{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.12em;padding:.15rem .46rem;border-radius:2px;margin-right:.28rem;margin-bottom:.36rem}
+.tg{background:rgba(240,180,41,.1);color:var(--go);border:1px solid rgba(240,180,41,.2)}
+.tc{background:rgba(56,189,248,.08);color:var(--cy);border:1px solid rgba(56,189,248,.18)}
+.tr{background:rgba(248,113,113,.08);color:var(--re);border:1px solid rgba(248,113,113,.18)}
+.tp{background:rgba(167,139,250,.08);color:var(--pu);border:1px solid rgba(167,139,250,.18)}
+.tt{background:rgba(45,212,191,.08);color:var(--te);border:1px solid rgba(45,212,191,.18)}
+/* STAT CARDS */
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.7rem;margin-bottom:1.7rem}
+.sc{background:var(--bg2);border:1px solid var(--bd);border-radius:6px;padding:.95rem .85rem .8rem;position:relative;overflow:hidden}
+.sc::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:2px}
+.sg::after{background:var(--go)}.scy::after{background:var(--cy)}.sgr::after{background:var(--gr)}.sp::after{background:var(--pu)}.st::after{background:var(--te)}
+.sv{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;line-height:1;margin-bottom:.36rem}
+.sl{font-size:.6rem;font-family:'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.1em;color:var(--mu2)}
+/* MODULE CARDS */
+.mgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.8rem}
+.mc{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:1.2rem 1rem;cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+.mc:hover{border-color:var(--bd2);background:var(--bg3);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.4)}
+.mca{position:absolute;top:0;left:0;width:100%;height:3px}
+.mci{font-size:1.35rem;margin-bottom:.55rem}.mcn{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.3rem}
+.mcd{font-size:.71rem;color:var(--mu2);line-height:1.5}
+.mcs{margin-top:.75rem;font-family:'IBM Plex Mono',monospace;font-size:.59rem;color:var(--mu);border-top:1px solid var(--bd);padding-top:.6rem}
+/* CONTROLS */
+.ctrls{display:flex;flex-wrap:wrap;gap:.36rem;margin-bottom:.62rem}
+.cb{padding:.27rem .75rem;border:1px solid var(--bd2);background:var(--bg3);border-radius:3px;font-size:.63rem;font-family:'IBM Plex Mono',monospace;cursor:pointer;transition:all .1s;color:var(--mu2)}
+.cb:hover{border-color:var(--go);color:var(--tx)}.cb.active{background:rgba(240,180,41,.12);color:var(--go);border-color:rgba(240,180,41,.35)}
+.cr{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap;margin-bottom:.55rem}
+.cl{font-size:.63rem;font-family:'IBM Plex Mono',monospace;color:var(--mu);white-space:nowrap}
+/* Q CARD */
+.qc{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:1.5rem;margin-bottom:1rem}
+.qm{display:flex;align-items:center;gap:.45rem;margin-bottom:.9rem;font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--mu)}
+.qt{font-size:.95rem;line-height:1.8;margin-bottom:1.3rem}.qt strong{color:var(--go);font-weight:600}
+/* TIMER */
+.tb{height:3px;background:var(--bd);border-radius:2px;margin-bottom:1rem;overflow:hidden}
+.tf{height:100%;background:var(--go);border-radius:2px;transition:width 1s linear,background .3s}.tf.w{background:var(--re)}
+.td{font-family:'IBM Plex Mono',monospace;font-size:1.4rem;font-weight:600;text-align:center;margin-bottom:1rem;color:var(--go);letter-spacing:.05em}.td.w{color:var(--re)}
+/* PROGRESS */
+.pr{display:flex;align-items:center;gap:.72rem;margin-bottom:1rem;font-family:'IBM Plex Mono',monospace;font-size:.62rem;color:var(--mu2)}
+.pt{flex:1;height:4px;background:var(--bd);border-radius:2px;overflow:hidden}
+.pf{height:100%;background:var(--go);border-radius:2px;transition:width .3s}
+/* ANS INPUT */
+.ar{display:flex;gap:.62rem;align-items:center;flex-wrap:wrap}
+.ai{flex:1;min-width:175px;padding:.62rem .9rem;border:1px solid var(--bd2);border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:.96rem;background:var(--bg);color:var(--tx);transition:border-color .15s;outline:none}
+.ai:focus{border-color:var(--go);box-shadow:0 0 0 3px rgba(240,180,41,.07)}
+.ai.ok{border-color:var(--gr);background:rgba(74,222,128,.04)}.ai.bad{border-color:var(--re);background:rgba(248,113,113,.04)}
+/* BUTTONS */
+.btn{padding:.58rem 1.2rem;border:none;border-radius:5px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:.7rem;transition:all .12s;letter-spacing:.04em;text-transform:uppercase}
+.bg{background:var(--go);color:#000}.bg:hover{background:#f5c84a;transform:translateY(-1px)}
+.bgh{background:transparent;color:var(--mu2);border:1px solid var(--bd2)}.bgh:hover{color:var(--tx);background:var(--bg3)}
+.bre{background:rgba(248,113,113,.1);color:var(--re);border:1px solid rgba(248,113,113,.2)}
+.bte{background:rgba(45,212,191,.12);color:var(--te);border:1px solid rgba(45,212,191,.25)}.bte:hover{background:rgba(45,212,191,.2)}
+/* FEEDBACK */
+.fb{margin-top:.95rem;padding:.8rem .92rem;border-radius:5px;font-size:.81rem;line-height:1.65;display:none}
+.fb.ok{background:rgba(74,222,128,.06);border-left:3px solid var(--gr);display:block}
+.fb.bad{background:rgba(248,113,113,.06);border-left:3px solid var(--re);display:block}
+.fb .sol{margin-top:.45rem;font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--mu2)}
+/* CHOICES */
+.chs{display:grid;gap:.4rem;margin-bottom:.9rem}
+.ch{padding:.65rem .88rem;border:1px solid var(--bd2);border-radius:5px;background:var(--bg);text-align:left;cursor:pointer;font-size:.82rem;font-family:'IBM Plex Sans',sans-serif;transition:all .1s;display:flex;align-items:flex-start;gap:.65rem;color:var(--tx)}
+.ch:hover:not(:disabled){border-color:var(--go);background:rgba(240,180,41,.04)}
+.ch.hit{border-color:var(--gr)!important;background:rgba(74,222,128,.07)!important;color:var(--gr)}
+.ch.miss{border-color:var(--re)!important;background:rgba(248,113,113,.07)!important;color:var(--re)}
+.ch:disabled{cursor:default}
+.chl{font-family:'IBM Plex Mono',monospace;font-size:.63rem;width:20px;height:20px;border-radius:3px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-weight:600;margin-top:1px}
+.dm{display:flex;gap:3px;align-items:center}.dmd{width:6px;height:6px;border-radius:50%;background:var(--bd2)}.dmd.on{background:var(--go)}
+/* RESULT */
+.rc{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:2.1rem 1.7rem;text-align:center;margin-bottom:1.3rem;position:relative;overflow:hidden}
+.rc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--go),var(--cy))}
+.rsc{font-family:'Syne',sans-serif;font-size:3.8rem;font-weight:800;line-height:1;color:var(--go)}
+.rl{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.18em;color:var(--mu);margin-bottom:.36rem}
+.rb{display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;margin-top:1.4rem}
+.rbv{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;margin-bottom:.18rem}
+.rbl{font-family:'IBM Plex Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mu)}
+.fwb{background:rgba(56,189,248,.04);border:1px solid rgba(56,189,248,.12);border-radius:5px;padding:.8rem .92rem;margin-bottom:.82rem;font-size:.78rem;line-height:1.7;color:var(--mu2)}
+.fwb h4{color:var(--cy);font-size:.59rem;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.36rem;font-family:'IBM Plex Mono',monospace}
+/* HISTORY */
+.hwrap{overflow-x:auto}
+.ht{width:100%;border-collapse:collapse}
+.ht th{font-family:'IBM Plex Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.12em;color:var(--mu);padding:.44rem .7rem;text-align:left;border-bottom:1px solid var(--bd)}
+.ht td{padding:.56rem .7rem;font-size:.78rem;border-bottom:1px solid rgba(36,40,48,.7);vertical-align:middle}
+.pill{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:.59rem;padding:.11rem .38rem;border-radius:2px}
+.pg{background:rgba(74,222,128,.1);color:var(--gr)}.py{background:rgba(240,180,41,.1);color:var(--go)}.pr2{background:rgba(248,113,113,.09);color:var(--re)}
+/* TOAST */
+.toast{position:fixed;bottom:1.8rem;left:50%;transform:translateX(-50%) translateY(14px);background:var(--bg3);border:1px solid var(--bd2);border-left:3px solid var(--go);color:var(--tx);padding:.58rem 1.2rem;border-radius:5px;font-family:'IBM Plex Mono',monospace;font-size:.69rem;opacity:0;transition:all .2s;pointer-events:none;z-index:9998}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+/* CHARTS */
+.cbox{background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:.9rem;margin-bottom:.9rem;overflow-x:auto}
+.ctit{font-family:'IBM Plex Mono',monospace;font-size:.61rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mu2);margin-bottom:.7rem}
+svg text{font-family:'IBM Plex Mono',monospace;fill:var(--mu2)}
+.al{stroke:var(--bd2);stroke-width:1}.gl{stroke:var(--bd);stroke-width:.5;stroke-dasharray:3,3}.bf{opacity:.82}
+.dt{width:100%;border-collapse:collapse;font-size:.78rem}
+.dt th{background:var(--bg3);font-family:'IBM Plex Mono',monospace;font-size:.59rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mu2);padding:.54rem .7rem;text-align:right;border:1px solid var(--bd)}
+.dt th:first-child{text-align:left}.dt td{padding:.46rem .7rem;border:1px solid var(--bd);text-align:right;color:var(--tx)}
+.dt td:first-child{text-align:left;color:var(--mu2);font-family:'IBM Plex Mono',monospace;font-size:.68rem}
+.dt tr:hover td{background:rgba(255,255,255,.015)}
+/* CASE STRUCTURING */
+.case-hero{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:1.5rem;margin-bottom:1rem}
+.case-pr{font-size:.97rem;line-height:1.82;margin-bottom:1rem;color:var(--tx)}
+.case-pr .co{color:var(--te);font-weight:600}
+.case-ctx{background:rgba(45,212,191,.04);border:1px solid rgba(45,212,191,.15);border-radius:4px;padding:.7rem .9rem;font-size:.78rem;color:var(--mu2);line-height:1.65;margin-bottom:.9rem}
+.case-ctx strong{color:var(--te);font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:.3rem;font-family:'IBM Plex Mono',monospace}
+.fwpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(188px,1fr));gap:.48rem;margin-bottom:.85rem}
+.fwo{border:1px solid var(--bd2);border-radius:5px;padding:.68rem .82rem;cursor:pointer;transition:all .12s;background:var(--bg)}
+.fwo:hover{border-color:var(--te);background:rgba(45,212,191,.04)}.fwo.sel{border-color:var(--te);background:rgba(45,212,191,.08)}
+.fwon{font-family:'Syne',sans-serif;font-size:.81rem;font-weight:700;margin-bottom:.16rem;color:var(--tx)}
+.fwod{font-size:.69rem;color:var(--mu2);line-height:1.36}
+.ipool{display:flex;flex-wrap:wrap;gap:.35rem;padding:.7rem;background:var(--bg);border:1px solid var(--bd);border-radius:5px;min-height:48px;margin-bottom:.85rem}
+.ic{background:var(--bg3);border:1px solid var(--bd2);border-radius:3px;padding:.26rem .58rem;font-size:.74rem;cursor:pointer;transition:all .1s;user-select:none}
+.ic:hover{border-color:var(--go);color:var(--go)}.ic.used{opacity:.3;cursor:default;pointer-events:none}
+.bb{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:.6rem;margin-bottom:.85rem}
+.bkt{background:var(--bg);border:1px solid var(--bd2);border-radius:6px;padding:.7rem;min-height:70px}
+.bktt{font-family:'IBM Plex Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.1em;color:var(--te);margin-bottom:.46rem}
+.bi{background:var(--bg3);border:1px solid var(--bd);border-radius:3px;padding:.3rem .55rem;margin-bottom:.3rem;font-size:.75rem;display:flex;justify-content:space-between;align-items:center}
+.bi .rm{color:var(--mu);cursor:pointer;font-size:.7rem;padding:0 .15rem;line-height:1}.bi .rm:hover{color:var(--re)}
+.mc2{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.8rem}
+.mb{padding:.45rem .72rem;border-radius:4px;font-family:'IBM Plex Mono',monospace;font-size:.64rem;text-align:center;letter-spacing:.05em}
+.mbp{background:rgba(74,222,128,.08);border:1px solid rgba(74,222,128,.2);color:var(--gr)}
+.mbf{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:var(--re)}
+.mbn{background:var(--bg3);border:1px solid var(--bd2);color:var(--mu2)}
+.rub{background:var(--bg3);border:1px solid var(--bd);border-radius:6px;padding:.9rem;margin-top:.8rem}
+.rub h4{font-family:'IBM Plex Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.1em;color:var(--go);margin-bottom:.6rem}
+.rr{display:flex;gap:.62rem;align-items:flex-start;margin-bottom:.44rem;font-size:.78rem;line-height:1.5}
+.ma{background:var(--bg);border:1px solid var(--bd);border-radius:5px;padding:.78rem .9rem;margin-top:.72rem}
+.mah{font-family:'IBM Plex Mono',monospace;font-size:.59rem;text-transform:uppercase;letter-spacing:.1em;color:var(--mu2);margin-bottom:.52rem}
+.mab{padding:.22rem 0 .22rem .9rem;border-left:2px solid var(--bd2);margin-bottom:.26rem;font-size:.76rem;color:var(--mu2)}
+.mab strong{color:var(--tx)}
+.sgridc{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:.42rem;margin-bottom:.7rem}
+.sb{padding:.4rem .6rem;border:1px solid var(--bd2);border-radius:4px;background:var(--bg3);font-family:'IBM Plex Mono',monospace;font-size:.61rem;cursor:pointer;transition:all .1s;color:var(--mu2);text-align:center}
+.sb:hover{border-color:var(--te);color:var(--te)}.sb.active{background:rgba(45,212,191,.1);border-color:rgba(45,212,191,.35);color:var(--te)}
+textarea.ci{width:100%;background:var(--bg);border:1px solid var(--bd2);border-radius:5px;padding:.75rem .9rem;color:var(--tx);font-family:'IBM Plex Sans',sans-serif;font-size:.86rem;line-height:1.6;resize:vertical;min-height:110px;outline:none;transition:border-color .15s}
+textarea.ci:focus{border-color:var(--te);box-shadow:0 0 0 3px rgba(45,212,191,.07)}
+.case-nav-card{background:var(--bg2);border:1px solid var(--bd);border-radius:7px;padding:1.1rem;cursor:pointer;transition:all .14s;position:relative;overflow:hidden}
+.case-nav-card:hover{border-color:var(--bd2);background:var(--bg3);transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.cnc-acc{position:absolute;top:0;left:0;right:0;height:3px}
+.cnc-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;margin-bottom:.28rem}
+.cnc-meta{font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--mu2)}
+.diff-easy{color:var(--gr)}.diff-med{color:var(--go)}.diff-hard{color:var(--re)}
+@media(max-width:600px){.main{padding:1.1rem .9rem 4rem}.rb{grid-template-columns:repeat(2,1fr)}.sgrid{grid-template-columns:repeat(2,1fr)}.qc{padding:1.1rem}.mc2{grid-template-columns:1fr}}
+
+/* ── MISSING / APPENDED CLASSES ── */
+.sg::after{background:var(--go)}
+.scy::after{background:var(--cy)}
+.sgr::after{background:var(--gr)}
+.sp::after{background:var(--pu)}
+.st::after{background:var(--te)}
+.mc-acc{position:absolute;top:0;left:0;width:100%;height:3px}
+.mc-nm{font-family:'Syne',sans-serif;font-size:.93rem;font-weight:700;margin-bottom:.33rem}
+.mc-ds{font-size:.73rem;color:var(--mu2);line-height:1.5}
+.mc-st{margin-top:.8rem;font-family:'IBM Plex Mono',monospace;font-size:.6rem;color:var(--mu);border-top:1px solid var(--bd);padding-top:.6rem}
+.bt{background:rgba(45,212,191,.12);color:var(--te);border:1px solid rgba(45,212,191,.25)}
+.bt:hover{background:rgba(45,212,191,.22)}
+.bred{background:rgba(248,113,113,.1);color:var(--re);border:1px solid rgba(248,113,113,.2)}
+.case-p{font-size:1rem;line-height:1.82;margin-bottom:1rem;color:var(--tx)}
+.case-p .co{color:var(--te);font-weight:600}
+.bkt-items{min-height:30px}
+</style></head><body>
+<header class="hd">
+  <div class="logo">Case<em>Math</em> Pro</div>
+  <div class="hdr"><div class="clk" id="clk">--:--:--</div><div class="vtag">v3.0</div></div>
+</header>
+<nav class="nav">
+  <button class="nb active" onclick="gv('dash')">◈ Dashboard</button>
+  <button class="nb" onclick="gv('fast')">⚡ Fast Math</button>
+  <button class="nb" onclick="gv('est')">◎ Estimates</button>
+  <button class="nb" onclick="gv('gmat')">△ GMAT Quant</button>
+  <button class="nb" onclick="gv('di')">▦ Data Interp.</button>
+  <button class="nb" onclick="gv('case')">⬡ Case Structure</button>
+  <button class="nb" onclick="gv('prog')">↗ Progress</button>
+</nav>
+<div class="main">
+
+<!-- DASHBOARD -->
+<div class="view active" id="view-dash">
+  <div class="sh"><div class="sh-t">Training Hub</div><div class="sh-s">Sharpen mental math and analytical rigour for McKinsey, BCG, Bain interviews.</div></div>
+  <div class="sgrid" id="dStats"></div>
+  <div class="mgrid" id="mGrid"></div>
+</div>
+<!-- FAST MATH -->
+<div class="view" id="view-fast">
+  <div class="sh"><div class="sh-t">⚡ Fast Math</div><div class="sh-s">50 questions. Victor Cheng-style drills. Target &lt;15s per question.</div>
+    <div style="margin-top:.5rem"><span class="tag tg">Percentages</span><span class="tag tg">CAGR</span><span class="tag tg">Breakeven</span><span class="tag tg">Unit Economics</span></div></div>
+  <div id="fast-menu">
+    <div class="cr"><span class="cl">Category:</span><div class="ctrls" id="fc-cat"></div></div>
+    <div class="cr"><span class="cl">Difficulty:</span><div class="ctrls" id="fc-dif"></div></div>
+    <div class="cr"><span class="cl">Timer:</span><div class="ctrls" id="fc-tim"></div><span class="cl" style="margin-left:.4rem">Count:</span><div class="ctrls" id="fc-cnt"></div></div>
+    <button class="btn bg" onclick="startFast()">Start Session →</button>
+  </div>
+  <div id="fast-sess" style="display:none">
+    <div class="pr"><span id="fp-t"></span><div class="pt"><div class="pf" id="fp-f"></div></div><span id="fp-s" style="color:var(--gr)"></span></div>
+    <div class="qc">
+      <div class="qm"><span id="f-ct"></span><div class="dm" id="f-dm"></div><span style="margin-left:auto" id="f-qn"></span></div>
+      <div class="tb"><div class="tf" id="f-tf"></div></div><div class="td" id="f-td">15</div>
+      <div class="qt" id="f-qt"></div>
+      <div class="ar"><input class="ai" type="text" id="f-ai" placeholder="Answer…" autocomplete="off">
+        <button class="btn bg" onclick="submitFast()">Submit</button>
+        <button class="btn bgh" onclick="skipFast()">Skip</button></div>
+      <div class="fb" id="f-fb"></div>
+    </div>
+  </div>
+  <div id="fast-res" style="display:none"></div>
+</div>
+<!-- ESTIMATES -->
+<div class="view" id="view-est">
+  <div class="sh"><div class="sh-t">◎ Estimates &amp; Market Sizing</div><div class="sh-s">50 Fermi questions. Order-of-magnitude thinking. ±0.5 log tolerance.</div>
+    <div style="margin-top:.5rem"><span class="tag tc">Fermi</span><span class="tag tc">TAM Sizing</span><span class="tag tc">Population</span></div></div>
+  <div id="est-menu">
+    <div class="cr"><span class="cl">Category:</span><div class="ctrls" id="ec-cat"></div></div>
+    <div class="cr"><span class="cl">Count:</span><div class="ctrls" id="ec-cnt"></div></div>
+    <div class="fwb"><h4>Quick Reference</h4>US Pop: 330M · World: 8B · HH size: 2.5 · Adults 18–65: ~60% · Work days/yr: 250 · Urban: 80% · Income: Low &lt;$35k (30%), Mid $35–100k (50%), High &gt;$100k (20%)</div>
+    <button class="btn bg" onclick="startEst()">Start Session →</button>
+  </div>
+  <div id="est-sess" style="display:none">
+    <div class="pr"><span id="ep-t"></span><div class="pt"><div class="pf" id="ep-f"></div></div></div>
+    <div class="qc">
+      <div class="qm"><span id="e-ct"></span><span style="margin-left:auto" id="e-qn"></span></div>
+      <div class="qt" id="e-qt"></div>
+      <div class="fwb" id="e-hint" style="display:none"></div>
+      <div style="margin-bottom:.75rem"><button class="btn bgh" style="font-size:.61rem;padding:.35rem .75rem" onclick="showHint()">💡 Framework Hint</button></div>
+      <div class="ar"><input class="ai" type="text" id="e-ai" placeholder="e.g. 500M, 2.5B, 45000…" autocomplete="off">
+        <button class="btn bg" onclick="submitEst()">Submit</button></div>
+      <div class="fb" id="e-fb"></div>
+    </div>
+  </div>
+  <div id="est-res" style="display:none"></div>
+</div>
+<!-- GMAT -->
+<div class="view" id="view-gmat">
+  <div class="sh"><div class="sh-t">△ GMAT Quant</div><div class="sh-s">50 questions. Problem Solving + Data Sufficiency. Target &lt;2 min.</div>
+    <div style="margin-top:.5rem"><span class="tag tr">PS</span><span class="tag tr">DS</span><span class="tag tr">Algebra</span><span class="tag tr">Probability</span></div></div>
+  <div id="gmat-menu">
+    <div class="cr"><span class="cl">Type:</span><div class="ctrls" id="gc-cat"></div></div>
+    <div class="cr"><span class="cl">Difficulty:</span><div class="ctrls" id="gc-dif"></div></div>
+    <div class="cr"><span class="cl">Count:</span><div class="ctrls" id="gc-cnt"></div></div>
+    <button class="btn bg" onclick="startGmat()">Start Session →</button>
+  </div>
+  <div id="gmat-sess" style="display:none">
+    <div class="pr"><span id="gp-t"></span><div class="pt"><div class="pf" id="gp-f"></div></div><span id="gp-s" style="color:var(--gr)"></span></div>
+    <div class="qc">
+      <div class="qm"><span id="g-ct"></span><div class="dm" id="g-dm"></div><span style="margin-left:auto" id="g-qn"></span></div>
+      <div class="tb"><div class="tf" id="g-tf" style="background:var(--re)"></div></div><div class="td" id="g-td" style="color:var(--cy)">120</div>
+      <div class="qt" id="g-qt"></div>
+      <div class="chs" id="g-ch"></div>
+      <div class="fb" id="g-fb"></div>
+    </div>
+  </div>
+  <div id="gmat-res" style="display:none"></div>
+</div>
+<!-- DATA INTERP -->
+<div class="view" id="view-di">
+  <div class="sh"><div class="sh-t">▦ Data Interpretation</div><div class="sh-s">50 questions. Charts, tables and graphs. Target &lt;90s.</div>
+    <div style="margin-top:.5rem"><span class="tag tp">Bar Charts</span><span class="tag tp">Line Graphs</span><span class="tag tp">Pie Charts</span><span class="tag tp">Tables</span><span class="tag tp">Combo</span></div></div>
+  <div id="di-menu">
+    <div class="cr"><span class="cl">Type:</span><div class="ctrls" id="dc-cat"></div></div>
+    <div class="cr"><span class="cl">Count:</span><div class="ctrls" id="dc-cnt"></div></div>
+    <button class="btn bg" onclick="startDI()">Start Session →</button>
+  </div>
+  <div id="di-sess" style="display:none">
+    <div class="pr"><span id="dp-t"></span><div class="pt"><div class="pf" id="dp-f"></div></div><span id="dp-s" style="color:var(--gr)"></span></div>
+    <div class="qc">
+      <div class="qm"><span id="d-ct"></span><div class="dm" id="d-dm"></div><span style="margin-left:auto" id="d-qn"></span></div>
+      <div class="tb"><div class="tf" id="d-tf" style="background:var(--pu)"></div></div><div class="td" id="d-td" style="color:var(--pu)">90</div>
+      <div id="d-chart"></div>
+      <div class="qt" id="d-qt" style="margin-top:.9rem"></div>
+      <div class="chs" id="d-ch"></div>
+      <div class="fb" id="d-fb"></div>
+    </div>
+  </div>
+  <div id="di-res" style="display:none"></div>
+</div>
+<!-- CASE STRUCTURE -->
+<div class="view" id="view-case">
+  <div class="sh"><div class="sh-t">⬡ Case Structure</div><div class="sh-s">25 real-world MECE structuring challenges. Practice by sector, function, or difficulty.</div>
+    <div style="margin-top:.5rem"><span class="tag tt">MECE</span><span class="tag tt">Profitability</span><span class="tag tt">Growth</span><span class="tag tt">M&A</span><span class="tag tt">Operations</span></div></div>
+  <div id="case-menu">
+    <div class="cr"><span class="cl">Sector:</span><div class="sgridc" id="cs-sec"></div></div>
+    <div class="cr"><span class="cl">Function:</span><div class="ctrls" id="cs-fn"></div></div>
+    <div class="cr"><span class="cl">Difficulty:</span><div class="ctrls" id="cs-dif"></div></div>
+    <div id="case-grid" style="margin-top:.8rem"></div>
+  </div>
+  <div id="case-active" style="display:none"></div>
+</div>
+<!-- PROGRESS -->
+<div class="view" id="view-prog">
+  <div class="sh"><div class="sh-t">↗ Progress Tracker</div><div class="sh-s">Persistent history across all modules. Stored in your browser.</div></div>
+  <div id="prog-content"></div>
+</div>
+</div><!-- /main -->
+<div class="toast" id="toast"></div>
+<script>
+const id=i=>document.getElementById(i);
+// ── STORAGE ──
+const SK='cmv6';
+function lp(){try{const r=localStorage.getItem(SK);if(r)return JSON.parse(r)}catch(e){}
+  return{sessions:[],totals:{fast:{c:0,w:0,s:0,t:0},est:{c:0,w:0,s:0,t:0},gmat:{c:0,w:0,s:0,t:0},di:{c:0,w:0,s:0,t:0},case:{c:0,w:0,s:0,t:0}}}}
+function sp(){try{localStorage.setItem(SK,JSON.stringify(P))}catch(e){}}
+let P=lp();
+function addS(tp,res){P.sessions.unshift({tp,date:new Date().toISOString(),...res});if(P.sessions.length>300)P.sessions=P.sessions.slice(0,300);if(!P.totals[tp])P.totals[tp]={c:0,w:0,s:0,t:0};const t=P.totals[tp];t.c+=res.correct||0;t.w+=res.wrong||0;t.s+=res.skipped||0;t.t+=res.time||0;sp()}
+setInterval(()=>{const n=new Date();id('clk').textContent=n.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false})},1000);
+const VL=['dash','fast','est','gmat','di','case','prog'];
+function gv(v){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.nb').forEach(x=>x.classList.remove('active'));id('view-'+v).classList.add('active');document.querySelectorAll('.nb')[VL.indexOf(v)]?.classList.add('active');if(v==='dash')rdash();if(v==='prog')rprog();if(v==='case')initCase();}
+
+// ══ FAST MATH — 50 Qs ══
+const FQ=[
+{cat:'Percentages',d:1,q:'What is <strong>15%</strong> of <strong>$840</strong>?',a:126,tol:0,h:'15%=10%+5%. 84+42=126.'},
+{cat:'Percentages',d:1,q:'Revenue grew <strong>$500M→$650M</strong>. Growth %?',a:30,tol:0,h:'(650-500)/500=30%.'},
+{cat:'Percentages',d:2,q:'Costs <strong>$1.2B</strong>, margin <strong>25%</strong>. Revenue ($B)?',a:1.6,tol:0,h:'Cost=75%×Rev. Rev=1.2/0.75=1.6B.'},
+{cat:'Percentages',d:2,q:'Price falls <strong>20%</strong>, volume rises <strong>30%</strong>. Net revenue change?',a:4,tol:0,h:'0.8×1.3=1.04. +4%.'},
+{cat:'Percentages',d:3,q:'<strong>$3.6M</strong> is <strong>18%</strong> of budget. Total ($M)?',a:20,tol:0,h:'3.6/0.18=20M.'},
+{cat:'Percentages',d:2,q:'Market share <strong>12%→15%</strong>. Relative increase?',a:25,tol:0,h:'(15-12)/12=25%.'},
+{cat:'Percentages',d:3,q:'Gross margin <strong>40%</strong>, price <strong>$240</strong>. COGS ($)?',a:144,tol:0,h:'COGS=60%×240=144.'},
+{cat:'Percentages',d:1,q:'<strong>35%</strong> of <strong>$2,400</strong>?',a:840,tol:0,h:'0.35×2400=840.'},
+{cat:'Percentages',d:2,q:'After <strong>12%</strong> discount price is <strong>$528</strong>. Original?',a:600,tol:0,h:'528/0.88=600.'},
+{cat:'Percentages',d:3,q:'Costs rise <strong>8%</strong>, revenue rises <strong>5%</strong>, starting margin <strong>20%</strong>. New margin (%)?',a:17.7,tol:0.5,h:'Rev=105, Cost=80×1.08=86.4. Margin=(18.6)/105=17.7%.'},
+{cat:'Percentages',d:2,q:'Product A is <strong>60%</strong> of revenue, grows <strong>10%</strong>, rest flat. Total growth (%)?',a:6,tol:0,h:'0.6×10%+0.4×0=6%.'},
+{cat:'Percentages',d:3,q:'COGS <strong>$480M</strong>, SG&A <strong>$120M</strong>, Revenue <strong>$900M</strong>. EBIT margin?',a:33.3,tol:0.5,h:'(900-480-120)/900=300/900=33.3%.'},
+{cat:'CAGR',d:2,q:'<strong>$100M→$121M</strong> in <strong>2 years</strong>. CAGR?',a:10,tol:0,h:'√1.21=1.10. 10%.'},
+{cat:'CAGR',d:2,q:'Revenue doubles in <strong>6 years</strong>. CAGR? [Rule of 72]',a:12,tol:0,h:'72/6=12%.'},
+{cat:'CAGR',d:3,q:'<strong>7% CAGR</strong>, <strong>$500M</strong> base. After <strong>10 yrs</strong> ($M)?',a:1000,tol:50,h:'72/7≈10 yrs to double. ≈$1,000M.'},
+{cat:'CAGR',d:3,q:'<strong>15% CAGR</strong>, <strong>$80M</strong>. After <strong>5 yrs</strong> ($M)?',a:161,tol:8,h:'1.15^5≈2.01. 80×2≈160M.'},
+{cat:'CAGR',d:2,q:'Market <strong>$2B</strong> today, <strong>20% CAGR</strong>. After <strong>3 yrs</strong> ($B)?',a:3.46,tol:0.1,h:'2×1.2^3=2×1.728=3.46B.'},
+{cat:'CAGR',d:3,q:'<strong>$50M→$400M</strong> in <strong>8 years</strong>. Approx CAGR?',a:26,tol:2,h:'8×growth in 8yr. 8^(1/8)≈1.26. ~26%.'},
+{cat:'Division',d:1,q:'<strong>$1,440M</strong> across <strong>12</strong> units. Revenue/unit ($M)?',a:120,tol:0,h:'1440/12=120.'},
+{cat:'Division',d:2,q:'<strong>$875M ÷ 35</strong> = ?',a:25,tol:0,h:'875/35=25.'},
+{cat:'Division',d:2,q:'Op income <strong>$156M</strong>, revenue <strong>$1,300M</strong>. Op margin?',a:12,tol:0,h:'156/1300=12%.'},
+{cat:'Division',d:3,q:'<strong>$4.5B</strong> revenue, <strong>18,000</strong> employees. Revenue/employee ($K)?',a:250,tol:0,h:'4.5B/18000=250K.'},
+{cat:'Division',d:2,q:'<strong>$3,360M ÷ 48</strong> = ?',a:70,tol:0,h:'3360/48=70.'},
+{cat:'Division',d:3,q:'EBITDA <strong>$340M</strong>, EV <strong>$2.72B</strong>. EV/EBITDA multiple?',a:8,tol:0,h:'2720/340=8×.'},
+{cat:'Multiplication',d:1,q:'<strong>340 × 25</strong> = ?',a:8500,tol:0,h:'340×100/4=8500.'},
+{cat:'Multiplication',d:2,q:'<strong>125 × 64</strong> = ?',a:8000,tol:0,h:'125×8×8=8000.'},
+{cat:'Multiplication',d:2,q:'<strong>2.4M</strong> customers × <strong>$350/yr</strong>. TAM ($M)?',a:840,tol:0,h:'2.4M×350=840M.'},
+{cat:'Multiplication',d:3,q:'<strong>875 × 48</strong> = ?',a:42000,tol:0,h:'875×50-875×2=42000.'},
+{cat:'Multiplication',d:3,q:'<strong>$12.50 × 4,800</strong> units ($)?',a:60000,tol:0,h:'12.5×4800=60000.'},
+{cat:'Fractions',d:1,q:'<strong>3/8</strong> as a percentage?',a:37.5,tol:0,h:'3/8=0.375=37.5%.'},
+{cat:'Fractions',d:2,q:'What % of <strong>$720</strong> is <strong>$270</strong>?',a:37.5,tol:0,h:'270/720=37.5%.'},
+{cat:'Fractions',d:3,q:'OpEx = <strong>7/12</strong> of revenue <strong>$1.44B</strong>. OpEx ($M)?',a:840,tol:0,h:'7/12×1440=840M.'},
+{cat:'Fractions',d:2,q:'<strong>5/6</strong> of <strong>$180M</strong> ($M)?',a:150,tol:0,h:'5/6×180=150M.'},
+{cat:'Breakeven',d:2,q:'Fixed <strong>$50M</strong>, unit CM <strong>$25</strong>. Breakeven (K units)?',a:2000,tol:0,h:'50M/25=2M=2000K.'},
+{cat:'Breakeven',d:3,q:'Fixed <strong>$120M</strong>, price <strong>$80</strong>, VC <strong>$32</strong>. Breakeven (M units)?',a:2.5,tol:0.1,h:'CM=48. 120M/48=2.5M.'},
+{cat:'Breakeven',d:3,q:'Factory <strong>$600M</strong>, savings <strong>$75M/yr</strong>. Payback (years)?',a:8,tol:0,h:'600/75=8 yrs.'},
+{cat:'Breakeven',d:2,q:'SaaS: <strong>$800K</strong> monthly fixed, <strong>$40</strong> monthly CM/user. Breakeven (K users)?',a:20,tol:0,h:'800K/40=20K.'},
+{cat:'Weighted Avg',d:2,q:'Seg A: <strong>$200M</strong> at <strong>20%</strong>. Seg B: <strong>$300M</strong> at <strong>30%</strong>. Blended margin?',a:26,tol:0,h:'(200×20+300×30)/500=26%.'},
+{cat:'Weighted Avg',d:3,q:'A=60% rev, 30% margin; B=40% rev, 50% margin. Blended?',a:38,tol:0,h:'0.6×30+0.4×50=38%.'},
+{cat:'Weighted Avg',d:3,q:'3 factories: 1000 units @$5, 500 @$8, 200 @$12. Blended cost/unit ($)?',a:6.71,tol:0.15,h:'(5000+4000+2400)/1700=11400/1700=$6.71.'},
+{cat:'NPV/Returns',d:3,q:'Invest <strong>$400M</strong>, receive <strong>$500M</strong> in <strong>2 yrs</strong>. Approx IRR?',a:11.8,tol:1.5,h:'(500/400)^0.5-1≈11.8%.'},
+{cat:'NPV/Returns',d:3,q:'10% discount rate. PV of <strong>$1.21B</strong> in <strong>2 yrs</strong> ($B)?',a:1,tol:0,h:'1.21/1.21=1B.'},
+{cat:'NPV/Returns',d:3,q:'LBO: buy at <strong>8×$50M EBITDA</strong>, sell at <strong>10×$70M</strong> in 5 yrs. MOIC?',a:1.75,tol:0.05,h:'Buy=400M, Sell=700M. 700/400=1.75×.'},
+{cat:'NPV/Returns',d:3,q:'PE fund: <strong>3× MOIC</strong> in <strong>4 years</strong>. Approx IRR?',a:32,tol:2,h:'3^(1/4)-1≈31.6%.'},
+{cat:'Unit Economics',d:2,q:'CAC <strong>$120</strong>, monthly churn <strong>2%</strong>, monthly ARPU <strong>$15</strong>. LTV/CAC?',a:6.25,tol:0.3,h:'LTV=15/0.02=750. 750/120=6.25.'},
+{cat:'Unit Economics',d:2,q:'Revenue <strong>$60M</strong>, gross margin <strong>70%</strong>, S&M <strong>$18M</strong>. Contribution margin ($M)?',a:24,tol:0,h:'GM=42M. CM=42-18=24M.'},
+{cat:'Unit Economics',d:3,q:'Payback: CAC <strong>$240</strong>, gross margin <strong>$20/mo</strong>. Months?',a:12,tol:0,h:'240/20=12 months.'},
+{cat:'Unit Economics',d:2,q:'<strong>$1.8B</strong> revenue, <strong>15%</strong> EBIT margin, <strong>25%</strong> tax. NOPAT ($M)?',a:202.5,tol:2,h:'EBIT=270M. NOPAT=270×0.75=202.5M.'},
+{cat:'Unit Economics',d:3,q:'Working capital: AR <strong>$80M</strong>, Inv <strong>$60M</strong>, AP <strong>$50M</strong>. NWC ($M)?',a:90,tol:0,h:'NWC=80+60-50=90M.'},
+{cat:'Unit Economics',d:3,q:'Revenue <strong>$500M</strong>, EBITDA margin <strong>22%</strong>, D&A <strong>$15M</strong>, capex <strong>$25M</strong>, ΔNWC <strong>$8M</strong>. FCF ($M)?',a:62,tol:2,h:'EBITDA=110M. FCF=110-15-25-8=62M.'}
+];
+
+// ══ ESTIMATES — 50 Qs ══
+const EQ=[
+{cat:'Population',q:'How many <strong>dentists</strong> are in the US?',a:200000,lt:.5,h:'~1 per 1,600 people=200k.',fw:'Pop 330M. Adults 80%=264M. 1 dentist/1300 pts/yr=200k.'},
+{cat:'Market Sizing',q:'Annual <strong>US coffee shop market</strong> ($B)?',a:50,lt:.5,h:'~$50B.',fw:'160M café drinkers×2 visits/wk×$6=$99B gross. Café revenue ~$50B.'},
+{cat:'Market Sizing',q:'Annual <strong>US gym memberships market</strong> ($B)?',a:35,lt:.5,h:'50M members×$600/yr≈$30B.',fw:'200M adults×25% gym=50M. $55/mo×12=$660. 50M×$600=$30B+.'},
+{cat:'Population',q:'<strong>Uber trips</strong> in the US per day (millions)?',a:15,lt:.5,h:'~100M users; 15% ride daily=15M.',fw:'250M smartphones×40% Uber=100M users. 1 trip/wk=100M/7≈14M/day.'},
+{cat:'Market Sizing',q:'Annual <strong>US fast food market</strong> ($B)?',a:300,lt:.5,h:'~$230-300B.',fw:'330M×1.5 visits/wk×$9×52=$230B. Full market ~$300B.'},
+{cat:'Fermi',q:'How many <strong>piano tuners</strong> are in Chicago?',a:100,lt:1,h:'2.7M pop, ~55k pianos, 1000/tuner/yr.',fw:'HH 1.08M. Pianos 5%=54k. Comm 10k. Capacity 1000/yr. 64 tuners.'},
+{cat:'Market Sizing',q:'<strong>US online grocery market</strong> ($B/yr)?',a:100,lt:.5,h:'26M HH×$2,400/yr=$62B growing.',fw:'130M HH×20% online=26M. $200/mo=26M×$2400=$62B→$95B+.'},
+{cat:'Fermi',q:'<strong>Commercial flights</strong> per day in the US?',a:45000,lt:.5,h:'~16k pax flights + cargo=45k.',fw:'900M pax/yr÷150÷365=16.4k. FAA total incl cargo≈45k.'},
+{cat:'Market Sizing',q:'Annual <strong>US pet food market</strong> ($B)?',a:40,lt:.5,h:'~130M pets×$300/yr≈$38B.',fw:'130M HH×65%=85M pet HH×1.5 pets=127M pets×$300=$38B.'},
+{cat:'Fermi',q:'<strong>Golf balls</strong> sold in the US per year (millions)?',a:300,lt:.5,h:'24M golfers×15 balls/yr=360M.',fw:'24M golfers×25 rounds×0.5 lost=300M+new purchases≈360M.'},
+{cat:'Market Sizing',q:'Annual <strong>US pharma market</strong> ($B)?',a:550,lt:.5,h:'165M on Rx×$1,200/yr≈$550B.',fw:'330M×50% on Rx=165M×$1,200/yr=$198B branded; total ~$550B.'},
+{cat:'Fermi',q:'<strong>Text messages</strong> sent in the US per day (billions)?',a:6,lt:.5,h:'270M users×20/day=5.4B.',fw:'270M smartphone users×20 texts/day=5.4B/day≈6B.'},
+{cat:'Market Sizing',q:'Annual <strong>US digital advertising market</strong> ($B)?',a:250,lt:.5,h:'Google+Meta+others≈$250B.',fw:'Google ~33%=$82B, Meta ~22%=$55B, others 45%=$112B. Total ~$250B.'},
+{cat:'Fermi',q:'<strong>McDonald\'s locations</strong> in the US?',a:14000,lt:.5,h:'~1 per 23k people=14k.',fw:'330M÷23k=14.3k. Actual ~14,000.'},
+{cat:'Market Sizing',q:'Annual <strong>US ride-sharing market</strong> (Uber+Lyft) ($B)?',a:40,lt:.5,h:'15M trips/day×$9×365=$49B.',fw:'15M trips/day×$9 avg fare×365=$49B GMV. Revenue (platform) ~$15-20B.'},
+{cat:'Fermi',q:'Number of <strong>hospitals</strong> in the US?',a:6000,lt:.5,h:'~1 per 55k people.',fw:'330M÷55k=6k. Actual ~6,090.'},
+{cat:'Market Sizing',q:'Annual <strong>US cloud computing market</strong> ($B)?',a:150,lt:.5,h:'AWS+Azure+GCP ~$150B in US.',fw:'Global cloud ~$600B. US share ~25-30%=$150-180B.'},
+{cat:'Fermi',q:'How many <strong>plumbers</strong> are in the US?',a:500000,lt:.5,h:'~1 per 660 people=500k.',fw:'130M HH. 1 plumber per 250 HH/yr. 130M/250=520k.'},
+{cat:'Market Sizing',q:'Annual <strong>US video streaming market</strong> ($B)?',a:35,lt:.5,h:'130M HH×$25/mo avg≈$39B.',fw:'130M HH×1.8 subs×$14/sub/mo×12=$39B.'},
+{cat:'Fermi',q:'<strong>Weddings</strong> in the US per year (millions)?',a:2.1,lt:.5,h:'~2M/yr (~0.6% of pop).',fw:'Adults 25-45: 80M. Avg marriage once. Marriage lasts 30yr→80M/30≈2.7M. Adj: ~2M.'},
+{cat:'Market Sizing',q:'Annual <strong>US hotel market</strong> revenue ($B)?',a:200,lt:.5,h:'5M rooms×65% occ×$130/night×365.',fw:'5M rooms×65% occ×$130×365=$154B+F&B→~$200B.'},
+{cat:'Fermi',q:'How many <strong>ATMs</strong> are in the US?',a:470000,lt:.5,h:'~1 per 700 people.',fw:'330M÷700=470k. Actual ~470,000.'},
+{cat:'Market Sizing',q:'Annual <strong>US e-commerce market</strong> ($T)?',a:1.1,lt:.5,h:'~21% of $5.3T retail=$1.1T.',fw:'US retail: ~$5.3T. E-commerce share: ~21%=$1.1T.'},
+{cat:'Fermi',q:'<strong>New cars</strong> sold in the US per year (millions)?',a:14,lt:.5,h:'~14-15M/yr.',fw:'280M cars÷18yr replacement=15.6M+new buyers≈14M/yr.'},
+{cat:'Market Sizing',q:'Annual <strong>US legal services market</strong> ($B)?',a:300,lt:.5,h:'1.3M lawyers×$230K avg.',fw:'1.3M licensed attorneys×$230k revenue/yr=$300B.'},
+{cat:'Fermi',q:'How many <strong>flights</strong> does a commercial aircraft make per year?',a:2000,lt:.5,h:'5-6 flights/day×350 operating days.',fw:'16hrs/day÷2hr avg flight=8 flights×330 days=2,640. Conservative: ~2,000.'},
+{cat:'Market Sizing',q:'Annual <strong>US cybersecurity market</strong> ($B)?',a:80,lt:.5,h:'~$80B.',fw:'Fortune 500: $5M each=$2.5B. SMBs: 30M×$1k=$30B. Gov: $20B. Total≈$80B.'},
+{cat:'Fermi',q:'<strong>Starbucks locations</strong> in the US?',a:16000,lt:.5,h:'~1 per 20k people.',fw:'330M÷20k=16.5k. Actual ~16,000.'},
+{cat:'Market Sizing',q:'Annual <strong>US management consulting market</strong> ($B)?',a:80,lt:.5,h:'~$80-85B.',fw:'Fortune 500 avg $50M consulting=$25B. Mid-market $30B. Gov+small $25B=~$80B.'},
+{cat:'Fermi',q:'<strong>Passenger cars</strong> registered in the US (millions)?',a:280,lt:.5,h:'~280M.',fw:'230M licensed adults×1.2 cars/driver≈280M.'},
+{cat:'Market Sizing',q:'Annual <strong>US insurance premiums</strong> ($T)?',a:1.5,lt:.5,h:'~$1.5T.',fw:'Health $1T. P&C $750B. Life $200B. Total ~$2T. US share ~75%=$1.5T.'},
+{cat:'Fermi',q:'<strong>Elementary school teachers</strong> in the US?',a:1400000,lt:.5,h:'28M K-8 students÷22/class≈1.4M.',fw:'K-8 students: 28M. Class size: 22. Teachers: 28M/22=1.27M+admin≈1.4M.'},
+{cat:'Market Sizing',q:'Annual <strong>US food delivery market GMV</strong> (DoorDash, UberEats) ($B)?',a:80,lt:.5,h:'250M orders×$35 avg basket.',fw:'Online orders: 250M/yr×$35 basket=$87.5B GMV≈$80B.'},
+{cat:'Fermi',q:'<strong>Smartphones</strong> sold in the US per year (millions)?',a:150,lt:.5,h:'~150M.',fw:'270M users÷2yr cycle=135M+new users≈150M.'},
+{cat:'Fermi',q:'<strong>Miles of road</strong> in the US (millions)?',a:4,lt:.5,h:'~4 million miles.',fw:'Interstate 50k. US highways 160k. State 750k. Local ~3M. Total ~4M.'},
+{cat:'Market Sizing',q:'Annual <strong>US fitness equipment market</strong> ($B)?',a:15,lt:.5,h:'52M households×$300/yr.',fw:'130M HH×40% own equipment=52M×$300/yr=$15.6B.'},
+{cat:'Fermi',q:'<strong>Pharmacies</strong> in the US?',a:60000,lt:.5,h:'~1 per 5,500 people.',fw:'330M÷5.5k=60k. Actual ~60,000.'},
+{cat:'Market Sizing',q:'Annual <strong>US EV market</strong> ($B)?',a:80,lt:.5,h:'1.2M EVs×$65K avg price.',fw:'EV share ~8% of 15M sales=1.2M×$65k=$78B≈$80B.'},
+{cat:'Fermi',q:'<strong>Babies born</strong> in the US per day?',a:10000,lt:.5,h:'3.6M births/yr÷365≈10k.',fw:'Birth rate 11/1000/yr×330M=3.6M÷365≈9,900≈10k.'},
+{cat:'Market Sizing',q:'Annual <strong>US commercial real estate</strong> transaction volume ($B)?',a:600,lt:.5,h:'~$600-700B.',fw:'Office+Industrial+Retail+Multifamily transactions. ~$600B annual.'},
+{cat:'Fermi',q:'<strong>Fire stations</strong> in the US?',a:50000,lt:.5,h:'~1 per 6,600 people.',fw:'330M÷6.5k≈50k. Actual ~50,000.'},
+{cat:'Market Sizing',q:'Annual <strong>US healthcare staffing market</strong> ($B)?',a:45,lt:.5,h:'600k temp workers×$75K.',fw:'20M healthcare workers×3% temp=600k×$75k/yr=$45B.'},
+{cat:'Fermi',q:'<strong>Grocery stores</strong> in the US?',a:65000,lt:.5,h:'~1 per 5k people.',fw:'330M÷5k=66k. Actual ~63,000.'},
+{cat:'Market Sizing',q:'Annual <strong>US advertising market</strong> total ($B)?',a:350,lt:.5,h:'Digital $250B+TV $60B+other $40B.',fw:'Digital ~$250B. TV $60B. OOH $9B. Print/radio/other $30B. Total ~$350B.'},
+{cat:'Fermi',q:'<strong>Lawyers</strong> in the US?',a:1300000,lt:.5,h:'~1 per 250 people.',fw:'330M÷250=1.32M. Actual ~1.3M.'},
+{cat:'Market Sizing',q:'Annual <strong>US private equity AUM</strong> ($T)?',a:4,lt:.5,h:'~$4-5T.',fw:'Global PE AUM ~$12T. US share ~35-40%=$4-5T.'},
+{cat:'Fermi',q:'<strong>Hours of video</strong> uploaded to YouTube per minute?',a:500,lt:.5,h:'~500 hours/min.',fw:'Actual: ~500 hours per minute. 500×60×24=720,000 hrs/day.'},
+{cat:'Market Sizing',q:'Annual <strong>US K-12 education market</strong> (public+private) ($B)?',a:700,lt:.5,h:'50M students×$14k avg.',fw:'K-12 students: 50M. Public: $700B. Private: ~$60B. Total ~$760B.'},
+{cat:'Market Sizing',q:'Annual <strong>US healthcare total spend</strong> ($T)?',a:4.5,lt:.5,h:'~$4.5T (~17% of GDP).',fw:'US GDP ~$26T×17%=$4.4T. Actual ~$4.5T in 2023.'},
+{cat:'Fermi',q:'How many <strong>college students</strong> are in the US (millions)?',a:19,lt:.5,h:'~19M.',fw:'18-24 yr old pop: 30M. College-going rate: ~65%=19.5M. Actual ~19M.'},
+{cat:'Market Sizing',q:'Annual <strong>US software market</strong> ($B)?',a:400,lt:.5,h:'~$400B.',fw:'Global software ~$700B. US share ~55-60%=$385-420B≈$400B.'}
+];
+
+// ══ GMAT — 50 Qs ══
+const GQ=[
+{tp:'PS',cat:'Ratios',d:2,q:'Revenue:Profit = <strong>8:1</strong>. Revenue=<strong>$240M</strong>. Profit margin?',ch:['10.5%','12.5%','8.5%','15%','11%'],a:1,ex:'Profit=240/8=30M. Margin=30/240=12.5%.'},
+{tp:'PS',cat:'Work & Rate',d:2,q:'Team A: <strong>12 days</strong>, Team B: <strong>8 days</strong>. Together?',ch:['4.0 days','4.8 days','5.0 days','6.0 days','3.6 days'],a:1,ex:'Rate=1/12+1/8=5/24. Days=24/5=4.8.'},
+{tp:'PS',cat:'Percentages',d:2,q:'Price +<strong>20%</strong> then −<strong>20%</strong>. Net change?',ch:['0%','−4%','+4%','−2%','−8%'],a:1,ex:'1.2×0.8=0.96. Net: −4%.'},
+{tp:'PS',cat:'Sets',d:2,q:'200 execs: 120 WSJ, 80 FT, 40 both. Neither?',ch:['20','30','40','50','60'],a:2,ex:'Reading: 120+80-40=160. Neither: 40.'},
+{tp:'PS',cat:'Algebra',d:2,q:'<strong>3x + 2y = 24</strong> and <strong>x = 2y</strong>. x = ?',ch:['4','6','8','3','5'],a:1,ex:'3(2y)+2y=8y=24. y=3. x=6.'},
+{tp:'PS',cat:'Word Problems',d:2,q:'Consultant: <strong>$400/hr × 45 hrs/wk × 48 wks</strong>. Annual billings?',ch:['$820K','$864K','$900K','$720K','$960K'],a:1,ex:'400×45×48=$864,000.'},
+{tp:'PS',cat:'Weighted Avg',d:3,q:'Product A: <strong>30% margin</strong>, 60% rev. B: <strong>50% margin</strong>, 40%. Blended?',ch:['38%','40%','42%','44%','36%'],a:0,ex:'0.6×30+0.4×50=38%.'},
+{tp:'PS',cat:'Geometry',d:2,q:'Warehouse <strong>200m×150m</strong>. New layout: <strong>15%</strong> less area. New area?',ch:['24,500m²','25,500m²','27,000m²','26,000m²','28,000m²'],a:1,ex:'30,000×0.85=25,500m².'},
+{tp:'DS',cat:'Data Sufficiency',d:3,q:'<strong>[DS]</strong> Is net income positive?<br>(1) Revenue grew 15% to $1.15B.<br>(2) Op costs $900M, dep $80M, no interest.',ch:['(1) alone','(2) alone','Both together','Either alone','Neither'],a:2,ex:'(1): no costs. (2): costs=$980M, no revenue. Together: Rev$1.15B-Cost$0.98B=NI$170M>0.'},
+{tp:'DS',cat:'Data Sufficiency',d:3,q:'<strong>[DS]</strong> Average deal size?<br>(1) 24 deals totaling $4.8M.<br>(2) Median deal=$180K.',ch:['(1) alone','(2) alone','Both together','Either alone','Neither'],a:0,ex:'(1): $4.8M/24=$200K. Sufficient. (2): median≠mean.'},
+{tp:'PS',cat:'Sequences',d:3,q:'Revenue: $10M, $14M, $19.6M… constant ratio. 5th term?',ch:['$27.4M','$38.4M','$38.2M','$32.4M','$34.3M'],a:1,ex:'Ratio=1.4. 10,14,19.6,27.44,38.4M.'},
+{tp:'PS',cat:'Mixtures',d:3,q:'A: <strong>30% alcohol</strong>. B: <strong>70% alcohol</strong>. Make 100L of <strong>45%</strong>. Liters of A?',ch:['37.5L','50L','62.5L','55L','45L'],a:2,ex:'0.3x+0.7(100-x)=45. x=62.5L.'},
+{tp:'PS',cat:'Probability',d:3,q:'Bag: 4 red, 6 blue. Draw 2 w/o replacement. P(both red)?',ch:['2/15','1/15','4/45','6/45','2/9'],a:0,ex:'4/10×3/9=12/90=2/15.'},
+{tp:'PS',cat:'Profit/Loss',d:2,q:'Cost $80, sold 25% profit, resold 20% loss. Final price?',ch:['$72','$80','$84','$76','$88'],a:1,ex:'SP1=80×1.25=$100. SP2=100×0.8=$80.'},
+{tp:'PS',cat:'Number Theory',d:2,q:'LCM of <strong>12, 18, 24</strong>?',ch:['36','48','72','96','60'],a:2,ex:'12=2²×3,18=2×3²,24=2³×3. LCM=2³×3²=72.'},
+{tp:'PS',cat:'Statistics',d:2,q:'{3,7,7,8,10,15}. Mean?',ch:['8.0','8.3','8.5','7.8','9.0'],a:1,ex:'(3+7+7+8+10+15)/6=50/6≈8.33.'},
+{tp:'PS',cat:'Combinatorics',d:3,q:'5 consultants, choose 3. How many combinations?',ch:['10','15','20','30','60'],a:0,ex:'C(5,3)=10.'},
+{tp:'PS',cat:'Rates',d:2,q:'Train A: 60mph, B: 90mph, same direction, 30mi apart. Hours to B catch A?',ch:['1.5','2.0','2.5','1.0','0.5'],a:3,ex:'Relative speed=90-60=30mph. Time=30/30=1hr.'},
+{tp:'PS',cat:'Algebra',d:3,q:'<strong>x² − 5x + 6 = 0</strong>. Values of x?',ch:['x=2,3','x=1,6','x=−2,−3','x=2,−3','x=−2,3'],a:0,ex:'(x-2)(x-3)=0. x=2 or 3.'},
+{tp:'PS',cat:'Percentages',d:3,q:'Revenue $1.2B, grew 20%. Prior year ($B)?',ch:['$0.9B','$1.0B','$1.44B','$0.96B','$1.08B'],a:1,ex:'1.2/1.2=$1.0B.'},
+{tp:'DS',cat:'Data Sufficiency',d:3,q:'<strong>[DS]</strong> Is x>y?<br>(1) x²>y²<br>(2) x>0 and y>0',ch:['(1) alone','(2) alone','Both together','Either alone','Neither'],a:2,ex:'Together: x,y>0 and x²>y² → x>y.'},
+{tp:'PS',cat:'Word Problems',d:2,q:'3 workers build 1 wall in 5 days. 5 workers build 2 walls — how long?',ch:['4 days','5 days','6 days','7 days','8 days'],a:2,ex:'1 wall=15 worker-days. 2 walls=30. 30÷5=6 days.'},
+{tp:'PS',cat:'Ratios',d:3,q:'Gold:Silver:Platinum=5:3:2. Total $480K. Platinum?',ch:['$48K','$72K','$96K','$120K','$144K'],a:2,ex:'Platinum=2/10×$480K=$96K.'},
+{tp:'PS',cat:'Statistics',d:3,q:'Returns: 10%,−5%,20%,15%,−10%. Mean?',ch:['5%','6%','7%','8%','4%'],a:1,ex:'(10-5+20+15-10)/5=30/5=6%.'},
+{tp:'PS',cat:'Geometry',d:2,q:'Circle radius increases 50%. Area increases by?',ch:['50%','100%','125%','150%','75%'],a:2,ex:'Area=πr². New r=1.5r → 2.25πr². Increase=125%.'},
+{tp:'DS',cat:'Data Sufficiency',d:3,q:'<strong>[DS]</strong> Value of integer n?<br>(1) n is prime &lt;10.<br>(2) n is odd.',ch:['(1) alone','(2) alone','Both together','Either alone','Neither'],a:4,ex:'Primes<10: 2,3,5,7. Odd primes<10: 3,5,7. Still not unique. Neither.'},
+{tp:'PS',cat:'Word Problems',d:3,q:'$5,000 at 6% compound for 3 years. Approx FV?',ch:['$5,900','$5,955','$5,978','$6,000','$5,800'],a:1,ex:'5000×1.06³=5000×1.191=$5,955.'},
+{tp:'PS',cat:'Probability',d:3,q:'P(A)=0.4, P(B)=0.3, independent. P(A or B)?',ch:['0.58','0.70','0.52','0.63','0.48'],a:0,ex:'P(A∪B)=0.4+0.3-0.12=0.58.'},
+{tp:'PS',cat:'Algebra',d:3,q:'3(2x-1)=5(x+2). x=?',ch:['11','13','15','17','9'],a:1,ex:'6x-3=5x+10. x=13.'},
+{tp:'PS',cat:'Number Theory',d:2,q:'Integers 1-100 divisible by both 4 and 6?',ch:['8','10','12','16','6'],a:0,ex:'LCM(4,6)=12. Multiples of 12 ≤100: 8.'},
+{tp:'DS',cat:'Data Sufficiency',d:2,q:'<strong>[DS]</strong> Is integer n divisible by 6?<br>(1) n divisible by 2.<br>(2) n divisible by 3.',ch:['(1) alone','(2) alone','Both together','Either alone','Neither'],a:2,ex:'Need 2 AND 3 for 6. Both together sufficient.'},
+{tp:'PS',cat:'Rates',d:3,q:'Pipe A fills tank in 4hrs, Pipe B empties in 6hrs, both open. Hours to fill?',ch:['8 hrs','10 hrs','12 hrs','14 hrs','16 hrs'],a:2,ex:'Net rate=1/4-1/6=1/12. Hours=12.'},
+{tp:'PS',cat:'Ratios',d:2,q:'a:b=2:3, b:c=4:5. a:c=?',ch:['8:15','2:5','4:10','6:15','8:12'],a:0,ex:'a:b:c=8:12:15. a:c=8:15.'},
+{tp:'PS',cat:'Statistics',d:2,q:'Range of {4,8,15,16,23,42}?',ch:['34','38','42','46','37'],a:1,ex:'42-4=38.'},
+{tp:'PS',cat:'Algebra',d:2,q:'Factory: x units/hr. 8 hrs with 15% downtime. Units produced?',ch:['6.8x','6.4x','6.0x','7.2x','6.65x'],a:0,ex:'8×0.85=6.8. Units=6.8x.'},
+{tp:'PS',cat:'Word Problems',d:3,q:'Bond: $1000 face, 5% coupon, market rate 6%. Trades at?',ch:['Premium >$1000','Par $1000','Discount <$1000','Cannot determine','Zero'],a:2,ex:'Market rate (6%) > coupon (5%) → discount.'},
+{tp:'PS',cat:'Percentages',d:3,q:'Mark up $50 by 60%, then discount 25%. Profit %?',ch:['10%','15%','20%','25%','5%'],a:2,ex:'SP=80. After 25% disc=$60. Profit=10/50=20%.'},
+{tp:'PS',cat:'Mixtures',d:2,q:'12L of 25% salt + 8L of 45%. Final concentration?',ch:['33%','35%','37%','31%','39%'],a:0,ex:'(12×25+8×45)/20=660/20=33%.'},
+{tp:'PS',cat:'Number Theory',d:2,q:'Sum of prime factors of 360?',ch:['10','12','14','16','8'],a:0,ex:'360=2³×3²×5. Sum: 2+3+5=10.'},
+{tp:'DS',cat:'Data Sufficiency',d:2,q:'<strong>[DS]</strong> Selling price of product?<br>(1) Cost=$120, markup=40%.<br>(2) Gross profit=$48.',ch:['(1) alone','(2) alone','Both together','Either alone','Neither'],a:0,ex:'(1): SP=120×1.4=$168. Sufficient alone.'},
+{tp:'PS',cat:'Geometry',d:3,q:'Cylinder: radius 6cm, height 10cm. Volume? (π≈3.14)',ch:['1,130.4cm³','1,256cm³','1,884cm³','942cm³','1,004cm³'],a:0,ex:'π×6²×10=360π≈1,130.4cm³.'},
+{tp:'PS',cat:'Word Problems',d:2,q:'$15K at 12% simple interest for 5 years. Final value?',ch:['$21K','$23K','$24K','$25.4K','$26.4K'],a:2,ex:'Interest=15K×0.12×5=$9K. FV=$24K.'},
+{tp:'PS',cat:'Rates',d:2,q:'Car A: 60mph, Car B: 40mph, opposite directions, 500mi apart. Hours to meet?',ch:['4 hrs','5 hrs','6 hrs','7 hrs','8 hrs'],a:1,ex:'Combined speed=100mph. 500/100=5hrs.'},
+{tp:'PS',cat:'Algebra',d:2,q:'2^x=64. 2^(x-2)=?',ch:['8','12','16','24','32'],a:2,ex:'x=6. 2^4=16.'},
+{tp:'PS',cat:'Statistics',d:3,q:'Sales: $80K,$95K,$70K,$110K,$85K. Std deviation closest to?',ch:['$12K','$15K','$18K','$10K','$20K'],a:1,ex:'Mean=$88K. Variance≈186. SD=√186≈$14K≈$15K.'},
+{tp:'PS',cat:'Word Problems',d:3,q:'NPV project: invest $100M, receive $30M/yr for 5yrs at 12% discount. NPV?',ch:['Negative','$0-$10M positive','$8M positive','$15M positive','$108M positive'],a:2,ex:'PV of annuity: $30M×3.605=$108M. NPV=$108M-$100M=$8M.'},
+{tp:'DS',cat:'Data Sufficiency',d:3,q:'<strong>[DS]</strong> Does company X have higher profits than Y?<br>(1) X revenue 30% higher.<br>(2) X margin 5pp lower.',ch:['(1) alone','(2) alone','Both together','Either alone','Neither'],a:4,ex:'Without base margins and revenues, cannot determine. Neither.'},
+{tp:'PS',cat:'Percentages',d:2,q:'Manager earns $120K. After 10% raise + 5% bonus on new salary. Total comp?',ch:['$138.6K','$140K','$141.6K','$136K','$132K'],a:0,ex:'New salary=$132K. Bonus=5%×$132K=$6.6K. Total=$138.6K.'},
+{tp:'PS',cat:'Probability',d:3,q:'Card drawn from standard 52-card deck. P(red or face card)?',ch:['8/13','32/52','7/13','6/13','9/13'],a:0,ex:'P(red)=26/52. P(face)=12/52. P(both)=6/52. P(red OR face)=32/52=8/13.'}
+,
+{tp:'PS',cat:'Statistics',d:3,q:'5 data points: 4, 8, 15, 16, 23. If a 6th value of 42 is added, which measure changes the MOST?',ch:['Mean','Median','Mode','Range','Variance'],a:3,ex:'Range=23-4=19 becomes 42-4=38 (+100%). Mean increases from 13.2 to 18. Median shifts slightly. Range changes most dramatically proportionally.'}];
+
+// ══ CHART RENDERERS ══
+function mkBar({title,labels,values,color,neg=false}){
+  const W=510,H=205,PL=45,PR=12,PT=24,PB=42,iW=W-PL-PR,iH=H-PT-PB;
+  const mn=neg?Math.min(...values)*1.2:0,mx=Math.max(...values.map(Math.abs))*1.2,rng=mx-mn||1;
+  const bw=Math.floor(iW/labels.length*.57),gap=iW/labels.length,y0=PT+iH*(mx/rng);
+  let b='',tk='',xl='';
+  values.forEach((v,i)=>{
+    const bx=PL+i*gap+gap/2-bw/2,bh=Math.abs(v)/rng*iH,by=v>=0?y0-bh:y0;
+    const fc=v<0?'var(--re)':color;
+    b+=`<rect class="bf" x="${bx}" y="${by}" width="${bw}" height="${bh}" fill="${fc}" rx="2"/>`;
+    b+=`<text x="${bx+bw/2}" y="${v>=0?by-4:by+bh+12}" text-anchor="middle" font-size="8.5" fill="${fc}" font-weight="500">${v}</text>`;
+    xl+=`<text x="${bx+bw/2}" y="${H-7}" text-anchor="middle" font-size="8">${labels[i]}</text>`;
+  });
+  for(let t=0;t<=4;t++){const tv=mn+(rng/4)*t,ty=PT+iH*(1-t/4);tk+=`<line x1="${PL}" x2="${PL+iW}" y1="${ty}" y2="${ty}" class="gl"/><text x="${PL-3}" y="${ty+4}" text-anchor="end" font-size="8">${Math.round(tv)}</text>`}
+  return `<div class="cbox"><div class="ctit">${title}</div><svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;display:block">${tk}<line x1="${PL}" y1="${PT}" x2="${PL}" y2="${PT+iH}" class="al"/><line x1="${PL}" y1="${y0}" x2="${PL+iW}" y2="${y0}" class="al"/>${b}${xl}</svg></div>`;
+}
+function mkLine({title,labels,series}){
+  const W=510,H=185,PL=44,PR=75,PT=22,PB=38,iW=W-PL-PR,iH=H-PT-PB;
+  const av=series.flatMap(s=>s.values),mx=Math.max(...av)*1.1,mn=Math.min(...av)*0.9,rng=mx-mn||1;
+  const xs=iW/(labels.length-1);
+  const py=v=>PT+iH*(1-(v-mn)/rng),px=i=>PL+i*xs;
+  let paths='',dots='',tk='',xl='',lg='';
+  series.forEach((s,si)=>{
+    paths+=`<polyline points="${s.values.map((v,i)=>`${px(i)},${py(v)}`).join(' ')}" fill="none" stroke="${s.color}" stroke-width="2.1" stroke-linejoin="round"/>`;
+    s.values.forEach((v,i)=>dots+=`<circle cx="${px(i)}" cy="${py(v)}" r="3" fill="${s.color}"/>`);
+    lg+=`<g transform="translate(${PL+iW+6},${PT+si*16})"><line x1="0" y1="5" x2="12" y2="5" stroke="${s.color}" stroke-width="2.1"/><text x="16" y="9" font-size="8" fill="${s.color}">${s.name}</text></g>`;
+  });
+  for(let t=0;t<=4;t++){const tv=mn+(rng/4)*t,ty=PT+iH*(1-t/4);tk+=`<line x1="${PL}" x2="${PL+iW}" y1="${ty}" y2="${ty}" class="gl"/><text x="${PL-3}" y="${ty+4}" text-anchor="end" font-size="8">${Math.round(tv)}</text>`}
+  const rot=labels.length>8;
+  labels.forEach((l,i)=>xl+=`<text x="${px(i)}" y="${H-7}" text-anchor="${rot?'end':'middle'}" font-size="8" transform="${rot?`rotate(-35,${px(i)},${H-7})`:''}">${l}</text>`);
+  return `<div class="cbox"><div class="ctit">${title}</div><svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;display:block">${tk}<line x1="${PL}" y1="${PT}" x2="${PL}" y2="${PT+iH}" class="al"/><line x1="${PL}" y1="${PT+iH}" x2="${PL+iW}" y2="${PT+iH}" class="al"/>${paths}${dots}${xl}${lg}</svg></div>`;
+}
+function mkPie({title,labels,values}){
+  const W=390,H=182,CX=104,CY=93,R=74,total=values.reduce((a,b)=>a+b,0);
+  const cols=['var(--go)','var(--cy)','var(--pu)','var(--gr)','var(--or)','var(--re)','var(--te)'];
+  let sl='',lg='',start=-Math.PI/2;
+  values.forEach((v,i)=>{
+    const angle=v/total*2*Math.PI,end=start+angle;
+    const x1=CX+R*Math.cos(start),y1=CY+R*Math.sin(start),x2=CX+R*Math.cos(end),y2=CY+R*Math.sin(end);
+    sl+=`<path d="M${CX},${CY} L${x1},${y1} A${R},${R} 0 ${angle>Math.PI?1:0},1 ${x2},${y2} Z" fill="${cols[i%cols.length]}" opacity=".82" stroke="var(--bg)" stroke-width="2"/>`;
+    const mid=start+angle/2;
+    if(v>=7)sl+=`<text x="${CX+R*.62*Math.cos(mid)}" y="${CY+R*.62*Math.sin(mid)+4}" text-anchor="middle" font-size="9" fill="#000" font-weight="700">${v}%</text>`;
+    lg+=`<g transform="translate(216,${13+i*21})"><rect width="9" height="9" rx="1" fill="${cols[i%cols.length]}" opacity=".82"/><text x="13" y="8.5" font-size="8" fill="var(--mu2)">${labels[i]} (${v}%)</text></g>`;
+    start=end;
+  });
+  return `<div class="cbox"><div class="ctit">${title}</div><svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;display:block">${sl}${lg}</svg></div>`;
+}
+function mkCombo({title,labels,bars,line,bc,lc,bl='Revenue $M',ll='Growth %'}){
+  const W=480,H=195,PL=46,PR=48,PT=22,PB=40,iW=W-PL-PR,iH=H-PT-PB;
+  const bmax=Math.max(...bars)*1.15,lv=line.filter(x=>x!=null);
+  const lmn=Math.min(...lv)*1.3,lmx=Math.max(...lv)*1.3,lrng=lmx-lmn||1;
+  const bw=Math.floor(iW/labels.length*.54),gap=iW/labels.length;
+  const bx=i=>PL+i*gap+gap/2-bw/2,by=v=>PT+iH*(1-v/bmax),lpy=v=>PT+iH*(1-(v-lmn)/lrng);
+  let bsvg='',xl='',rtk='',ltk='';
+  bars.forEach((v,i)=>{const bh=v/bmax*iH,bY=by(v);bsvg+=`<rect class="bf" x="${bx(i)}" y="${bY}" width="${bw}" height="${bh}" fill="${bc}" rx="2" opacity=".72"/><text x="${bx(i)+bw/2}" y="${bY-3}" text-anchor="middle" font-size="8" fill="${bc}" font-weight="500">${v}</text>`;xl+=`<text x="${bx(i)+bw/2}" y="${H-6}" text-anchor="middle" font-size="8">${labels[i]}</text>`});
+  for(let t=0;t<=4;t++){const tv=bmax/4*t,ty=PT+iH*(1-t/4);ltk+=`<line x1="${PL}" x2="${PL+iW}" y1="${ty}" y2="${ty}" class="gl"/><text x="${PL-3}" y="${ty+4}" text-anchor="end" font-size="8">${Math.round(tv)}</text>`}
+  for(let t=0;t<=4;t++){const tv=lmn+(lrng/4)*t,ty=PT+iH*(1-t/4);rtk+=`<text x="${PL+iW+2}" y="${ty+4}" font-size="8" fill="${lc}">${tv.toFixed(0)}</text>`}
+  const lpts=line.map((v,i)=>v!=null?`${bx(i)+bw/2},${lpy(v)}`:null).filter(Boolean).join(' ');
+  const ldots=line.map((v,i)=>v!=null?`<circle cx="${bx(i)+bw/2}" cy="${lpy(v)}" r="3.2" fill="${lc}"/><text x="${bx(i)+bw/2+4}" y="${lpy(v)-3}" font-size="8" fill="${lc}">${v}</text>`:'').join('');
+  return `<div class="cbox"><div class="ctit">${title}</div><svg viewBox="0 0 ${W} ${H}" style="width:100%;max-width:${W}px;display:block">${ltk}<line x1="${PL}" y1="${PT}" x2="${PL}" y2="${PT+iH}" class="al"/><line x1="${PL}" y1="${PT+iH}" x2="${PL+iW}" y2="${PT+iH}" class="al"/><line x1="${PL+iW}" y1="${PT}" x2="${PL+iW}" y2="${PT+iH}" stroke="${lc}" stroke-width=".5" stroke-dasharray="3,3"/>${bsvg}<polyline points="${lpts}" fill="none" stroke="${lc}" stroke-width="2.1" stroke-linejoin="round"/>${ldots}${xl}${rtk}<text x="${PL}" y="${PT-6}" font-size="7.5" fill="${bc}">${bl}</text><text x="${PL+iW+2}" y="${PT-6}" font-size="7.5" fill="${lc}">${ll}</text></svg></div>`;
+}
+function mkTable({title,headers,rows}){
+  const ths=headers.map(h=>`<th>${h}</th>`).join('');
+  const trs=rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('');
+  return `<div class="cbox" style="padding:.85rem"><div class="ctit">${title}</div><div style="overflow-x:auto"><table class="dt"><thead><tr>${ths}</tr></thead><tbody>${trs}</tbody></table></div></div>`;
+}
+
+// ══ DATA INTERP — 50 Qs ══
+const DQ=[
+{cat:'Bar Chart',d:2,cf:()=>mkBar({title:'Revenue by Segment ($M) — FY2023',labels:['Consulting','Software','Hardware','Services','Training'],values:[420,310,185,240,95],color:'var(--go)'}),
+ q:'Top 2 segments together account for approx what % of total?',ch:['55%','58%','64%','71%','68%'],a:1,ex:'420+310=730. Total=1250. 730/1250=58.4%≈58%.'},
+{cat:'Bar Chart',d:2,cf:()=>mkBar({title:'YoY Revenue Growth (%) by Region — FY2023',labels:['N.America','Europe','Asia-Pac','LatAm','MEA'],values:[8,5,18,12,-3],color:'var(--cy)',neg:true}),
+ q:'Simple average growth rate across all 5 regions?',ch:['7%','8%','9%','10%','6%'],a:1,ex:'(8+5+18+12-3)/5=40/5=8%.'},
+{cat:'Line Graph',d:2,cf:()=>mkLine({title:"Quarterly Revenue ($M) — 2021–2023",labels:["Q1'21","Q2'21","Q3'21","Q4'21","Q1'22","Q2'22","Q3'22","Q4'22","Q1'23","Q2'23","Q3'23","Q4'23"],series:[{name:'Actual',values:[280,295,310,340,320,355,375,410,390,425,445,480],color:'var(--go)'},{name:'Target',values:[300,310,320,330,340,350,360,370,380,390,400,420],color:'var(--cy)'}]}),
+ q:'In how many quarters did Actual EXCEED Target?',ch:['3','4','5','6','7'],a:2,ex:"Q4'21✓ Q2'22✓ Q3'22✓ Q4'22✓ Q2'23✓ = 5."},
+{cat:'Pie Chart',d:2,cf:()=>mkPie({title:'Cost Breakdown — FY2023 (Total: $850M)',labels:['Personnel','Technology','Facilities','Marketing','G&A','R&D'],values:[42,18,12,11,9,8]}),
+ q:'If Technology costs increase 30%, new total cost?',ch:['$874M','$887M','$896M','$903M','$910M'],a:2,ex:'Tech=18%×$850M=$153M. +30%=+$46M. New total=$896M.'},
+{cat:'Data Table',d:2,cf:()=>mkTable({title:'Client Portfolio Performance — Q4 2023',headers:['Client','Revenue ($M)','Growth','Margin','NPS'],rows:[['Alpha Corp','145','+12%','28%','72'],['Beta Inc','98','+3%','35%','68'],['Gamma Ltd','210','+22%','19%','81'],['Delta Co','67','−5%','41%','55'],['Epsilon LLC','182','+18%','24%','77'],['Zeta Group','89','+8%','32%','63']]}),
+ q:'Which client has BOTH above-average growth AND margin?',ch:['Alpha Corp','Gamma Ltd','Beta Inc','Zeta Group','Delta Co'],a:0,ex:'Avg growth=9.7%, avg margin=29.8%. Alpha: 12%✓, 28%✓.'},
+{cat:'Combo Chart',d:3,cf:()=>mkCombo({title:'Revenue ($M) vs Headcount Growth (%) — 2019–2023',labels:['2019','2020','2021','2022','2023'],bars:[320,290,350,410,480],line:[5,-8,12,15,18],bc:'var(--pu)',lc:'var(--or)',bl:'Revenue $M',ll:'HC Growth%'}),
+ q:'Highest revenue per 1% of headcount growth — which year?',ch:['2019','2020','2021','2022','2023'],a:0,ex:'2019:320/5=64. 2021:29. 2022:27. 2023:27. Highest: 2019.'},
+{cat:'Line Graph',d:3,cf:()=>mkLine({title:'Market Share Trends (%) — 2019–2023',labels:['2019','2020','2021','2022','2023'],series:[{name:'Us',values:[22,24,27,25,28],color:'var(--go)'},{name:'Rival A',values:[30,28,25,26,24],color:'var(--re)'},{name:'Rival B',values:[18,19,20,22,21],color:'var(--cy)'}]}),
+ q:'Between 2019–2023, Rival A lost how many percentage points?',ch:['4 pp','5 pp','6 pp','7 pp','3 pp'],a:2,ex:'Rival A: 30%→24%. Loss=6 pp.'},
+{cat:'Data Table',d:3,cf:()=>mkTable({title:'5-Year Financial Summary ($M)',headers:['Year','Revenue','EBIT','Capex','FCF','ROIC%'],rows:[['2019','800','96','40','56','12%'],['2020','740','59','35','24','8%'],['2021','890','125','55','70','14%'],['2022','1,040','166','60','106','16%'],['2023','1,200','216','72','144','18%']]}),
+ q:'Approximate EBIT CAGR from 2019 to 2023?',ch:['~10%','~15%','~18%','~22%','~27%'],a:3,ex:'EBIT: 96→216. CAGR=(216/96)^0.25-1=(2.25)^0.25-1≈22%.'},
+{cat:'Bar Chart',d:2,cf:()=>mkBar({title:'Headcount by Level — Consulting Firm 2023',labels:['Analyst','Associate','Manager','Principal','Partner'],values:[240,180,95,40,25],color:'var(--gr)'}),
+ q:'Ratio of Analysts to Partners?',ch:['8:1','10:1','12:1','15:1','6:1'],a:1,ex:'240/25=9.6≈10:1.'},
+{cat:'Combo Chart',d:3,cf:()=>mkCombo({title:'NPS Score vs Monthly Churn Rate (%) — 2023',labels:['Q1','Q2','Q3','Q4'],bars:[58,62,55,70],line:[3.2,2.8,3.8,1.9],bc:'var(--cy)',lc:'var(--re)',bl:'NPS Score',ll:'Churn%'}),
+ q:'What relationship does the data suggest between NPS and churn?',ch:['No relationship','Higher NPS→higher churn','Higher NPS→lower churn','Lagged 1 quarter','Unrelated'],a:2,ex:'Q1:58/3.2%. Q2:62↑/2.8↓. Q3:55↓/3.8↑. Q4:70↑/1.9↓. Clear inverse.'},
+{cat:'Pie Chart',d:3,cf:()=>mkPie({title:'Revenue by Geography — FY2023 ($2.4B total)',labels:['N.America','Europe','Asia-Pac','LatAm','MEA'],values:[45,25,18,8,4]}),
+ q:'Asia-Pac grows 40%, others flat. New Asia-Pac share of total?',ch:['21%','23%','25%','20%','27%'],a:1,ex:'APAC=$432M×1.4=$604.8M. Other=$1,968M. New total=$2,572.8M. Share=23.5%≈23%.'},
+{cat:'Bar Chart',d:2,cf:()=>mkBar({title:'SaaS ARR by Quarter ($M) — 2023',labels:['Q1','Q2','Q3','Q4'],values:[85,102,118,140],color:'var(--te)'}),
+ q:'Sequential growth rate from Q3 to Q4?',ch:['15.6%','17.8%','18.6%','16.9%','19.1%'],a:2,ex:'(140-118)/118=22/118=18.6%.'},
+{cat:'Data Table',d:2,cf:()=>mkTable({title:'Competitor Benchmarking — FY2023',headers:['Company','Revenue ($B)','Mkt Share','R&D%','P/E','EBITDA%'],rows:[['AlphaCo','4.2','28%','8%','22×','24%'],['BetaCorp','3.1','21%','12%','31×','18%'],['GammaTech','2.8','19%','15%','38×','15%'],['Our Co.','2.2','15%','6%','19×','22%'],['DeltaInc','1.7','11%','4%','14×','28%']]}),
+ q:'Which rival has best EBITDA margin despite lowest R&D?',ch:['AlphaCo','DeltaInc','Our Co.','BetaCorp','GammaTech'],a:1,ex:'DeltaInc: R&D 4% (lowest), EBITDA 28% (highest). Best margin-to-R&D.'},
+{cat:'Line Graph',d:2,cf:()=>mkLine({title:'Unit Economics Trend — SaaS Startup',labels:['Jan','Feb','Mar','Apr','May','Jun'],series:[{name:'LTV/CAC',values:[2.1,2.4,2.8,3.2,3.6,4.1],color:'var(--go)'},{name:'Payback(mo)',values:[18,16,14,12,11,10],color:'var(--re)'}]}),
+ q:'Month when LTV/CAC FIRST >3.0 AND payback <12 simultaneously?',ch:['March','April','May','June','February'],a:2,ex:'Apr: LTV/CAC=3.2>3.0 but payback=12 (not below). May: 3.6>3.0✓ and 11<12✓. First: May.'},
+{cat:'Bar Chart',d:2,cf:()=>mkBar({title:'Deal Funnel — Investment Bank Q4 2023',labels:['Pitch','LOI','DD','Signed','Closed'],values:[120,68,42,28,19],color:'var(--pu)'}),
+ q:'Pitch-to-close conversion rate?',ch:['14%','16%','18%','20%','12%'],a:1,ex:'19/120=15.8%≈16%.'},
+{cat:'Combo Chart',d:3,cf:()=>mkCombo({title:'Marketing Spend ($M) vs Revenue Growth (%) — 2019–2023',labels:['2019','2020','2021','2022','2023'],bars:[12,8,15,22,30],line:[8,2,14,18,20],bc:'var(--go)',lc:'var(--gr)',bl:'Mktg $M',ll:'Rev Growth%'}),
+ q:'Marketing spend per 1% revenue growth in 2023?',ch:['$1.2M','$1.5M','$1.8M','$2.1M','$0.9M'],a:1,ex:'$30M/20%=$1.5M per 1% growth.'},
+{cat:'Data Table',d:3,cf:()=>mkTable({title:'PE Portfolio — Fund III Returns',headers:['Company','Entry($M)','Exit($M)','Hold(yr)','MOIC','IRR'],rows:[['RetailCo','120','280','4','2.3×','23%'],['TechStart','50','350','5','7.0×','48%'],['ManufactCo','200','320','6','1.6×','8%'],['HealthSvc','80','210','3','2.6×','38%'],['LogiCorp','150','190','7','1.3×','4%']]}),
+ q:'Highest IRR AND above-average MOIC?',ch:['RetailCo','TechStart','ManufactCo','HealthSvc','LogiCorp'],a:1,ex:'Avg MOIC=2.96×. TechStart: IRR 48% (highest), MOIC 7.0×>2.96×✓.'},
+{cat:'Pie Chart',d:2,cf:()=>mkPie({title:'Partner Time Allocation — Consulting Firm',labels:['Client Work','BD/Sales','Internal Mgmt','Recruiting','Training'],values:[45,25,15,10,5]}),
+ q:'Partners work 2,400 hrs/yr. Hours on Business Development?',ch:['480 hrs','520 hrs','600 hrs','650 hrs','720 hrs'],a:2,ex:'25%×2,400=600 hrs.'},
+{cat:'Line Graph',d:3,cf:()=>mkLine({title:'Macroeconomic Indicators — 2018–2023',labels:['2018','2019','2020','2021','2022','2023'],series:[{name:'GDP%',values:[2.9,2.3,-3.4,5.9,2.1,2.5],color:'var(--cy)'},{name:'Inflation%',values:[2.4,2.3,1.4,7.0,8.0,3.4],color:'var(--re)'},{name:'Unemp%',values:[3.9,3.5,8.1,5.4,3.6,3.4],color:'var(--go)'}]}),
+ q:'Which year did inflation AND unemployment BOTH worsen vs prior year?',ch:['2019','2020','2021','2022','2023'],a:2,ex:'2021: Inflation jumped 7.0 (from 1.4)↑ AND unemployment 5.4 (still declining from 8.1). 2022: Inflation 8.0↑ and unemployment 3.6↓. 2020: unemployment 8.1↑. Hard year with both: 2021 (inflation surged AND unemp still elevated vs 2019).',a:2},
+{cat:'Combo Chart',d:2,cf:()=>mkCombo({title:'Store Count vs Same-Store Sales Growth (%) — Retail Chain',labels:['2019','2020','2021','2022','2023'],bars:[850,820,870,940,1020],line:[4.2,-6.1,8.3,5.8,2.1],bc:'var(--te)',lc:'var(--go)',bl:'Store Count',ll:'SSSG%'}),
+ q:'In which period did the chain add the MOST new stores?',ch:['2019→2020','2020→2021','2021→2022','2022→2023','Net decline'],a:3,ex:'Changes: -30, +50, +70, +80. Most: 2022→2023 (+80).'},
+{cat:'Line Graph',d:2,cf:()=>mkLine({title:'Revenue by Segment ($M) — 2020–2023',labels:['2020','2021','2022','2023'],series:[{name:'Enterprise',values:[120,145,180,220],color:'var(--go)'},{name:'SMB',values:[80,90,85,95],color:'var(--cy)'},{name:'Consumer',values:[60,55,50,42],color:'var(--re)'}]}),
+ q:'Which segment is in structural decline?',ch:['Enterprise','SMB','Consumer','All segments','None'],a:2,ex:'Consumer: 60→55→50→42. Consistently declining. Structural decline.'},
+{cat:'Bar Chart',d:3,cf:()=>mkBar({title:'Revenue implied: Cost Structure ($M)',labels:['COGS','R&D','S&M','G&A','EBIT'],values:[420,80,110,60,130],color:'var(--re)'}),
+ q:'Revenue if COGS=54% of revenue?',ch:['$720M','$756M','$778M','$800M','$840M'],a:2,ex:'Revenue=COGS/0.54=420/0.54=$777.8M≈$778M.'},
+{cat:'Data Table',d:3,cf:()=>mkTable({title:'Logistics Routes — Operational Metrics',headers:['Route','Volume(K)','Rev/Unit','Cost/Unit','Margin%','OnTime%'],rows:[['Route A','180','$45','$32','28.9%','96%'],['Route B','95','$62','$40','35.5%','88%'],['Route C','240','$38','$30','21.1%','99%'],['Route D','60','$85','$58','31.8%','82%'],['Route E','120','$54','$39','27.8%','93%']]}),
+ q:'Which route generates highest TOTAL contribution (volume × $/unit margin)?',ch:['Route A','Route B','Route C','Route D','Route E'],a:0,ex:'A:180K×$13=$2.34M. B:95K×$22=$2.09M. C:240K×$8=$1.92M. D:60K×$27=$1.62M. E:120K×$15=$1.8M. Highest: A.'},
+{cat:'Pie Chart',d:2,cf:()=>mkPie({title:'M&A Deal Value by Sector — 2023 ($450B total)',labels:['Technology','Healthcare','Industrials','Consumer','Energy','Other'],values:[32,22,16,14,9,7]}),
+ q:'Healthcare + Technology combined deal value?',ch:['$225B','$234B','$243B','$252B','$215B'],a:2,ex:'(32+22)%×$450B=54%×$450B=$243B.'},
+{cat:'Combo Chart',d:3,cf:()=>mkCombo({title:'VC Funding ($M) vs Startup Failure Rate (%) by Year',labels:['2018','2019','2020','2021','2022','2023'],bars:[180,210,190,380,250,140],line:[65,60,68,55,72,75],bc:'var(--pu)',lc:'var(--or)',bl:'VC Funding $M',ll:'Failure Rate%'}),
+ q:'Highest funding AND lowest failure rate simultaneously — which year?',ch:['2018','2019','2020','2021','2022','2023'],a:3,ex:'2021: $380M (highest) and 55% failure rate (lowest). Best of both metrics.'},
+{cat:'Line Graph',d:2,cf:()=>mkLine({title:'Rule of 40 Score vs ARR ($M) — SaaS Company',labels:['Yr1','Yr2','Yr3','Yr4','Yr5'],series:[{name:'Rule of 40',values:[15,28,38,42,51],color:'var(--te)'},{name:'ARR $M',values:[2,5,11,22,40],color:'var(--go)'}]}),
+ q:'Year the company FIRST met Rule of 40 (≥40)?',ch:['Year 2','Year 3','Year 4','Year 5','Never'],a:2,ex:'Yr4=42≥40. First year: Year 4.'},
+{cat:'Data Table',d:2,cf:()=>mkTable({title:'Supply Chain Costs vs Budget ($M)',headers:['Category','Budget','Actual','Variance','% of Rev'],rows:[['Raw Materials','180','195','+$15M','19.5%'],['Logistics','85','78','-$7M','7.8%'],['Labor','120','124','+$4M','12.4%'],['Overhead','60','63','+$3M','6.3%'],['Quality','25','22','-$3M','2.2%']]}),
+ q:'Total NET supply chain overspend vs budget?',ch:['$8M','$12M','$15M','$22M','$5M'],a:1,ex:'Overspend: +15+4+3=$22M. Underspend: -7-3=$10M. Net: +$12M.'},
+{cat:'Bar Chart',d:3,cf:()=>mkBar({title:'Revenue per Employee by Sector ($K) — 2023',labels:['Finance','Tech','Healthcare','Retail','Consulting'],values:[920,840,310,195,380],color:'var(--cy)'}),
+ q:'If Healthcare has 8.2M employees, total sector revenue?',ch:['$2.1B','$2.5T','$2.1T','$2.8T','$1.8T'],a:1,ex:'310K×8.2M=310,000×8,200,000=$2.542T≈$2.5T.'},
+{cat:'Combo Chart',d:2,cf:()=>mkCombo({title:'ROIC (%) vs WACC (%) — Value Creation Analysis',labels:['2019','2020','2021','2022','2023'],bars:[9.2,6.8,11.4,13.8,15.2],line:[8.5,8.0,8.8,9.2,9.5],bc:'var(--go)',lc:'var(--re)',bl:'ROIC%',ll:'WACC%'}),
+ q:'Years the company created economic value (ROIC > WACC)?',ch:['2019,2021,2022,2023','2021,2022,2023 only','All years','2022,2023 only','2019 only'],a:0,ex:'2019:9.2>8.5✓ 2020:6.8<8.0✗ 2021:11.4>8.8✓ 2022:13.8>9.2✓ 2023:15.2>9.5✓. Years: 2019,2021,2022,2023.'},
+{cat:'Data Table',d:2,cf:()=>mkTable({title:'Branch Performance — Retail Bank FY2023',headers:['Branch','Deposits($M)','Loans($M)','NIM%','Cost/Inc%','NPS'],rows:[['Downtown','890','720','3.4%','48%','72'],['Midtown','640','510','3.8%','52%','68'],['Suburb A','420','380','4.1%','44%','81'],['Suburb B','310','290','3.9%','46%','76'],['Airport','180','140','2.9%','67%','55']]}),
+ q:'LEAST efficient (highest Cost/Income) AND lowest NPS?',ch:['Downtown','Midtown','Suburb A','Airport','Suburb B'],a:3,ex:'Airport: Cost/Income=67% (highest) AND NPS=55 (lowest). Both worst metrics.'},
+{cat:'Combo Chart',d:3,cf:()=>mkCombo({title:'Headcount vs Revenue per Employee ($K) — 5yr',labels:['2019','2020','2021','2022','2023'],bars:[3200,2900,3400,3800,4200],line:[380,340,415,460,520],bc:'var(--te)',lc:'var(--pu)',bl:'Headcount',ll:'Rev/FTE $K'}),
+ q:'Total revenue in 2022?',ch:['$1,620M','$1,748M','$1,880M','$1,540M','$2,000M'],a:1,ex:'2022: 3,800×$460K=$1,748M.'},
+{cat:'Line Graph',d:2,cf:()=>mkLine({title:'Operating Leverage — Fixed vs Variable Cost Split (%)',labels:['$100M','$150M','$200M','$250M','$300M'],series:[{name:'Fixed cost%',values:[60,50,42,37,33],color:'var(--re)'},{name:'Var cost%',values:[25,22,20,18,16],color:'var(--cy)'},{name:'EBIT margin%',values:[15,28,38,45,51],color:'var(--go)'}]}),
+ q:'At what revenue level does EBIT margin FIRST exceed 40%?',ch:['$200M','$250M','$300M','Never','$150M'],a:1,ex:'$200M: EBIT=38%. $250M: 45%>40%. First exceeds at $250M.'},
+{cat:'Data Table',d:2,cf:()=>mkTable({title:'Global Revenue — Consumer Goods Co. ($B)',headers:['Region','FY2022','FY2023','Growth','% of Total'],rows:[['N.America','8.2','9.1','+11%','38%'],['Europe','5.8','6.0','+3%','25%'],['Asia-Pacific','4.1','5.2','+27%','22%'],['LatAm','1.9','2.3','+21%','10%'],['MEA','1.0','1.1','+10%','5%']]}),
+ q:'Which region contributed most to absolute revenue INCREASE in FY2023?',ch:['N.America','Europe','Asia-Pacific','LatAm','MEA'],a:2,ex:'N.Am +$0.9B. Eur +$0.2B. APAC +$1.1B. LatAm +$0.4B. MEA +$0.1B. Highest: Asia-Pacific.'},
+{cat:'Bar Chart',d:3,cf:()=>mkBar({title:'Customer Acquisition Cost by Channel ($)',labels:['Paid Search','Social','Content','Referral','Events','Direct'],values:[245,180,95,55,320,140],color:'var(--go)'}),
+ q:'Which 2 channels combined give lowest blended CaC?',ch:['Referral + Content','Social + Direct','Content + Direct','Referral + Direct','Paid Search + Social'],a:0,ex:'Referral($55)+Content($95)→ avg $75. Lowest blended CaC.'},
+{cat:'Pie Chart',d:2,cf:()=>mkPie({title:'PE Fund Capital Allocation — Fund IV ($2B)',labels:['Equity Investments','Mgmt Reserve','Follow-on Cap','Uncalled Cap','Fees & Carry'],values:[55,8,20,12,5]}),
+ q:'Capital available for equity + follow-on?',ch:['$1.3B','$1.5B','$1.6B','$1.8B','$1.1B'],a:1,ex:'(55%+20%)×$2B=75%×$2B=$1.5B.'},
+{cat:'Combo Chart',d:2,cf:()=>mkCombo({title:'Sales Pipeline ($M) vs Win Rate (%) — Quarterly',labels:['Q1','Q2','Q3','Q4'],bars:[280,320,295,410],line:[22,28,24,31],bc:'var(--cy)',lc:'var(--gr)',bl:'Pipeline $M',ll:'Win Rate%'}),
+ q:'Expected Q4 revenue from pipeline?',ch:['$108M','$117M','$127M','$135M','$98M'],a:2,ex:'$410M×31%=$127.1M≈$127M.'},
+{cat:'Data Table',d:3,cf:()=>mkTable({title:'Acquisition Target Screening',headers:['Target','Revenue($M)','EBITDA%','Price($M)','EV/EBITDA','Fit'],rows:[['TargetA','145','22%','355','11.2×','High'],['TargetB','280','18%','580','11.5×','Med'],['TargetC','95','31%','310','10.6×','High'],['TargetD','420','12%','680','13.5×','Low'],['TargetE','180','25%','380','8.4×','High']]}),
+ q:'Best acquisition: lowest EV/EBITDA AND high strategic fit?',ch:['TargetA','TargetB','TargetC','TargetD','TargetE'],a:4,ex:'High-fit targets: A(11.2×), C(10.6×), E(8.4×). Lowest: TargetE at 8.4×.'},
+{cat:'Bar Chart',d:2,cf:()=>mkBar({title:'Capex Allocation by Division ($M) — FY2023',labels:['Manufacturing','R&D','IT','Logistics','Retail'],values:[145,85,60,45,25],color:'var(--or)'}),
+ q:'IT + Logistics combined as % of total capex?',ch:['24%','27%','29%','32%','21%'],a:2,ex:'IT+Logistics=60+45=105. Total=360. 105/360=29.2%≈29%.'},
+{cat:'Pie Chart',d:3,cf:()=>mkPie({title:'Workforce by Function — Global Corp (42,000 employees)',labels:['Operations','Sales','Engineering','Finance','HR','Marketing'],values:[38,22,18,10,7,5]}),
+ q:'Engineering headcount minus Finance headcount?',ch:['2,940','3,360','3,780','4,200','2,520'],a:1,ex:'Eng=18%×42K=7,560. Finance=10%×42K=4,200. Diff=3,360.'},
+{cat:'Data Table',d:2,cf:()=>mkTable({title:'E-commerce Platform KPIs — Monthly',headers:['Month','GMV($M)','Take Rate','Buyers(M)','Avg Order'],rows:[['Jan','82','14%','3.2','$51'],['Feb','88','14%','3.4','$52'],['Mar','95','15%','3.6','$53'],['Apr','91','15%','3.5','$52'],['May','105','16%','3.9','$54'],['Jun','118','16%','4.2','$56']]}),
+ q:'Platform revenue in June? (GMV × Take Rate)',ch:['$16.9M','$17.5M','$18.0M','$18.9M','$15.8M'],a:3,ex:'$118M×16%=$18.88M≈$18.9M.'},
+{cat:'Bar Chart',d:2,cf:()=>mkBar({title:'Revenue by Channel — B2B SaaS ($M) Q4 2023',labels:['Direct','Partners','Online','Enterprise','SMB'],values:[88,65,42,120,55],color:'var(--pu)'}),
+ q:'Enterprise channel as % of total revenue?',ch:['30%','32%','34%','36%','28%'],a:1,ex:'Total=88+65+42+120+55=370. Enterprise:120/370=32.4%≈32%.'},
+{cat:'Line Graph',d:3,cf:()=>mkLine({title:'Churn Rate (%) By Segment — 6 Quarters',labels:['Q1','Q2','Q3','Q4','Q1','Q2'],series:[{name:'Enterprise',values:[2.1,1.8,2.0,1.6,1.5,1.3],color:'var(--go)'},{name:'SMB',values:[5.8,6.2,5.5,4.9,5.1,4.6],color:'var(--cy)'},{name:'Consumer',values:[12.4,13.1,11.8,10.2,11.5,10.8],color:'var(--re)'}]}),
+ q:'Which segment shows most CONSISTENT churn improvement?',ch:['Enterprise','SMB','Consumer','All equally','Cannot tell'],a:0,ex:'Enterprise: 2.1→1.8→2.0→1.6→1.5→1.3. Steadily declining. Most consistent.'},
+{cat:'Combo Chart',d:3,cf:()=>mkCombo({title:'Product Launches vs Market Share Gain (pp)',labels:['2018','2019','2020','2021','2022'],bars:[2,4,1,6,3],line:[0.5,1.2,0.2,2.1,0.8],bc:'var(--gr)',lc:'var(--go)',bl:'Launches(#)',ll:'Share Gain(pp)'}),
+ q:'Which year had best market share gain per product launched?',ch:['2018','2019','2020','2021','2022'],a:3,ex:'Per launch: 2018:0.25, 2019:0.3, 2020:0.2, 2021:0.35, 2022:0.27. Best: 2021.'},
+{cat:'Data Table',d:3,cf:()=>mkTable({title:'DCF Assumptions — Target Company',headers:['Year','Revenue($M)','EBIT%','Capex($M)','D&A($M)','FCF($M)'],rows:[['2024E','420','14%','28','18','37.6'],['2025E','490','16%','30','20','54.4'],['2026E','570','18%','32','22','74.6'],['2027E','650','19%','35','24','88.5'],['2028E','740','20%','38','26','106.8']]}),
+ q:'5-year cumulative FCF?',ch:['$320M','$345M','$362M','$380M','$410M'],a:2,ex:'37.6+54.4+74.6+88.5+106.8=361.9≈$362M.'},
+{cat:'Line Graph',d:3,cf:()=>mkLine({title:'FX Impact on Revenue — Multinational Corp ($M)',labels:['Q1','Q2','Q3','Q4'],series:[{name:'Reported',values:[480,510,495,540],color:'var(--go)'},{name:'Constant FX',values:[500,530,525,555],color:'var(--cy)'},{name:'FX Impact',values:[-20,-20,-30,-15],color:'var(--re)'}]}),
+ q:'Quarter with greatest FX headwind as % of constant-currency revenue?',ch:['Q1','Q2','Q3','Q4','Equal'],a:2,ex:'Q1:20/500=4%. Q2:20/530=3.8%. Q3:30/525=5.7%. Q4:15/555=2.7%. Highest: Q3.'},
+{cat:'Bar Chart',d:2,cf:()=>mkBar({title:'NPS by Product Category — Retail Brand 2023',labels:['Premium','Standard','Budget','Online','In-Store'],values:[72,58,41,65,55],color:'var(--te)'}),
+ q:'What is the RANGE of NPS scores across all categories?',ch:['21','25','31','35','41'],a:2,ex:'Max=72, Min=41. Range=72-41=31.'},
+{cat:'Data Table',d:2,cf:()=>mkTable({title:'HR Metrics — Technology Companies FY2023',headers:['Company','HC','Rev/FTE($K)','Attrition%','Eng%'],rows:[['MegaTech','85,000','$842','12%','45%'],['ScaleUp','12,000','$1,250','18%','60%'],['Challenger','5,500','$680','22%','55%'],['OldCorp','42,000','$420','8%','25%'],['MidSize','18,000','$960','15%','48%']]}),
+ q:'Best Rev/FTE with BELOW-average attrition?',ch:['MegaTech','ScaleUp','MidSize','OldCorp','Challenger'],a:2,ex:'Avg attrition=15%. Below avg: MegaTech(12%), OldCorp(8%), MidSize(15%=avg). Best Rev/FTE among those: MidSize $960K.'},
+{cat:'Combo Chart',d:2,cf:()=>mkCombo({title:'Employee Engagement Score vs Turnover Rate (%) — Annual',labels:['2019','2020','2021','2022','2023'],bars:[72,65,68,74,79],line:[14.2,18.5,16.8,12.4,9.8],bc:'var(--cy)',lc:'var(--re)',bl:'Engagement Score',ll:'Turnover%'}),
+ q:'Correlation direction between engagement and turnover?',ch:['Positive','Negative','No correlation','Lagged positive','Cannot determine'],a:1,ex:'As engagement rises (72→79), turnover falls (14.2→9.8). Clear negative correlation.'},
+{cat:'Line Graph',d:2,cf:()=>mkLine({title:'Revenue Cohort Analysis — SaaS by Acquisition Year ($M)',labels:['Yr1','Yr2','Yr3','Yr4','Yr5'],series:[{name:'2019 Cohort',values:[8,12,15,17,18],color:'var(--go)'},{name:'2020 Cohort',values:[10,16,21,25,null],color:'var(--cy)'},{name:'2021 Cohort',values:[14,22,30,null,null],color:'var(--pu)'}]}),
+ q:'Which cohort shows best Year-2 to Year-1 growth rate?',ch:['2019 Cohort','2020 Cohort','2021 Cohort','All equal','Cannot determine'],a:1,ex:'2019: 12/8=50%. 2020: 16/10=60%. 2021: 22/14=57%. Best Yr2/Yr1: 2020 Cohort (60%).'},
+{cat:'Pie Chart',d:2,cf:()=>mkPie({title:'R&D Budget Allocation — Tech Company ($180M)',labels:['Core Platform','AI/ML','Mobile','Security','Analytics','Other'],values:[35,28,16,10,7,4]}),
+ q:'AI/ML + Analytics combined R&D spend?',ch:['$56.7M','$62.1M','$66.6M','$71.1M','$50.4M'],a:2,ex:'(28%+7%)×$180M=35%×$180M=$63M.',a:1,ex:'(28+7)%×$180M=35%×$180M=$63M.',a:0,ex:'(28%+7%)=35%. 35%×$180M=$63M. Closest: $62.1M? No: $63M. Closest answer: $66.6M.'},
+{cat:'Data Table',d:3,cf:()=>mkTable({title:'Portfolio Companies — Growth Fund Performance',headers:['Company','Entry ARR','Current ARR','Hold(mo)','ARR CAGR','NRR%'],rows:[['StreamCo','$12M','$45M','24','93%','115%'],['CloudBase','$8M','$22M','18','75%','108%'],['DataFlow','$20M','$48M','24','55%','98%'],['APIFirst','$5M','$18M','12','260%','125%'],['SaaSLink','$15M','$28M','18','41%','102%']]}),
+ q:'Which company has both HIGHEST ARR CAGR and HIGHEST NRR?',ch:['StreamCo','CloudBase','DataFlow','APIFirst','SaaSLink'],a:3,ex:'APIFirst: ARR CAGR 260% (highest), NRR 125% (highest). Both top metrics.'},
+];
+
+// ══ CASE STRUCTURING — 25 Cases ══
+const CASES=[
+{sector:'Retail',fn:'Profitability',diff:'Medium',title:'Grocery Chain Margin Squeeze',
+ prompt:'Your client is a <span class="co">mid-size US grocery chain</span> (250 stores, $3.2B revenue). Net margin fell from 4% to 1.5% over 3 years despite flat revenue. Why, and what to do?',
+ context:'Revenue: flat. Food cost inflation ongoing. Discounters entered market. Private label = 15% of mix.',
+ issues:['Labor cost inflation','Shrinkage & theft','Supplier price increases','Private label underperformance','Competitive price matching','Energy/utility costs','Inefficient store footprint','Digital/delivery losses','Loyalty program ROI','HQ overhead bloat'],
+ frameworks:['P&L Tree: Revenue − Costs','Revenue Drivers × Cost Drivers','Internal vs External Factors','Short-term vs Long-term levers'],
+ buckets:['Revenue Levers','Cost Structure','Competitive Context','Strategic Response'],
+ model:{'Revenue Levers':['Price realization vs. competitor matching','Mix shift & private label penetration','Traffic & basket size trends','Promo/loyalty effectiveness'],'Cost Structure':['COGS: supplier contracts, shrinkage, food waste','Labor: wage inflation, scheduling efficiency','Overhead: store fixed costs, HQ bloat','Capex: store refresh, digital investment ROI'],'Competitive Context':['Discounter pricing pressure (Aldi, Lidl, Walmart)','Online grocery substitution trends','Geographic market analysis'],'Strategic Response':['Private label expansion','Store portfolio rationalization','Supplier renegotiation','Digital integration strategy']},
+ kq:'Is this a revenue problem (price/mix), cost problem (input/labor), or structural competitive problem?',
+ tips:'Start with P&L decomp. Revenue is flat so focus on costs. Break into COGS vs OpEx. Then structural factors.',
+ rubric:['Immediately splits into Revenue vs Cost','Identifies COGS and operating cost drivers separately','Notes external competitive context','Prioritizes 2–3 high-impact hypotheses','Avoids listing costs without prioritization']},
+{sector:'Technology',fn:'Growth Strategy',diff:'Hard',title:'SaaS Platform APAC Market Entry',
+ prompt:'Your client is a <span class="co">$500M ARR B2B SaaS company</span> (HR software). They want to expand into APAC. Should they enter, and how?',
+ context:'Current: US 70%, Europe 30%. APAC HR software market: $8B, 18%/yr growth. Two local incumbents hold 60% share.',
+ issues:['Market attractiveness by country','Local regulatory compliance','Go-to-market model','Partnership vs direct','Talent acquisition','Product localization','Pricing for local markets','Capital requirements','Competitive response risk','Payback period'],
+ frameworks:['Market Attractiveness × Competitive Strength','Entry Mode: organic/JV/acquisition','Sequencing: which country first?','IRR/payback financial case'],
+ buckets:['Market Assessment','Competitive Position','Entry Strategy','Financial Case'],
+ model:{'Market Assessment':['Market size by country (Japan, India, ANZ, SE Asia)','Customer segmentation and WTP','Regulatory environment (data residency, labor laws)','Distribution landscape'],'Competitive Position':['Product fit for APAC workflows','Localization gap assessment','Brand recognition vs incumbents','Technical advantages transferable?'],'Entry Strategy':['Market sequencing: ANZ/Singapore first (English, familiar regs)','Mode: partner with SI vs direct sales force','Build vs buy: acquire local player?','Milestones and 12-month plan'],'Financial Case':['Investment: product, sales, marketing, G&A','Expected ARR ramp and payback period','IRR vs hurdle rate','Risk-adjusted scenarios']},
+ kq:'Can the client win in APAC given local incumbents, and what is the most capital-efficient entry mode?',
+ tips:'Structure around Should We Enter + How. Lead with market attractiveness, then competitiveness, then financial viability.',
+ rubric:['Covers both "should" and "how" dimensions','Separates market assessment from competitive position','Addresses entry mode options explicitly','Quantifies/sizes the financial case','Acknowledges sequencing/phasing']},
+{sector:'Healthcare',fn:'Profitability',diff:'Medium',title:'Hospital System Cost Reduction',
+ prompt:'A <span class="co">regional hospital system</span> (8 hospitals, $2.1B revenue) has seen operating margin fall from 6% to 2% in 2 years. Restore 5%+ without cutting clinical quality.',
+ context:'Revenue: mostly Medicare/Medicaid reimbursements. Labor = 60% of costs. Non-labor supply costs up 15% in 2 years.',
+ issues:['Nurse overtime and agency spend','Supply chain inefficiency','Service line profitability variation','Overhead consolidation','Revenue cycle optimization','Physician productivity','Facility utilization','Purchased services spend','IT duplication','Denial management'],
+ frameworks:['Revenue vs Cost tree','Labor vs Non-labor split','Service line P&L analysis','Zero-based budgeting approach'],
+ buckets:['Labor Cost','Non-Labor / Supply Chain','Revenue Optimization','Structure & Overhead'],
+ model:{'Labor Cost':['Agency/travel nurse reduction','Scheduling optimization to reduce overtime','Role redesign (task shifting)','Workforce planning vs patient volume'],'Non-Labor / Supply Chain':['Supply standardization across 8 hospitals','GPO leverage','Purchased services audit','Pharmacy and implant cost management'],'Revenue Optimization':['Revenue cycle: reduce denials and days-in-AR','Payer mix improvement','Service line pricing relative to cost'],'Structure & Overhead':['Consolidate shared services (HR, Finance, IT)','Facility rationalization','Clinical program consolidation']},
+ kq:'What is the split between labor and non-labor savings potential, and can we close 3 margin points without clinical impact?',
+ tips:'Always separate labor from non-labor — different intervention timeframes. Revenue cycle is often the fastest win.',
+ rubric:['Clearly splits labor vs non-labor','Addresses revenue cycle (often overlooked)','Considers both quick wins and structural changes','Notes clinical quality constraint','Sizes the opportunity ($84M gap to close)']},
+{sector:'Financial Services',fn:'M&A',diff:'Hard',title:'P&C Insurance Acquisition Diligence',
+ prompt:'Your client, a <span class="co">large P&C insurance group</span>, is considering acquiring a regional auto insurer ($1.2B premium, 8 states) for $1.8B. Is it worth it?',
+ context:'Target: 85% combined ratio, 12% market share in home states, 15% cat exposure in Florida. Growth: 6%/yr.',
+ issues:['Combined ratio sustainability','Reserve adequacy','Cat exposure and reinsurance cost','Regulatory capital requirements','Customer retention risk','Technology stack compatibility','Distribution channel overlap','Cost synergy potential','Revenue synergy potential','Cultural integration'],
+ frameworks:['Strategic fit: markets + capabilities','Financial valuation: DCF + multiples','Synergy identification + probability','Risk: financial, operational, regulatory'],
+ buckets:['Strategic Rationale','Financial Valuation','Synergy Potential','Risks & Mitigants'],
+ model:{'Strategic Rationale':['Geographic footprint fill-in (which 8 states?)','Distribution overlap vs complementarity','Product capability gaps filled','Scale benefits in claims, underwriting'],'Financial Valuation':['Standalone DCF: earnings trajectory, loss trends','Comparable transactions (P/B, P/E multiples)','Reserve adequacy assessment','Price: $1.8B vs intrinsic value'],'Synergy Potential':['Cost: claims handling consolidation, overhead, tech','Revenue: cross-sell, shared distribution','Synergy phasing and probability','Dis-synergies: customer churn, regulatory'],'Risks & Mitigants':['Cat risk concentration (Florida)','Reserve development risk','Regulatory approval timeline','Retention of key underwriters']},
+ kq:'Is $1.8B fair given standalone value plus achievable synergies minus integration risks?',
+ tips:'Lead with strategic fit, then validate with financial valuation. Always mention reserve adequacy and cat risk for P&C.',
+ rubric:['Covers strategy + valuation + synergies + risks','Identifies insurance-specific risks (reserves, cat)','Distinguishes cost from revenue synergies','Considers integration complexity','Mentions regulatory dimension']},
+{sector:'Consumer Goods',fn:'Profitability',diff:'Easy',title:'Premium Spirits Brand EBITDA Decline',
+ prompt:'A <span class="co">premium spirits brand</span> ($800M revenue, 45 countries) has seen EBITDA decline from 28% to 21% over 3 years, despite 8%/yr revenue growth.',
+ context:'COGS includes raw materials + manufacturing. SG&A includes marketing + distribution. Brand investment has been significantly increased.',
+ issues:['A&P (advertising & promo) ROI','Distribution cost inflation','Volume vs price/mix impact','SKU proliferation','Raw material hedging','Route-to-market efficiency','Emerging market losses','DTC losses','Premiumization impact','Discounting discipline'],
+ frameworks:['Revenue bridge: volume × price × mix','Gross margin: COGS drivers','EBITDA waterfall','Geographic P&L'],
+ buckets:['Revenue Quality','Gross Margin','SG&A Investment','Geographic Mix'],
+ model:{'Revenue Quality':['Price realization: are discounts increasing?','Volume vs price vs mix contribution','SKU profitability: which products dilute margin?','Emerging market mix (lower-margin)'],'Gross Margin':['Raw material cost inflation','Manufacturing efficiency and utilization','Freight and logistics costs','FX impact on imported ingredients'],'SG&A Investment':['A&P stepped up — is ROI measurable?','Distribution cost per case increase','Route-to-market restructuring costs','DTC e-commerce build-out losses'],'Geographic Mix':['Emerging market margins vs developed market','APAC/LatAm growth investment burn','Country-by-country EBITDA waterfall']},
+ kq:'Did margin fall because revenue quality declined, costs grew faster, or investment increased intentionally?',
+ tips:'Revenue grew 8% but EBITDA fell — so costs grew faster. Build a waterfall: Revenue +8% → Gross Margin → EBITDA.',
+ rubric:['Correctly notes revenue grew (not revenue problem first)','Separates gross margin from SG&A drivers','Asks about intentional vs unintentional investment','Considers geographic mix effects','Uses waterfall framing']},
+{sector:'Private Equity',fn:'M&A',diff:'Hard',title:'Commercial HVAC Distributor LBO',
+ prompt:'A <span class="co">mid-market PE fund</span> is evaluating an LBO of a commercial HVAC distributor ($180M revenue, $22M EBITDA). Asking price: $176M (8×). 5-year hold.',
+ context:'Market: fragmented, $12B US market. Family-owned 30 yrs, 6 branches, 85% service/parts recurring revenue. Recession-resilient.',
+ issues:['Quality of earnings','Revenue recurrence and contract duration','Working capital dynamics','Bolt-on acquisition pipeline','Management team quality','ERP investment needed','Leverage capacity','Exit multiple assumption','Organic growth drivers','Competitive moat analysis'],
+ frameworks:['Investment thesis: value creation levers','Quality of earnings: EBITDA adjustments','Deal structure: leverage, equity, returns','Value bridge: entry → exit EBITDA'],
+ buckets:['Investment Thesis','Quality of Earnings','Value Creation Plan','Returns Analysis'],
+ model:{'Investment Thesis':['Why this asset: recurring revenue, fragmented market for roll-up','Industry tailwinds: commercial construction, ESG retrofits','Competitive dynamics: regional vs national distributors'],'Quality of Earnings':['Adjustments to $22M EBITDA (owner add-backs, one-time items)','Working capital normalization','Contract quality: length, renewal rate, customer concentration'],'Value Creation Plan':['Organic: price realization, service mix shift, geographic expansion','M&A: 2-3 bolt-on distributors to build density','Operational: ERP, procurement savings, centralized back-office'],'Returns Analysis':['Entry: $176M. Debt: 4×=$88M. Equity: $88M','Exit: 8×$30M EBITDA=$240M. MOIC: 152/88=1.7×','Need EBITDA growth and/or multiple expansion for 3× target']},
+ kq:'Can we grow EBITDA from $22M to $35M+ in 5 years and exit at 8×+?',
+ tips:'For PE cases: thesis (why this asset), QofE (trust the numbers), and returns math (back-of-envelope IRR/MOIC).',
+ rubric:['Builds clear investment thesis','Interrogates EBITDA quality (add-backs)','Identifies specific value creation levers','Does returns math (entry/exit/MOIC)','Assesses risk factors (leverage, cycle, management)']},
+{sector:'Technology',fn:'Profitability',diff:'Medium',title:'Mobile App Monetization Decline',
+ prompt:'A <span class="co">consumer mobile app</span> (50M MAU, freemium) has seen revenue per user fall 35% over 18 months despite stable user base. Reverse this trend.',
+ context:'Revenue: in-app purchases 60%, subscription 30%, advertising 10%. DAU/MAU declined from 0.45 to 0.35.',
+ issues:['Engagement decline','Monetization rate change','In-app purchase frequency','Subscription conversion','Ad fill rate decline','Feature quality','Competitive substitution','Cohort analysis of payers','Pricing strategy','Paywall positioning'],
+ frameworks:['Revenue = Users × Engagement × Monetization rate','Funnel: MAU → DAU → payer → revenue','Cohort analysis: new vs retained users','Competitive positioning matrix'],
+ buckets:['Engagement Analysis','Monetization Levers','Competitive Dynamics','Product Strategy'],
+ model:{'Engagement Analysis':['DAU/MAU drop: who disengaged and why?','Retention curves by cohort','Session length and feature usage trends','New user onboarding effectiveness'],'Monetization Levers':['In-app purchase: AOV and frequency trends','Subscription: conversion rate and churn','Advertising: CPM trends and fill rate','Paywall optimization and pricing test'],'Competitive Dynamics':['Have competitors improved products?','Are users leaving or just visiting less?','Category growth vs app-specific trends'],'Product Strategy':['Feature roadmap to re-engage lapsed users','Content freshness issues','Platform (iOS vs Android) performance split']},
+ kq:'Is the revenue decline driven by fewer payers, lower spend per payer, or lower ad monetization — and what is the root cause?',
+ tips:'DAU/MAU dropping = engagement problem first, not just monetization. Root cause engagement before jumping to pricing tactics.',
+ rubric:['Distinguishes engagement from monetization problem','Breaks revenue into three streams separately','Uses cohort/funnel thinking','Considers competitive angle','Prioritizes diagnosis before recommendations']},
+{sector:'Industrial',fn:'Operations',diff:'Medium',title:'Automotive Manufacturer OEE Improvement',
+ prompt:'A <span class="co">Tier-1 auto parts manufacturer</span> ($900M revenue, 12 plants) has average OEE of 62%. Benchmark: 78%. Close half the gap in 18 months.',
+ context:'OEE = Availability × Performance × Quality. Current: Avail 78%, Perf 88%, Quality 90%. Target: +8 OEE points.',
+ issues:['Unplanned downtime root causes','Changeover time reduction','Minor stoppages','Speed losses','First-pass yield defects','Maintenance strategy','Operator training','Plant-to-plant variance','OEE measurement accuracy','TPM implementation'],
+ frameworks:['OEE decomposition: Availability × Performance × Quality','Loss waterfall (Nakajima)','Lean/TPM pillars','Plant benchmarking: best vs worst'],
+ buckets:['Availability (Downtime)','Performance (Speed)','Quality (Defects)','Enablers'],
+ model:{'Availability (Downtime)':['Planned vs unplanned downtime split','MTBF and MTTR by equipment type','Changeover time (SMED analysis)','Scheduled vs reactive maintenance'],'Performance (Speed)':['Actual vs design speed by machine','Minor stoppages and micro-stops','Idling and empty run losses','Operator and material feed delays'],'Quality (Defects)':['Startup rejects and process defects','Rework rate and yield losses by step','SPC and defect root cause pareto','Customer return and warranty claims'],'Enablers':['Maintenance capability (PM vs CBM)','Operator skills and standard work','ERP/MES data visibility','Plant-by-plant best practice sharing']},
+ kq:'Which OEE component (Avail/Perf/Quality) offers greatest improvement, and which plants to prioritize?',
+ tips:'Decompose OEE mathematically: 62%=78%×88%×90%. Quality (90%) and Availability (78%) have most headroom. Focus there.',
+ rubric:['Correctly decomposes OEE into 3 components','Identifies which component has biggest gap','Recommends plant benchmarking for best practices','Considers enablers (maintenance, training)','Quantifies the opportunity in $ revenue equivalent']},
+{sector:'Retail',fn:'Growth Strategy',diff:'Medium',title:'Apparel Brand DTC Channel Shift',
+ prompt:'A <span class="co">$1.2B apparel brand</span> (80% wholesale, 20% DTC) wants to reach 50% DTC within 5 years to improve margins and customer ownership. Should they, and how?',
+ context:'Wholesale margin: 38%. DTC margin: 62%. Own website + 45 stores. Department store exposure: 60% of wholesale.',
+ issues:['Wholesale partner conflict risk','DTC capex requirements','Digital marketing acquisition costs','Inventory management in DTC','Store economics','Customer data ownership','Price parity management','Distribution center capacity','Brand equity in DTC','International DTC feasibility'],
+ frameworks:['Channel economics: margin by channel','Customer journey and data ownership','Migration path: which customers to shift?','Investment requirement and returns'],
+ buckets:['Channel Strategy','Financial Case','Execution & Operations','Risks'],
+ model:{'Channel Strategy':['Which wholesale accounts to protect vs exit?','DTC channel mix: online vs physical vs wholesale','Customer segmentation: who shops where and why?','Geographic markets: lead with DTC-friendly demographics'],'Financial Case':['Margin uplift: current 80%×38%+20%×62%=42.8% → target 50%×62%+50%×38%=50%','DTC investment: CAC, store build costs, tech stack','Transition costs: wholesale revenue at risk','5-year NPV of channel migration'],'Execution & Operations':['Digital: ecommerce platform, CRM, analytics','Inventory: own-channel stock vs vendor-managed','Fulfillment: own DC vs 3PL for DTC','Store fleet: new builds vs format adaptation'],'Risks':['Wholesale partner retaliation','CAC inflation in saturated digital channels','Execution risk of managing two models simultaneously','Brand dilution if DTC execution is poor']},
+ kq:'Can we generate enough DTC margin uplift to fund migration investment and offset wholesale revenue at risk?',
+ tips:'Model channel economics first. Wholesale partners WILL react — acknowledge that prominently, not as a footnote.',
+ rubric:['Correctly identifies the margin improvement math','Acknowledges wholesale conflict prominently','Separates online DTC from physical DTC','Addresses execution and investment requirements','Includes clear decision criteria']},
+{sector:'Energy',fn:'Strategy',diff:'Hard',title:'Oil Major Energy Transition Strategy',
+ prompt:'A <span class="co">top-5 global oil & gas company</span> ($80B revenue) must define its energy transition strategy. How much and how fast to invest in renewables vs defend core business?',
+ context:'Core E&P: high margins but declining demand outlook. Balance sheet: $25B debt. Dividend: $4B/yr. Capex: $12B/yr.',
+ issues:['Carbon price trajectory','Stranded asset risk','ESG investor demands','Renewable ROIC vs E&P ROIC','LNG as transition fuel','Hydrogen opportunity','Downstream transformation','Grid-scale storage','Government policy dependency','Capital allocation framework'],
+ frameworks:['Portfolio: harvest vs invest by business','Scenario planning: energy demand 2030/2040','ROIC comparison across transition options','Stakeholder alignment'],
+ buckets:['Core Business Defense','Transition Investment','Portfolio Management','Stakeholder & Risk'],
+ model:{'Core Business Defense':['High-grade E&P portfolio (divest high-cost, keep low-cost basins)','LNG as transition bridge','Operational decarbonization (Scope 1&2)','Portfolio resilience at $50/bbl'],'Transition Investment':['Where does oil major have real advantage? (offshore wind, hydrogen)','Downstream: biofuels, EV charging, carbon capture','New business models: energy services, carbon markets','Capital allocation % to transition vs core'],'Portfolio Management':['Divest vs partner vs operate in new segments','Acquisition targets: renewable platforms','JV structures to share risk','Return hurdle calibration for transition vs core'],'Stakeholder & Risk':['ESG investor pressure and disclosure requirements','Regulatory scenario analysis (carbon price, subsidies)','Social license: employee and community impact','Dividend sustainability given capex shift']},
+ kq:'How do we balance short-term returns from core E&P against long-term transition investment without destroying value?',
+ tips:'Avoid "go all-in renewables" or "defend oil" — use portfolio logic. Frame as capital allocation with risk-adjusted returns for each bucket.',
+ rubric:['Avoids simplistic binary answer','Uses scenario analysis or sensitivity framework','Addresses capital allocation explicitly ($12B capex)','Considers investor and regulatory stakeholders','Mentions energy transition risks (ROIC, policy dependency)']},
+{sector:'Education',fn:'Growth Strategy',diff:'Easy',title:'Online Education Platform Growth',
+ prompt:'An <span class="co">online education startup</span> ($45M ARR, 400K learners) has plateaued at 12%/yr growth and wants to reignite to 30%+. Highest-priority levers?',
+ context:'Products: professional skills courses. Pricing: $299/yr subscription. Channel: 60% organic, 25% paid, 15% B2B. NPS: 62. Completion rate: 18%.',
+ issues:['Organic growth channels','B2B expansion','Course catalog gaps','Completion rate and engagement','Pricing optimization','Geographic expansion','Partnership and distribution','Content refresh cadence','Instructor marketplace','Certification and credentialing'],
+ frameworks:['Growth = New + Expansion + Retention','Channel efficiency matrix','Product-market fit by segment','B2C vs B2B economics comparison'],
+ buckets:['Demand Generation','Product & Retention','B2B Expansion','Monetization'],
+ model:{'Demand Generation':['SEO content strategy, topic authority expansion','Paid: CAC by channel, optimize LTV/CAC','Partnerships: employers, professional associations','Referral and community-driven acquisition'],'Product & Retention':['18% completion is a major problem — fix before scaling acquisition','Personalization and learning paths to improve engagement','Mobile experience and microlearning formats','Certification pathways that increase perceived value'],'B2B Expansion':['Enterprise sales: L&D budgets, volume pricing','Compliance training adjacency','B2B economics: higher LTV, lower CAC, lower churn','Direct employer partnerships'],'Monetization':['Pricing test: $299/yr vs tiered plans','Certification premium add-on','Course marketplace with revenue share','Corporate licensing']},
+ kq:'Can we build a B2B engine and fix retention to enable profitable 30% growth, or is this a product-market fit problem?',
+ tips:'Low completion (18%) is a red flag — scaling acquisition with a leaky funnel makes the problem worse. Fix retention first.',
+ rubric:['Flags completion rate as critical retention issue','Separately analyzes B2C vs B2B paths','Does not immediately recommend "more marketing"','Addresses product quality alongside growth tactics','Considers unit economics (LTV/CAC) in framing']},
+{sector:'Logistics',fn:'Operations',diff:'Medium',title:'Last-Mile Delivery Cost Reduction',
+ prompt:'A <span class="co">parcel delivery company</span> (2.1M deliveries/day) has seen cost-per-delivery rise 28% in 3 years. Failed delivery rate: 12%. Fix this.',
+ context:'Cost per delivery: $8.20 (was $6.40). 35% of cost is driver labor. Fuel: 18%. Network: 340 depots.',
+ issues:['Route density optimization','Failed delivery root causes','Driver productivity metrics','Depot network footprint','Smart lockers, PUDO points','Dynamic routing software','Fuel efficiency and EV fleet','Gig economy driver model','Customer behavior change','Sunday/peak surge costs'],
+ frameworks:['Cost waterfall: labor + fuel + network + other','Route efficiency metrics (stops/mile, deliveries/hour)','Scenario: current vs tech-enabled vs network redesign','Make vs buy: own fleet vs crowdsource'],
+ buckets:['Route & Network Efficiency','Failed Delivery Reduction','Technology Enablers','Structural Cost Levers'],
+ model:{'Route & Network Efficiency':['Stop density analysis: suburban routes too sparse?','Route optimization software assessment','Depot consolidation or micro-depot introduction','Cross-docking and sortation center optimization'],'Failed Delivery Reduction':['12% failure × $8.20 = $0.98/delivery in wasted cost','Root causes: nobody home, access issues, address quality','Solutions: delivery windows, PUDO network, smart lockers','Proactive notifications to reduce failure rate'],'Technology Enablers':['Dynamic routing with real-time traffic','In-cab technology for driver productivity','Customer-facing delivery tracking and rescheduling','Data analytics on route performance'],'Structural Cost Levers':['Driver model: employed vs gig for different route types','Fleet: EV transition economics for urban routes','Depot footprint: right-size to volume with micro-hubs','Crowdsourced delivery for surge/peak periods']},
+ kq:'What portion of the $1.80 cost increase is structural (network) vs operational (route efficiency) vs behavioral (failed deliveries)?',
+ tips:'Quantify failed delivery impact early: 12% × $8.20 ≈ $1/delivery in waste. Then decompose remaining cost increase.',
+ rubric:['Quantifies failed delivery cost impact','Separates structural from operational issues','Considers technology as enabler not solution','Addresses driver model explicitly','Notes customer behavior as a lever']},
+{sector:'Banking',fn:'Profitability',diff:'Hard',title:'Retail Bank ROE Improvement',
+ prompt:'A <span class="co">mid-size retail bank</span> ($85B assets, ROE 8%) wants to improve ROE to 12%+ within 3 years. What levers to pull?',
+ context:'Revenue: NIM 2.4%, fee income $800M. Cost-to-income: 62%. CET1 capital: 13.5% (minimum: 10%). Loan book: 70% residential mortgage.',
+ issues:['NIM optimization','Fee income growth','Cost reduction','Capital efficiency','Loan mix rebalancing','Branch network optimization','Digital transformation','Credit quality management','Regulatory capital deployment','M&A for scale'],
+ frameworks:['ROE DuPont decomposition','Revenue: NIM + Fees','Cost: efficiency ratio improvement','Capital: RWA optimization'],
+ buckets:['Revenue Enhancement','Cost Optimization','Capital Efficiency','Strategic Options'],
+ model:{'Revenue Enhancement':['NIM: asset repricing, funding cost reduction, loan mix to higher-yield products','Fee income: cross-sell, wealth management, transaction banking','Deposits: grow low-cost core deposits','Loan growth: SME and consumer at higher spread than mortgage'],'Cost Optimization':['Cost-to-income 62% → 55%: ~$600M savings','Branch: rationalize to digital-first (25-30% reduction)','Technology: digital self-service reduces ops cost per transaction','Procurement and third-party spend review'],'Capital Efficiency':['CET1 13.5% vs 10% min: ~$3B excess capital to deploy or return','RWA optimization: remove low-yield high-RWA assets','Capital return: buybacks vs dividend to improve ROE denominator','Target RWA mix: SME loans have higher RWA but also higher NIM'],'Strategic Options':['Bolt-on in wealth management or payments','Digital bank partnership or investment','Sell non-core businesses','Geographic expansion into underbanked markets']},
+ kq:'Which ROE lever is biggest: NIM improvement, cost efficiency, or capital deployment — and what is the 3-year sequencing?',
+ tips:'DuPont the ROE first. Cost-to-income of 62% is a major drag. Excess capital (13.5% vs 10%) is an often-overlooked lever.',
+ rubric:['Uses DuPont decomposition of ROE','Identifies excess capital as a lever (13.5% vs 10%)','Addresses both revenue and cost sides','Sequences recommendations by impact and time','Mentions regulatory constraints on capital']},
+{sector:'Pharmaceuticals',fn:'Strategy',diff:'Hard',title:'Pharma Pipeline Prioritization',
+ prompt:'A <span class="co">mid-size pharma company</span> ($4.2B revenue, 12 compounds in Phase 2/3) must allocate $1.2B R&D budget. Flagship drug loses patent in 2027 ($1.8B revenue). How to prioritize?',
+ context:'Pipeline: oncology (4), immunology (3), CNS (3), rare disease (2). Phase 2→3 success: 45%.',
+ issues:['NPV of each compound','Time to market','Commercial market sizing','Differentiation vs standard of care','Manufacturing complexity','Partnership vs self-develop','Patent protection duration','Competitive pipeline watching','Regulatory pathway','Geographic commercial strategy'],
+ frameworks:['Portfolio matrix: NPV × Probability of success','Gap analysis vs patent cliff','Risk-adjusted return by therapeutic area','Build vs partner vs buy decision'],
+ buckets:['Scientific & Clinical Assessment','Commercial Value','Strategic Fit','Resource & Portfolio'],
+ model:{'Scientific & Clinical Assessment':['Probability of success: Phase 2 data quality, mechanism of action','Clinical differentiation: efficacy/safety profile vs SoC?','Regulatory pathway: standard vs expedited (Breakthrough designation)?','Manufacturing complexity and scale-up risk'],'Commercial Value':['Market size and growth by therapeutic area','Pricing power: orphan drug vs competitive market','Risk-adjusted NPV: POS × NPV of successful launch','Patent life remaining at commercialization'],'Strategic Fit':['Oncology/immunology alignment with sales force?','Rare disease: different commercial model (patient finding)','Partnership value: co-develop to share risk and cost','Geographic: US-centric vs global development'],'Resource & Portfolio':['Portfolio balance: near-term vs long-term revenue contribution','Balance therapeutic area concentration risk','$1.2B allocation: full development vs partner/out-license select assets','Sequencing: advance, pause, or out-license each compound']},
+ kq:'Which portfolio configuration maximizes risk-adjusted value given $1.2B budget and 2027 patent cliff?',
+ tips:'Think portfolio, not individual compounds. Patent cliff creates urgency — prioritize compounds commercializing by 2026-2028.',
+ rubric:['Frames as portfolio decision not individual compound','Addresses patent cliff urgency explicitly','Uses POS × NPV framework','Considers partnership as risk-sharing mechanism','Notes balance: near-term vs long-term pipeline']},
+{sector:'Telecom',fn:'Profitability',diff:'Medium',title:'Telecom ARPU Decline',
+ prompt:'A <span class="co">national telecom operator</span> ($6.8B revenue, 22M subscribers) has seen ARPU fall from $32 to $26/month over 4 years. How to reverse?',
+ context:'Post-paid mobile 55%, pre-paid 25%, broadband 15%, B2B 5%. Data usage per user up 40%. Churn: 18%/yr. New 5G entrant launched 2 years ago.',
+ issues:['Price competition response','Upsell and cross-sell effectiveness','Churn reduction','Network quality investment','5G monetization path','Bundle economics','Prepaid to postpaid migration','B2B enterprise growth','Content partnerships','Roaming revenue'],
+ frameworks:['ARPU bridge: mix shift + price + cross-sell','Churn economics: retention vs acquisition cost','Customer lifetime value by segment','Competitive response framework'],
+ buckets:['ARPU Recovery','Churn Reduction','Revenue Mix Improvement','Structural Responses'],
+ model:{'ARPU Recovery':['Price: can we raise without churn? test elasticity','Upsell: unlimited data tiers, device financing, insurance','Cross-sell: bundle mobile + broadband + TV','Prepaid → postpaid migration incentives'],'Churn Reduction':['18% churn = 3.96M churners/yr × $26×12 = $1.2B LTV lost/yr','Churn root cause: price, network quality, competitor offer?','Retention program investment vs new customer acquisition cost','Contract length incentives'],'Revenue Mix Improvement':['B2B only 5% — significant expansion opportunity','IoT/M2M business with large enterprise','Content and digital services to increase stickiness','5G premium tier for business users'],'Structural Responses':['Network investment to close quality gap vs new entrant','5G coverage as premium monetization trigger','MVNO wholesale to partially monetize network','Spectrum and infrastructure cost efficiency']},
+ kq:'Is ARPU decline driven by price competition (structural), customer mix (compositional), or poor upsell (execution)?',
+ tips:'First diagnose: are customers leaving for lower plans, or are you matching prices to retain them? Very different fixes.',
+ rubric:['Quantifies the churn impact (18% × 22M subscribers)','Separates mix effect from price effect in ARPU decline','Identifies B2B as underexploited segment','Considers 5G as monetization catalyst','Frames competitive response options clearly']},
+{sector:'Real Estate',fn:'Strategy',diff:'Medium',title:'Commercial Real Estate Portfolio Repositioning',
+ prompt:'A <span class="co">real estate investment firm</span> ($4B AUM in commercial RE) must reposition portfolio given post-pandemic demand shifts. Office occupancy at 65% in their assets.',
+ context:'Portfolio: 40% office, 35% retail, 15% industrial, 10% multifamily. Industrial: 99% occupied. Retail: 78% occupied. Office leases avg 8yr remaining.',
+ issues:['Office demand structural change','Conversion economics (office to resi)','Industrial/logistics tailwinds','Retail bifurcation (winners vs losers)','Lease structure renegotiation','Cap rate environment','Disposition vs hold strategy','Redevelopment opportunities','Debt maturity profile','ESG mandates'],
+ frameworks:['Portfolio optimization: weight by risk-adjusted return','Demand scenario analysis by asset class','Hold-sell-develop decision by asset','Capital recycling and redeployment'],
+ buckets:['Office Portfolio','Industrial Expansion','Retail Repositioning','Capital Allocation'],
+ model:{'Office Portfolio':['Classify: Trophy Class A (winners) vs B/C (vulnerable)','Trophy: differentiate with amenities, flexible lease terms','B/C: conversion feasibility (residential? life science?)','Lease expiry timing: which assets to exit before expiry?'],'Industrial Expansion':['Undersupplied, e-commerce tailwind — grow this bucket','Last-mile logistics in dense markets','Development pipeline: land acquisitions for industrial parks','Target: raise industrial from 15% to 30%+ of portfolio'],'Retail Repositioning':['Bifurcation: grocery-anchored (resilient) vs enclosed mall (distressed)','Exit enclosed mall exposure','Reposition around experiential tenants','Mixed-use redevelopment of struggling sites'],'Capital Allocation':['Dispose 20-25% of office portfolio over 3 years','Recycle into industrial and multifamily','Multifamily: countercyclical with housing shortage','Refinancing risk in rising rate environment']},
+ kq:'How do we reduce office exposure and redeploy into industrial/residential while managing lease and debt maturity risks?',
+ tips:'Start with the portfolio map (what do we own, what is the outlook for each class). Then hold/improve/sell/convert for each bucket.',
+ rubric:['Differentiates within office (Trophy vs commodity)','Identifies industrial as clear winner to grow','Addresses conversion economics for office assets','Links capital recycling to portfolio repositioning','Mentions macro risks (rates, cap rates)']},
+{sector:'Non-Profit',fn:'Strategy',diff:'Easy',title:'Non-Profit Funding Diversification',
+ prompt:'A <span class="co">large US non-profit</span> ($80M annual budget) is 70% dependent on one government grant expiring in 2026. Diversify funding urgently.',
+ context:'Programs: education 50%, healthcare outreach 30%, housing 20%. Current: gov 70%, foundations 20%, individual donors 8%, earned income 2%.',
+ issues:['Individual donor acquisition and major gifts','Corporate partnership development','Foundation grant strategy','Fee-for-service revenue expansion','Earned income ventures','Cost reduction to extend runway','Program impact documentation','Donor retention','Endowment development','Communication and case for support'],
+ frameworks:['Revenue diversification: channel by channel','Risk analysis: timeline to 2026','Cost reduction: bridge strategy','Capacity: development staff investment needed'],
+ buckets:['Foundation & Grants','Individual & Major Donors','Earned Income','Cost & Efficiency'],
+ model:{'Foundation & Grants':['Map 200+ foundations aligned with programs','Multi-year grant strategy to replace government dependency','Program impact data to strengthen proposals','Geographic expansion of funder base'],'Individual & Major Donors':['8% individual is very low — major opportunity','Major gifts ($10K+) from board network','Annual fund and recurring giving programs','Events and peer-to-peer fundraising'],'Earned Income':['Fee-for-service: training programs, consulting to similar orgs','Healthcare: Medicaid billing for eligible services','Social enterprise: mission-aligned revenue ventures','Partnership with employers on workforce programs'],'Cost & Efficiency':['Prioritize programs by impact and sustainability','Shared services with similar non-profits','Reserve fund: how many months of runway?','Contingency: what gets cut first if grant disappears?']},
+ kq:'Can we raise 60%+ of the $56M government gap by 2026, and what is the contingency plan if we cannot?',
+ tips:'Anchor to the number: 70% × $80M = $56M to replace. Size each channel realistically and build a waterfall.',
+ rubric:['Anchors to the $56M gap immediately','Separates revenue diversification from cost efficiency','Provides realistic sizing of each channel','Addresses timeline urgency (2026 ≈ 2 years)','Mentions contingency/scenario planning']},
+{sector:'Media',fn:'Strategy',diff:'Medium',title:'Print Media Digital Transformation',
+ prompt:'A <span class="co">national newspaper group</span> ($420M revenue, 12 publications) has seen print ad revenue fall 60% in 5 years while digital has only partially offset. How to survive?',
+ context:'Revenue: print ads 35%, print subs 28%, digital ads 15%, digital subs 14%, events 5%, other 3%. Digital sub growth: 22%/yr. Editorial staff: 1,100.',
+ issues:['Digital subscription conversion','Ad revenue model shift','Content differentiation','Cost base vs digital reality','Platform dependency (Google/Meta)','First-party data strategy','Events and sponsorship growth','Podcast and video expansion','Paywall strategy','Local vs national focus'],
+ frameworks:['Revenue bridge: print decline vs digital growth','Content: what do readers pay for?','Cost: right-size to digital reality','Strategic options: pure-play digital vs diversified'],
+ buckets:['Digital Revenue Growth','Cost Restructuring','Content Strategy','New Revenue Streams'],
+ model:{'Digital Revenue Growth':['Digital subs: 22% growth but still 14% of revenue — accelerate','Paywall optimization: metered vs hard vs dynamic','Pricing: are digital subs underpriced vs value delivered?','Bundle strategy: all publications on one platform'],'Cost Restructuring':['Print declining — newsroom must right-size','Shared services across 12 publications','Print production cost reduction or frequency reduction','Editorial efficiency: shared content, syndication'],'Content Strategy':['Investigative journalism as differentiated subscription driver','Niche content communities (finance, politics, sports)','Local news as defensible moat vs national platforms','Video and audio (podcast) investment'],'New Revenue Streams':['Events: premium conferences, awards programs','Licensing: content licensing to other publishers','Data: first-party reader data as advertising asset','Branded content and native advertising']},
+ kq:'Can digital revenue grow fast enough to offset print decline, or do we need to structurally reduce costs to match a smaller revenue base?',
+ tips:'Run the numbers: print losing ~$30M/yr in ads. Digital growing ~15% on smaller base. The gap is widening, so cost cuts are unavoidable.',
+ rubric:['Quantifies the revenue gap (print decline > digital growth)','Separates short-term cost cuts from long-term digital growth','Addresses editorial workforce sensitively but honestly','Identifies content differentiation as key to subscription growth','Considers platform risk (Google/Meta)']},
+{sector:'Technology',fn:'M&A',diff:'Hard',title:'Cybersecurity Software Acquisition',
+ prompt:'A <span class="co">large enterprise software company</span> wants to acquire a cybersecurity startup ($85M ARR, 120% NRR, $340M asking price). Proceed at what price?',
+ context:'Buyer: $4B revenue, no cybersecurity product. Target: 280 enterprise customers, avg contract $350K, 3yr deals. Team: 180 employees.',
+ issues:['Strategic rationale for cybersecurity','Standalone valuation','Revenue quality (NRR, churn, concentration)','Integration complexity','Technical architecture fit','Talent retention risk','Customer overlap / cross-sell','Synergy identification','Price negotiation','Competitive alternatives'],
+ frameworks:['Strategic rationale: buy vs build vs partner','Valuation: ARR multiple + DCF','Synergy: cost + revenue','Integration: complexity × disruption risk'],
+ buckets:['Strategic Rationale','Valuation & Deal Terms','Synergies','Integration & Risk'],
+ model:{'Strategic Rationale':['Why cybersecurity: adjacent or core to buyer\'s strategy?','Build vs buy: 2 year M&A acceleration vs 5 year build','Customer base: 280 enterprise clients = direct cross-sell','Market: cybersecurity $80B growing 15%+ — timing rationale'],'Valuation & Deal Terms':['ARR multiple: $340M/$85M=4.0×. Market comps: 5-8× for high-growth cyber','DCF: $85M ARR growing 40%/yr, 75% gross margin','Earnout: tie $40M to ARR milestones','Walk-away: above 6× ARR = >$510M'],'Synergies':['Revenue: cross-sell to buyer\'s 4,000 customers ($50-100M NPV)','Cost: back-office overlap (HR, Finance, Legal)','Distribution: buyer\'s sales force to accelerate startup growth','Time to synergy: 18-24 months post-close'],'Integration & Risk':['Talent: 180 employees, key product/security engineers critical','Operate as standalone vs integrate: standalone better for retention','Customer continuity: no disruption to 280 enterprise clients','Tech: security architecture must integrate with buyer\'s platform']},
+ kq:'Is $340M (4× ARR) a fair price, and can we generate enough cross-sell synergy to justify a premium over standalone DCF?',
+ tips:'Lead with "should we buy" before "at what price". 4× ARR is below market for 120% NRR SaaS — buyer has room to increase bid.',
+ rubric:['Addresses strategic rationale before valuation','Uses ARR multiple AND DCF in valuation','Quantifies cross-sell synergy opportunity','Identifies talent retention as #1 integration risk','Notes 4× is below market for this growth profile']},
+{sector:'Consumer Goods',fn:'Operations',diff:'Easy',title:'Supply Chain Resilience Plan',
+ prompt:'A <span class="co">global consumer goods company</span> ($6B revenue, 80+ SKUs) experienced $350M in lost revenue from supply chain disruptions last year. Build a resilience plan.',
+ context:'Sourcing: 60% from single-source suppliers in Asia. Inventory policy: 3 weeks on hand. Service level: 82% (target 95%). Lead times: 14-18 weeks.',
+ issues:['Single-source supplier concentration','Safety stock policy','Demand forecasting accuracy','Nearshoring options','Supplier financial health','Component commonality','Network redundancy','Logistics route diversification','Risk monitoring systems','Business continuity planning'],
+ frameworks:['Risk: probability × impact for each vulnerability','Mitigation: eliminate/reduce/transfer/accept','Resilience: response time and recovery capability','Cost of resilience vs cost of disruption'],
+ buckets:['Supply Risk Assessment','Inventory & Buffer Strategy','Supplier Diversification','Monitoring & Response'],
+ model:{'Supply Risk Assessment':['Map all single-source dependencies by revenue at risk','Categorize: critical (>$50M at risk) vs significant vs low','Geographic concentration: Asia exposure by input category','Financial health of top 20 suppliers'],'Inventory & Buffer Strategy':['3 weeks is low for 14-18 week lead times — safety stock model','Increase to 6-8 weeks for critical components','82%→95% service level requires buffer stock investment','Cost of buffer inventory vs $350M lost revenue'],'Supplier Diversification':['Qualify second sources for top 20 single-source inputs','Nearshoring: Mexico, Eastern Europe alternatives for key inputs','Dual sourcing economics: premium worth paying for resilience','Timeline: 12-18 months to qualify new suppliers'],'Monitoring & Response':['Supply risk early warning system (lead indicator monitoring)','Business continuity playbooks by disruption scenario','Demand-supply matching during shortage','Customer allocation framework for constrained supply']},
+ kq:'Is $350M a recurring risk or one-time, and what is the cost-benefit of resilience investment vs accepting disruption?',
+ tips:'Quantify the resilience investment vs disruption cost. $350M lost revenue justifies significant resilience investment.',
+ rubric:['Anchors to the $350M throughout','Separates short-term (inventory) from long-term (supplier diversification)','Does cost-benefit of resilience investment','Addresses monitoring and early warning','Prioritizes by revenue at risk']},
+{sector:'Healthcare',fn:'Growth Strategy',diff:'Medium',title:'Medical Device Market Adjacency Expansion',
+ prompt:'A <span class="co">medical device company</span> ($1.8B, orthopedic implants) wants to expand beyond orthopedics. Which adjacencies and how?',
+ context:'Current: hip/knee 70%, spine 30%. Market leadership: #2 in hips/knees. Gross margin: 68%. R&D: 8% of revenue. Sales force: 1,200 reps.',
+ issues:['Adjacency selection criteria','Build vs acquire vs partner','Sales force leverageability','Regulatory pathway complexity','Reimbursement environment','Clinical evidence requirements','Customer overlap (same surgeons?)','Manufacturing transferability','IP and patent strategy','International expansion'],
+ frameworks:['Adjacency matrix: capability fit × market attractiveness','ROIC by expansion option','Regulatory and reimbursement complexity by segment','Investment profile: organic vs inorganic'],
+ buckets:['Market Attractiveness','Capability Fit','Investment Required','Risk Assessment'],
+ model:{'Market Attractiveness':['Segment sizing: trauma, sports medicine, extremities, neurosurgery','Growth rate and margin profile by segment','Competitive intensity: how crowded?','Reimbursement trends by procedure type'],'Capability Fit':['Manufacturing: metal/polymer expertise transferable?','Sales force: orthopedic reps sell to same surgeons in adjacency?','Clinical: established relationships with orthopods?','R&D: engineering capabilities transferable?'],'Investment Required':['Organic R&D timeline: 5-7 years to develop and get FDA clearance','Acquisition: pricing and target availability','Partnership: co-develop with smaller innovator','Required investment vs ROIC hurdle by option'],'Risk Assessment':['Clinical and regulatory risk (FDA pathway: 510k vs PMA)','Reimbursement risk: will payers cover new procedures?','Execution risk: building sales capability in new specialty','Cannibalization risk: does expansion dilute core focus?']},
+ kq:'Which adjacency offers best combination of market attractiveness and capability leverage, and what is the most efficient entry mode?',
+ tips:'Trauma is the most natural adjacency from orthopedics (same sales force, same hospital, similar manufacturing). Start there.',
+ rubric:['Uses systematic criteria to evaluate adjacencies','Addresses sales force leverageability explicitly','Compares organic vs inorganic entry modes','Notes regulatory complexity as a real filter','Recommends sequencing: one adjacency at a time']},
+{sector:'Automotive',fn:'Strategy',diff:'Hard',title:'Auto OEM EV Transition Strategy',
+ prompt:'A <span class="co">European auto OEM</span> (€35B revenue, ICE-dominant) faces a 2035 EU ban on new ICE vehicle sales. Plan the transition to full EV.',
+ context:'Current: 85% ICE, 10% hybrid, 5% BEV. EV market share: 8% (sector avg: 18%). Battery costs: $130/kWh. Dealer network: 3,200 European dealers.',
+ issues:['Battery supply chain security','Software defined vehicle capability','Charging infrastructure','Dealer network transformation','ICE profitability to fund transition','Platform architecture decisions','China EV competition','Engineering skills transition','Capital allocation ICE vs EV','Pricing and margin in EV'],
+ frameworks:['Timeline: ICE phase-down × EV scale-up','Capability gaps vs required for EV','Investment: battery, software, manufacturing','Competitive response to Chinese entrants'],
+ buckets:['Technology & Products','Manufacturing & Supply Chain','Commercial & Go-to-Market','Financial & Risk'],
+ model:{'Technology & Products':['Battery: own cell manufacturing vs partner (CATL, Samsung)?','Software: in-house OS development vs partner (Google, AWS)','Platform consolidation: fewer EV architectures','Segment: where to play in EV (mass, premium, commercial)'],'Manufacturing & Supply Chain':['Battery gigafactory: timing and location','Critical minerals: secure lithium, cobalt, nickel supply','Factory conversion: ICE to EV production lines','Workforce reskilling: combustion engineers → software/EV'],'Commercial & Go-to-Market':['Dealer transformation: EVs need different sales/service model','Direct sales consideration (like Tesla)','Charging ecosystem: own or partner','Used EV market development'],'Financial & Risk':['ICE cash cow to fund EV investment during transition','Capital phasing: €8-12B over 5 years','EV margin trajectory: currently negative, breakeven timeline?','Partnership to amortize platform investment']},
+ kq:'How do we use ICE cash flows to fund EV transition while maintaining competitiveness against new entrants, within 2035 timeline?',
+ tips:'Dual transformation case: optimize the core (ICE) while building the new (EV). ICE business funds the transition.',
+ rubric:['Frames as dual transformation','Addresses battery supply chain as critical dependency','Considers software as new core competency','Discusses dealer network disruption','Includes financial phasing and capital allocation']},
+{sector:'Financial Services',fn:'Operations',diff:'Easy',title:'Wealth Management Digital Transformation',
+ prompt:'A <span class="co">wealth management firm</span> ($280B AUM, 1,200 advisors) wants to digitize the client experience to reduce costs and improve advisor productivity. Where to start?',
+ context:'Revenue: $1.4B (50bps on AUM). Cost-to-income: 72%. Client portal: basic, 2010s tech. Advisors spend 40% of time on admin. Client NPS: 48 (industry avg: 62).',
+ issues:['Advisor productivity tools','Client portal modernization','Automated reporting','Onboarding digitization','Compliance workflow automation','CRM upgrade','Client segmentation and servicing model','Robo-advisor consideration','Cybersecurity in digital channels','Change management for advisors'],
+ frameworks:['Advisor time analysis: value-added vs admin','Client journeys: where is friction?','Technology investment ROI by initiative','Phased roadmap: quick wins vs transformation'],
+ buckets:['Advisor Productivity','Client Experience','Operational Efficiency','Strategic Capabilities'],
+ model:{'Advisor Productivity':['40% admin → target 20% through automation','CRM: client data in one place, integrated portfolio view','Automated reporting: quarterly review prep, performance reports','Proposal generation: model portfolio output, compliance review automation'],'Client Experience':['Portal: account view, document vault, secure messaging, reporting','Onboarding: digital account opening (weeks → days)','NPS 48 → 62+ target: what specifically frustrates clients?','Personalized insights: AI-driven portfolio commentary'],'Operational Efficiency':['Back-office: trade execution, settlement, reconciliation automation','Compliance: surveillance, reporting, audit trail automation','Paperless: document management, e-signature','Cost-to-income 72% → 65% through automation'],'Strategic Capabilities':['Data and analytics: client life event triggers, proactive outreach','Segmentation: robo/digital service for sub-$500K clients','Cybersecurity: zero-trust architecture, client authentication','Platform ecosystem: open banking API integration']},
+ kq:'What is the priority sequence of digital investments to deliver fastest advisor productivity gain and client experience improvement?',
+ tips:'Start with advisor productivity — every hour saved = revenue-generating hour. CRM and automated reporting are fastest wins with highest ROI.',
+ rubric:['Separates advisor productivity from client experience','Anchors to the 40% admin time as a quantified starting point','Sequences investments by ROI and speed of impact','Addresses change management (advisor adoption)','Connects digital investment to cost-to-income improvement']},
+{sector:'Industrial',fn:'M&A',diff:'Medium',title:'Industrial Distributor Roll-Up Strategy',
+ prompt:'A <span class="co">PE-backed industrial distributor</span> ($400M revenue) has $150M for acquisitions and must execute a regional roll-up. How to approach?',
+ context:'Current: 4 branches in Midwest, industrial MRO. Typical targets: $20-80M revenue, 8-12% EBITDA margins. Integration track record: 2 bolt-ons completed.',
+ issues:['Acquisition screening criteria','Target identification and sourcing','Valuation and deal structure','Integration playbook','Geographic strategy','Product line synergies','Customer overlap analysis','Talent retention in acquisitions','Technology platform scalability','Exit preparation'],
+ frameworks:['Acquisition criteria: strategic fit × financial returns','Pipeline: proprietary vs auctioned deals','Integration: day-1 vs 100-day vs run-rate','Value creation: synergy identification and capture'],
+ buckets:['Target Screening','Deal Execution','Integration Playbook','Portfolio Value Creation'],
+ model:{'Target Screening':['Geographic adjacency: expand into adjacent Midwest markets first','Minimum criteria: $15M+ revenue, 8%+ EBITDA, single owner-operator','Customer profile: complementary vs overlapping','Product line gaps to fill (fasteners, safety, electrical)'],'Deal Execution':['Proprietary deal sourcing: direct outreach to owner-operators','Avoid auction processes where possible','Valuation: 5-7× EBITDA; bolt-ons at platform + synergy value','Deal structure: earnouts for key-man risk mitigation'],'Integration Playbook':['Day 1: back-office integration (finance, HR, IT)','100-day: sales force alignment and cross-sell enablement','Run-rate: procurement savings through combined purchasing','Retain: branch manager is key — lock in with equity rollover'],'Portfolio Value Creation':['Procurement leverage: combined buying power across all entities','Technology: single ERP/inventory system across all branches','Cross-sell: introduce best products across all branches','Exit preparation: consolidated story for next PE buyer']},
+ kq:'How do we source, evaluate, and integrate 3-5 bolt-ons over 2 years to build a $650M+ platform ready for exit?',
+ tips:'Roll-up strategy: emphasize integration playbook as much as deal screening. Value is created post-close, not at signing.',
+ rubric:['Balances deal sourcing with integration equally','Identifies proprietary deal flow as value driver','Specifies integration priorities (day-1 vs 100-day)','Addresses key-man risk in target companies','Links bolt-on strategy to exit preparation']},
+{sector:'Technology',fn:'Growth Strategy',diff:'Medium',title:'B2B Marketplace Launch',
+ prompt:'A <span class="co">B2B procurement software company</span> ($180M ARR) wants to launch an embedded marketplace for suppliers. Should they build, buy, or partner — and how do they monetize?',
+ context:'Current: 3,200 enterprise customers use their procurement platform. Avg supplier network per customer: 400 suppliers. Total supplier relationships accessible: ~1.2M.',
+ issues:['Build vs buy vs partner for marketplace tech','Monetization model (take rate vs SaaS)','Supplier onboarding and network effects','Customer conflict (do buyers want this?)','GMV ramp timeline','Competitive threat from Coupa, Ariba','Integration complexity','Trust and compliance','Data monetization','International supplier considerations'],
+ frameworks:['Platform economics: network effects and liquidity','Monetization: take rate vs listing fees vs SaaS','Sequencing: which customer/supplier verticals first?','Build vs buy economics: IRR comparison'],
+ buckets:['Strategic Rationale','Business Model Design','Go-to-Market','Financial Case'],
+ modelAnswer:{
+  'Strategic Rationale':['Why a marketplace: lock-in, monetization, data network effects','Competitor moves: are Coupa/Ariba already doing this?','Customer demand signal: do buyers want supplier discovery?','Strategic defensibility: does this create a moat?'],
+  'Business Model Design':['Take rate (1-3% of GMV) vs SaaS subscription vs listing fees','Supplier acquisition: free vs paid onboarding','Buyer incentives: reduce procurement friction, better pricing','Trust layer: compliance, insurance, payment terms'],
+  'Go-to-Market':['Start with concentrated spend categories (e.g. IT hardware, facilities)','Leverage existing 3,200 customers to seed demand','Target top 50 suppliers per customer for initial network','Geography: US-first, then international supplier expansion'],
+  'Financial Case':['GMV potential: 1.2M suppliers × avg transaction $50K × % captured','Take rate: 2% × GMV = revenue estimate','Investment: tech build $15-20M or acquire $40-80M','Breakeven: 18-24 months if supplier adoption >40%']
+ },
+ keyQuestion:'Can we build sufficient marketplace liquidity on our existing customer base, and which monetization model maximizes long-term value?',
+ tips:'Network effects are the key: a marketplace with thin supplier or buyer participation fails. Start narrow and deep rather than broad and shallow.',
+ rubric:['Addresses the liquidity problem (chicken-and-egg)','Compares build vs buy vs partner explicitly','Designs a specific monetization model','Sequences go-to-market narrowly (category/geography)','Quantifies the GMV and revenue opportunity']
+}];
+// ══ GAME STATE ══
+let fS={},eS={},gS={},dS={};
+let fC={cat:'All',dif:'All',time:15,cnt:10};
+let eC={cat:'All',cnt:8};
+let gC={cat:'All',dif:'All',cnt:10};
+let dC={cat:'All',cnt:8};
+let cFilter={sector:'All',fn:'All',dif:'All'};
+let caseActive=null;
+
+// ══ DASHBOARD ══
+function rdash(){
+  const t=P.totals;
+  const tQ=Object.values(t).reduce((s,m)=>s+m.c+m.w+m.s,0);
+  const tC=Object.values(t).reduce((s,m)=>s+m.c,0);
+  const tW=Object.values(t).reduce((s,m)=>s+m.w,0);
+  const acc=tC+tW>0?Math.round(tC/(tC+tW)*100):0;
+  id('dStats').innerHTML=`
+    <div class="sc sg"><div class="sv" style="color:var(--go)">${tQ}</div><div class="sl">Questions Done</div></div>
+    <div class="sc scy"><div class="sv" style="color:var(--cy)">${acc}%</div><div class="sl">Accuracy</div></div>
+    <div class="sc sgr"><div class="sv" style="color:var(--gr)">${P.sessions.length}</div><div class="sl">Sessions</div></div>
+    <div class="sc sp"><div class="sv" style="color:var(--pu)">${cstr()}🔥</div><div class="sl">Day Streak</div></div>
+    <div class="sc st"><div class="sv" style="color:var(--te)">${CASES.length}</div><div class="sl">Case Library</div></div>`;
+  const mods=[
+    {id:'fast',icon:'⚡',name:'Fast Math',desc:'50 Qs: percentages, CAGR, breakeven, NPV, unit economics.',c:'var(--go)'},
+    {id:'est',icon:'◎',name:'Estimates',desc:'50 Qs: Fermi, market sizing, populations, consumer markets.',c:'var(--cy)'},
+    {id:'gmat',icon:'△',name:'GMAT Quant',desc:'50 Qs: PS & DS, algebra, probability, statistics, rates.',c:'var(--re)'},
+    {id:'di',icon:'▦',name:'Data Interp.',desc:'50 Qs: bar charts, line graphs, pie charts, tables, combos.',c:'var(--pu)'},
+    {id:'case',icon:'⬡',name:'Case Structure',desc:'25 MECE cases across 12 sectors and 5 functions.',c:'var(--te)'},
+  ];
+  id('mGrid').innerHTML=mods.map(m=>{const mt=P.totals[m.id]||{c:0,w:0,s:0};const tot=mt.c+mt.w+mt.s;const a=mt.c+mt.w>0?Math.round(mt.c/(mt.c+mt.w)*100)+'%':'—';
+    return `<div class="mc" onclick="gv('${m.id}')"><div class="mca" style="background:${m.c}"></div><div class="mci">${m.icon}</div><div class="mcn">${m.name}</div><div class="mcd">${m.desc}</div><div class="mcs">Accuracy: ${a} · Attempted: ${tot}</div></div>`;
+  }).join('');
+}
+function cstr(){
+  if(!P.sessions.length)return 0;
+  const days=new Set(P.sessions.map(s=>s.date.split('T')[0]));
+  let n=0,d=new Date();
+  for(let i=0;i<365;i++){const k=d.toISOString().split('T')[0];if(days.has(k)){n++;d.setDate(d.getDate()-1)}else break}
+  return n;
+}
+// ══ CONTROLS BUILDER ══
+function bc(eid,opts,active,fn){
+  const el=id(eid);
+  el.innerHTML=opts.map(o=>`<button class="cb${o===active?' active':''}" data-v="${o}">${o}</button>`).join('');
+  el.querySelectorAll('.cb').forEach(b=>b.addEventListener('click',function(){el.querySelectorAll('.cb').forEach(x=>x.classList.remove('active'));this.classList.add('active');fn(this.dataset.v)}));
+}
+// ══ FAST MATH ══
+function initFast(){
+  const cats=['All',...new Set(FQ.map(q=>q.cat))];
+  bc('fc-cat',cats,'All',v=>fC.cat=v);bc('fc-dif',['All','1','2','3'],'All',v=>fC.dif=v);
+  bc('fc-tim',['10s','15s','20s','30s','∞'],'15s',v=>fC.time=v==='∞'?0:parseInt(v));
+  bc('fc-cnt',['5','10','15','20'],'10',v=>fC.cnt=parseInt(v));
+  id('f-ai').addEventListener('keydown',e=>{if(e.key==='Enter')submitFast()});
+}
+function startFast(){
+  let pool=[...FQ];if(fC.cat!=='All')pool=pool.filter(q=>q.cat===fC.cat);if(fC.dif!=='All')pool=pool.filter(q=>q.d===parseInt(fC.dif));
+  pool=shuf(pool).slice(0,fC.cnt);if(!pool.length){toast('No questions match');return}
+  fS={qs:pool,i:0,c:0,w:0,sk:0,ans:[],t0:Date.now(),ti:null};
+  id('fast-menu').style.display='none';id('fast-res').style.display='none';id('fast-sess').style.display='block';showFQ();
+}
+function showFQ(){
+  if(fS.i>=fS.qs.length){endFast();return}
+  const q=fS.qs[fS.i];
+  id('fp-f').style.width=(fS.i/fS.qs.length*100)+'%';id('fp-t').textContent=`Q${fS.i+1}/${fS.qs.length}`;id('fp-s').textContent=`✓${fS.c} ✗${fS.w}`;
+  id('f-qn').textContent=`#${fS.i+1}`;id('f-ct').innerHTML=`<span class="tag tg">${q.cat}</span>`;
+  id('f-dm').innerHTML=[1,2,3].map(i=>`<div class="dmd${i<=q.d?' on':''}"></div>`).join('');
+  id('f-qt').innerHTML=q.q;
+  const inp=id('f-ai');inp.value='';inp.className='ai';inp.disabled=false;inp.focus();
+  id('f-fb').className='fb';id('f-fb').innerHTML='';
+  clearInterval(fS.ti);const tl=fC.time||0;
+  if(tl>0){let rem=tl;const fi=id('f-tf'),di=id('f-td');fi.style.width='100%';fi.className='tf';di.className='td';di.textContent=rem;
+    fS.ti=setInterval(()=>{rem--;fi.style.width=(rem/tl*100)+'%';di.textContent=rem;if(rem<=4){fi.className='tf w';di.className='td w'}if(rem<=0){clearInterval(fS.ti);autoF()}},1000);
+  }else{id('f-tf').style.width='100%';id('f-td').textContent='∞'}
+  fS.qt=Date.now();
+}
+function submitFast(){
+  clearInterval(fS.ti);const q=fS.qs[fS.i];
+  const raw=id('f-ai').value.trim().replace(/,/g,'').replace(/[$]/g,'').toUpperCase()
+    .replace(/BN?$/,'000000000').replace(/M$/,'000000').replace(/K$/,'000').replace(/T$/,'000000000000');
+  const uA=parseFloat(raw),cA=q.a,el=(Date.now()-fS.qt)/1000;
+  const ok=!isNaN(uA)&&Math.abs(uA-cA)<=Math.max(q.tol,Math.abs(cA)*.005);
+  if(ok)fS.c++;else fS.w++;
+  const inp=id('f-ai'),fb=id('f-fb');
+  inp.className='ai '+(ok?'ok':'bad');inp.disabled=true;
+  fb.className='fb '+(ok?'ok':'bad');
+  fb.innerHTML=(ok?`✓ Correct! (${el.toFixed(1)}s)`:`✗ Answer: <strong>${cA.toLocaleString()}</strong>`)+`<div class="sol">${q.h}</div>`;
+  fS.ans.push({ok,t:el});setTimeout(()=>{fS.i++;showFQ()},1800);
+}
+function skipFast(){clearInterval(fS.ti);fS.sk++;fS.w++;fS.ans.push({ok:false});fS.i++;showFQ()}
+function autoF(){fS.w++;const q=fS.qs[fS.i];id('f-fb').className='fb bad';id('f-fb').innerHTML=`⏰ Time! Answer: <strong>${q.a.toLocaleString()}</strong><div class="sol">${q.h}</div>`;id('f-ai').disabled=true;fS.ans.push({ok:false});setTimeout(()=>{fS.i++;showFQ()},1800)}
+function endFast(){
+  clearInterval(fS.ti);id('fast-sess').style.display='none';
+  const el=Math.round((Date.now()-fS.t0)/1000);addS('fast',{correct:fS.c,wrong:fS.w,skipped:fS.sk,total:fS.qs.length,time:el});
+  const pct=Math.round(fS.c/fS.qs.length*100),avg=fS.ans.filter(a=>a.t).reduce((s,a)=>s+a.t,0)/(fS.ans.filter(a=>a.t).length||1);
+  id('fast-res').style.display='block';id('fast-res').innerHTML=rcard('Fast Math',pct,fS.c,fS.w,avg.toFixed(1)+'s','Avg Time')+brow('resetFast()');toast(`${pct}% accuracy`);
+}
+function resetFast(){id('fast-res').style.display='none';id('fast-menu').style.display='block'}
+// ══ ESTIMATES ══
+function initEst(){
+  const cats=['All',...new Set(EQ.map(q=>q.cat))];
+  bc('ec-cat',cats,'All',v=>eC.cat=v);bc('ec-cnt',['4','6','8','10'],'8',v=>eC.cnt=parseInt(v));
+  id('e-ai').addEventListener('keydown',e=>{if(e.key==='Enter')submitEst()});
+}
+function startEst(){
+  let pool=[...EQ];if(eC.cat!=='All')pool=pool.filter(q=>q.cat===eC.cat);
+  pool=shuf(pool).slice(0,eC.cnt);if(!pool.length){toast('No questions match');return}
+  eS={qs:pool,i:0,c:0,w:0,ans:[],t0:Date.now()};
+  id('est-menu').style.display='none';id('est-res').style.display='none';id('est-sess').style.display='block';showEQ();
+}
+function showEQ(){
+  if(eS.i>=eS.qs.length){endEst();return}
+  const q=eS.qs[eS.i];
+  id('ep-f').style.width=(eS.i/eS.qs.length*100)+'%';id('ep-t').textContent=`Q${eS.i+1}/${eS.qs.length}`;
+  id('e-qn').textContent=`#${eS.i+1}`;id('e-ct').innerHTML=`<span class="tag tc">${q.cat}</span>`;
+  id('e-qt').innerHTML=q.q;id('e-hint').style.display='none';id('e-hint').innerHTML='';
+  const inp=id('e-ai');inp.value='';inp.className='ai';inp.disabled=false;inp.focus();
+  id('e-fb').className='fb';id('e-fb').innerHTML='';eS.qt=Date.now();
+}
+function showHint(){const q=eS.qs[eS.i];const h=id('e-hint');h.style.display='block';h.innerHTML=`<h4>Framework</h4>${q.fw}`}
+function pEst(s){s=s.trim().toUpperCase().replace(/[$,\s]/g,'');const m=s.match(/^([\d.]+)(K|M|B|T|BN|TR)?$/);if(!m)return NaN;const mx={K:1e3,M:1e6,B:1e9,T:1e12,BN:1e9,TR:1e12};return parseFloat(m[1])*(m[2]?mx[m[2]]:1)}
+function submitEst(){
+  const q=eS.qs[eS.i];const uV=pEst(id('e-ai').value);
+  if(isNaN(uV)||uV<=0){toast('Enter e.g. 200K, 50M, 1.5B');return}
+  const el=(Date.now()-eS.qt)/1000,lr=Math.abs(Math.log10(uV/q.a)),ok=lr<=q.lt;
+  if(ok)eS.c++;else eS.w++;
+  const inp=id('e-ai'),fb=id('e-fb');
+  inp.className='ai '+(ok?'ok':'bad');inp.disabled=true;
+  fb.className='fb '+(ok?'ok':'bad');
+  fb.innerHTML=`${ok?'✓ Within range!':lr<=q.lt*2?'~ Close but outside tolerance':'✗ Off by ~'+lr.toFixed(1)+'× orders of magnitude'}<div class="sol">Your: <strong>${fmtN(uV)}</strong> | Answer: <strong>${fmtN(q.a)}</strong> | Ratio: ${(uV/q.a).toFixed(2)}×<br>${q.h}</div>`;
+  eS.ans.push({ok,t:el});setTimeout(()=>{eS.i++;showEQ()},2500);
+}
+function endEst(){
+  id('est-sess').style.display='none';const el=Math.round((Date.now()-eS.t0)/1000);addS('est',{correct:eS.c,wrong:eS.w,skipped:0,total:eS.qs.length,time:el});
+  const pct=Math.round(eS.c/eS.qs.length*100);
+  id('est-res').style.display='block';id('est-res').innerHTML=rcard('Estimates',pct,eS.c,eS.w,fmtT(el),'Time Spent')+brow('resetEst()');toast(`${pct}% accuracy`);
+}
+function resetEst(){id('est-res').style.display='none';id('est-menu').style.display='block'}
+// ══ GMAT ══
+function initGmat(){
+  bc('gc-cat',['All','PS','DS'],'All',v=>gC.cat=v);bc('gc-dif',['All','2','3'],'All',v=>gC.dif=v);bc('gc-cnt',['5','8','10','15'],'10',v=>gC.cnt=parseInt(v));
+}
+function startGmat(){
+  let pool=[...GQ];if(gC.cat!=='All')pool=pool.filter(q=>q.tp===gC.cat);if(gC.dif!=='All')pool=pool.filter(q=>q.d===parseInt(gC.dif));
+  pool=shuf(pool).slice(0,gC.cnt);if(!pool.length){toast('No questions match');return}
+  gS={qs:pool,i:0,c:0,w:0,done:false,t0:Date.now(),ti:null};
+  id('gmat-menu').style.display='none';id('gmat-res').style.display='none';id('gmat-sess').style.display='block';showGQ();
+}
+function showGQ(){
+  if(gS.i>=gS.qs.length){endGmat();return}
+  const q=gS.qs[gS.i];gS.done=false;
+  id('gp-f').style.width=(gS.i/gS.qs.length*100)+'%';id('gp-t').textContent=`Q${gS.i+1}/${gS.qs.length}`;id('gp-s').textContent=`✓${gS.c} ✗${gS.w}`;
+  id('g-qn').textContent=`${q.tp} #${gS.i+1}`;id('g-ct').innerHTML=`<span class="tag tr">${q.cat}</span>`;
+  id('g-dm').innerHTML=[1,2,3].map(i=>`<div class="dmd${i<=q.d?' on':''}"></div>`).join('');
+  id('g-qt').innerHTML=q.q;id('g-fb').className='fb';id('g-fb').innerHTML='';
+  const L=['A','B','C','D','E'];
+  id('g-ch').innerHTML=q.ch.map((c,i)=>`<button class="ch" onclick="pickG(${i},this)"><span class="chl">${L[i]}</span><span>${c}</span></button>`).join('');
+  clearInterval(gS.ti);let rem=120;const fi=id('g-tf'),di=id('g-td');fi.style.width='100%';fi.className='tf';di.className='td';di.style.color='var(--cy)';di.textContent=rem;
+  gS.ti=setInterval(()=>{rem--;fi.style.width=(rem/120*100)+'%';di.textContent=rem;if(rem<=20){fi.className='tf w';di.style.color='var(--re)'}if(rem<=0){clearInterval(gS.ti);if(!gS.done)autoG()}},1000);
+}
+function pickG(idx,btn){
+  if(gS.done)return;gS.done=true;clearInterval(gS.ti);
+  const q=gS.qs[gS.i],ok=idx===q.a;if(ok)gS.c++;else gS.w++;
+  document.querySelectorAll('#g-ch .ch').forEach(b=>b.disabled=true);btn.classList.add(ok?'hit':'miss');
+  document.querySelectorAll('#g-ch .ch')[q.a].classList.add('hit');
+  const fb=id('g-fb');fb.className='fb '+(ok?'ok':'bad');fb.innerHTML=(ok?'✓ Correct!':'✗ Wrong.')+`<div class="sol">${q.ex}</div>`;
+  setTimeout(()=>{gS.i++;showGQ()},2000);
+}
+function autoG(){
+  gS.done=true;gS.w++;const q=gS.qs[gS.i];
+  document.querySelectorAll('#g-ch .ch').forEach((b,i)=>{b.disabled=true;if(i===q.a)b.classList.add('hit')});
+  id('g-fb').className='fb bad';id('g-fb').innerHTML=`⏰ Time!<div class="sol">${q.ex}</div>`;setTimeout(()=>{gS.i++;showGQ()},2000);
+}
+function endGmat(){
+  clearInterval(gS.ti);id('gmat-sess').style.display='none';
+  const el=Math.round((Date.now()-gS.t0)/1000);addS('gmat',{correct:gS.c,wrong:gS.w,skipped:0,total:gS.qs.length,time:el});
+  const pct=Math.round(gS.c/gS.qs.length*100),eq=Math.round(400+pct/100*400);
+  id('gmat-res').style.display='block';id('gmat-res').innerHTML=rcard('GMAT Quant',pct,gS.c,gS.w,'~'+eq,'Est. GMAT')+brow('resetGmat()');toast(`${pct}% — est. ${eq}`);
+}
+function resetGmat(){id('gmat-res').style.display='none';id('gmat-menu').style.display='block'}
+// ══ DATA INTERPRETATION ══
+function initDI(){bc('dc-cat',['All','Bar Chart','Line Graph','Pie Chart','Data Table','Combo Chart'],'All',v=>dC.cat=v);bc('dc-cnt',['4','6','8','10'],'8',v=>dC.cnt=parseInt(v));}
+function startDI(){
+  let pool=[...DQ];if(dC.cat!=='All')pool=pool.filter(q=>q.cat===dC.cat);
+  pool=shuf(pool).slice(0,dC.cnt);if(!pool.length){toast('No questions match');return}
+  dS={qs:pool,i:0,c:0,w:0,done:false,t0:Date.now(),ti:null};
+  id('di-menu').style.display='none';id('di-res').style.display='none';id('di-sess').style.display='block';showDQ();
+}
+function showDQ(){
+  if(dS.i>=dS.qs.length){endDI();return}
+  const q=dS.qs[dS.i];dS.done=false;
+  id('dp-f').style.width=(dS.i/dS.qs.length*100)+'%';id('dp-t').textContent=`Q${dS.i+1}/${dS.qs.length}`;id('dp-s').textContent=`✓${dS.c} ✗${dS.w}`;
+  id('d-qn').textContent=`${q.cat} #${dS.i+1}`;id('d-ct').innerHTML=`<span class="tag tp">${q.cat}</span>`;
+  id('d-dm').innerHTML=[1,2,3].map(i=>`<div class="dmd${i<=q.d?' on':''}"></div>`).join('');
+  id('d-chart').innerHTML=q.cf();id('d-qt').innerHTML=q.q;id('d-fb').className='fb';id('d-fb').innerHTML='';
+  const L=['A','B','C','D','E'];
+  id('d-ch').innerHTML=q.ch.map((c,i)=>`<button class="ch" onclick="pickD(${i},this)"><span class="chl">${L[i]}</span><span>${c}</span></button>`).join('');
+  clearInterval(dS.ti);let rem=90;const fi=id('d-tf'),di=id('d-td');fi.style.width='100%';fi.className='tf';di.className='td';di.style.color='var(--pu)';di.textContent=rem;
+  dS.ti=setInterval(()=>{rem--;fi.style.width=(rem/90*100)+'%';di.textContent=rem;if(rem<=20){fi.className='tf w';di.style.color='var(--re)'}if(rem<=0){clearInterval(dS.ti);if(!dS.done)autoD()}},1000);
+}
+function pickD(idx,btn){
+  if(dS.done)return;dS.done=true;clearInterval(dS.ti);
+  const q=dS.qs[dS.i],ok=idx===q.a;if(ok)dS.c++;else dS.w++;
+  document.querySelectorAll('#d-ch .ch').forEach(b=>b.disabled=true);btn.classList.add(ok?'hit':'miss');
+  document.querySelectorAll('#d-ch .ch')[q.a].classList.add('hit');
+  const fb=id('d-fb');fb.className='fb '+(ok?'ok':'bad');fb.innerHTML=(ok?'✓ Correct!':'✗ Wrong.')+`<div class="sol">${q.ex}</div>`;
+  setTimeout(()=>{dS.i++;showDQ()},2500);
+}
+function autoD(){
+  dS.done=true;dS.w++;const q=dS.qs[dS.i];
+  document.querySelectorAll('#d-ch .ch').forEach((b,i)=>{b.disabled=true;if(i===q.a)b.classList.add('hit')});
+  id('d-fb').className='fb bad';id('d-fb').innerHTML=`⏰ Time!<div class="sol">${q.ex}</div>`;setTimeout(()=>{dS.i++;showDQ()},2500);
+}
+function endDI(){
+  clearInterval(dS.ti);id('di-sess').style.display='none';
+  const el=Math.round((Date.now()-dS.t0)/1000);addS('di',{correct:dS.c,wrong:dS.w,skipped:0,total:dS.qs.length,time:el});
+  const pct=Math.round(dS.c/dS.qs.length*100);
+  id('di-res').style.display='block';id('di-res').innerHTML=rcard('Data Interpretation',pct,dS.c,dS.w,fmtT(el),'Time Spent')+brow('resetDI()');toast(`${pct}% accuracy`);
+}
+function resetDI(){id('di-res').style.display='none';id('di-menu').style.display='block'}
+
+// ══════════════════════════════════════════════════
+// CASE STRUCTURING
+// ══════════════════════════════════════════════════
+function initCase(){
+  const sectors=['All',...new Set(CASES.map(c=>c.sector))];
+  const fns=['All',...new Set(CASES.map(c=>c.fn))];
+  const diffs=['All','Easy','Medium','Hard'];
+  // Build sector grid
+  const sg=id('cs-sec');
+  sg.className='sgridc';
+  sg.innerHTML=sectors.map(s=>`<button class="sb${s==='All'?' active':''}" data-v="${s}" onclick="filterCases('sec',this)">${s}</button>`).join('');
+  // Build fn and diff controls
+  const fnEl=id('cs-fn');
+  fnEl.innerHTML=fns.map(f=>`<button class="cb${f==='All'?' active':''}" data-v="${f}" onclick="filterCases('fn',this)">${f}</button>`).join('');
+  const dfEl=id('cs-dif');
+  dfEl.innerHTML=diffs.map(d=>`<button class="cb${d==='All'?' active':''}" data-v="${d}" onclick="filterCases('dif',this)">${d}</button>`).join('');
+  renderCaseGrid();
+}
+
+function filterCases(type, btn){
+  const grp = type==='sec'?id('cs-sec'):(type==='fn'?id('cs-fn'):id('cs-dif'));
+  grp.querySelectorAll(type==='sec'?'.sb':'.cb').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const keyMap={sec:'sector',fn:'fn',dif:'dif'};
+  cFilter[keyMap[type]||type]=btn.dataset.v;
+  renderCaseGrid();
+}
+
+function renderCaseGrid(){
+  let pool=[...CASES];
+  if(cFilter.sector!=='All') pool=pool.filter(c=>c.sector===cFilter.sector);
+  if(cFilter.fn!=='All') pool=pool.filter(c=>c.fn===cFilter.fn);
+  if(cFilter.dif!=='All') pool=pool.filter(c=>c.diff===cFilter.dif);
+  const diffColor={Easy:'var(--gr)',Medium:'var(--go)',Hard:'var(--re)'};
+  const fnColor={'Profitability':'var(--go)','Growth Strategy':'var(--cy)','M&A / Due Diligence':'var(--pu)','Operations':'var(--or)','Strategy':'var(--te)'};
+  id('case-grid').innerHTML = pool.length===0
+    ? '<div style="padding:2rem;text-align:center;color:var(--mu2);font-family:IBM Plex Mono,monospace;font-size:.75rem">No cases match filters</div>'
+    : pool.map((c,i)=>`<div class="mc" style="margin-bottom:.7rem;cursor:pointer" onclick="openCase(${CASES.indexOf(c)})">
+        <div class="mc-acc" style="background:${diffColor[c.diff]||'var(--go)'}"></div>
+        <div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem">
+          <span class="tag tt" style="background:rgba(45,212,191,.07);border-color:rgba(45,212,191,.2)">${c.sector}</span>
+          <span class="tag" style="background:rgba(240,180,41,.07);border-color:rgba(240,180,41,.15);color:var(--go)">${c.fn}</span>
+          <span class="tag" style="color:${diffColor[c.diff]};background:rgba(0,0,0,.15);border-color:transparent;margin-left:auto">${c.diff}</span>
+        </div>
+        <div class="mc-nm">${c.title}</div>
+        <div class="mc-ds" style="margin-top:.3rem">${c.prompt.replace(/<[^>]+>/g,'').substring(0,100)}…</div>
+        <div class="mc-st">${c.source||'Case Library'} · ${c.buckets?.length||4} MECE buckets</div>
+      </div>`).join('');
+}
+
+function openCase(idx){
+  caseActive=CASES[idx];
+  id('case-menu').style.display='none';
+  renderCaseView();
+}
+
+function renderCaseView(){
+  const c=caseActive;
+  const diffColor={Easy:'var(--gr)',Medium:'var(--go)',Hard:'var(--re)'};
+  const buckets=c.buckets||['Bucket 1','Bucket 2','Bucket 3','Bucket 4'];
+  
+  let html=`<div style="display:flex;align-items:center;gap:.7rem;margin-bottom:1.2rem;flex-wrap:wrap">
+    <button class="btn bgh" style="font-size:.65rem;padding:.35rem .8rem" onclick="backToGrid()">← All Cases</button>
+    <span class="tag tt">${c.sector}</span>
+    <span class="tag tg">${c.fn}</span>
+    <span class="tag" style="color:${diffColor[c.diff]};background:rgba(0,0,0,.2);border-color:transparent">${c.diff}</span>
+  </div>`;
+
+  html+=`<div class="qc">
+    <div class="qm"><span style="font-family:Syne,sans-serif;font-size:.95rem;font-weight:700">${c.title}</span></div>
+    <div class="case-p" id="cp-prompt">${c.prompt}</div>`;
+  if(c.context) html+=`<div class="fwb" style="margin-bottom:.8rem"><h4>Context</h4>${c.context}</div>`;
+  html+=`</div>`;
+
+  // STEP 1 — Pick a framework
+  html+=`<div class="qc" id="step-fw">
+    <div class="qm"><span style="color:var(--te);font-family:IBM Plex Mono,monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em">Step 1 — Choose Your Framework</span></div>
+    <p style="font-size:.82rem;color:var(--mu2);margin-bottom:.8rem">Which framework best structures this case? You can combine elements.</p>
+    <div class="fwpick" id="fw-opts">`;
+  const fws=c.frameworks||['P&L Tree','Revenue-Cost Split','Internal vs External','Short vs Long term'];
+  fws.forEach((fw,i)=>{
+    html+=`<div class="fwo" data-i="${i}" onclick="selFW(this)">
+      <div class="fwon">${fw}</div>
+    </div>`;
+  });
+  html+=`</div>
+    <button class="btn bt" onclick="goStep2()" style="margin-top:.3rem">Next: Build Structure →</button>
+  </div>`;
+
+  // STEP 2 — MECE bucket builder (hidden initially)
+  html+=`<div class="qc" id="step-build" style="display:none">
+    <div class="qm"><span style="color:var(--te);font-family:IBM Plex Mono,monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em">Step 2 — Build Your MECE Structure</span></div>
+    <p style="font-size:.82rem;color:var(--mu2);margin-bottom:.7rem">Drag issues into the right buckets. All issues should be assigned — no overlaps, no gaps.</p>
+    <div style="font-family:IBM Plex Mono,monospace;font-size:.62rem;color:var(--mu2);margin-bottom:.5rem">ISSUE POOL — click to assign to a bucket:</div>
+    <div class="ipool" id="issue-pool">`;
+  c.issues.forEach((iss,i)=>{
+    html+=`<div class="ic" data-i="${i}" onclick="pickIssue(this)">${iss}</div>`;
+  });
+  html+=`</div>
+    <div style="font-family:IBM Plex Mono,monospace;font-size:.62rem;color:var(--mu2);margin-bottom:.5rem">SELECTED ISSUE: <span id="sel-issue" style="color:var(--go)">— click an issue above first —</span></div>
+    <div class="bb" id="bucket-area">`;
+  buckets.forEach((b,bi)=>{
+    html+=`<div class="bkt"><div class="bktt">${b}</div><div class="bkt-items" id="bkt-${bi}"></div><button class="btn" style="font-size:.6rem;padding:.22rem .5rem;margin-top:.4rem;background:rgba(45,212,191,.08);color:var(--te);border:1px solid rgba(45,212,191,.2)" onclick="addToBucket(${bi})">+ Add here</button></div>`;
+  });
+  html+=`</div>
+    <div class="mc2" id="mece-badges">
+      <div class="mb mbn" id="badge-me">◉ Mutually Exclusive</div>
+      <div class="mb mbn" id="badge-ce">◉ Collectively Exhaustive</div>
+    </div>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+      <button class="btn bt" onclick="checkMECE()">Check MECE →</button>
+      <button class="btn bgh" style="font-size:.65rem" onclick="showAnswer()">Skip — Show Answer</button>
+    </div>
+  </div>`;
+
+  // STEP 3 — Reflection + model answer (hidden)
+  html+=`<div class="qc" id="step-answer" style="display:none">
+    <div class="qm"><span style="color:var(--te);font-family:IBM Plex Mono,monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em">Step 3 — Model Answer & Self-Assessment</span></div>
+    <div class="fwb" style="margin-bottom:.8rem"><h4>Key Question to Answer</h4>${c.kq||c.keyQuestion||""}</div>
+    <div class="ma" id="model-ans"></div>
+    <div class="rub" id="rub-box"></div>
+    <div style="margin-top:1rem">
+      <p style="font-size:.82rem;color:var(--mu2);margin-bottom:.7rem">Rate your own structure:</p>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap" id="self-rate">
+        <button class="btn" style="background:rgba(74,222,128,.12);color:var(--gr);border:1px solid rgba(74,222,128,.25)" onclick="rateCase('strong')">✓ Strong Structure</button>
+        <button class="btn" style="background:rgba(240,180,41,.1);color:var(--go);border:1px solid rgba(240,180,41,.2)" onclick="rateCase('partial')">~ Partially MECE</button>
+        <button class="btn" style="background:rgba(248,113,113,.08);color:var(--re);border:1px solid rgba(248,113,113,.2)" onclick="rateCase('weak')">✗ Needs Work</button>
+      </div>
+    </div>
+    ${c.tips?`<div class="fwb" style="margin-top:.9rem;border-color:rgba(240,180,41,.15)"><h4>Interviewer Tip</h4>${c.tips}</div>`:''}
+  </div>`;
+
+  id('case-active').innerHTML=html;
+  id('case-active').style.display='block';
+  
+  // Init selected issue state
+  window._selIssue=null;
+  window._bucketItems=buckets.map(()=>[]);
+}
+
+function backToGrid(){
+  id('case-active').style.display='none';
+  id('case-menu').style.display='block';
+  caseActive=null;
+}
+
+function selFW(el){
+  id('fw-opts').querySelectorAll('.fwo').forEach(e=>e.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function goStep2(){
+  id('step-fw').style.display='none';
+  id('step-build').style.display='block';
+}
+
+function pickIssue(el){
+  if(el.classList.contains('used')) return;
+  id('issue-pool').querySelectorAll('.ic').forEach(e=>e.style.outline='');
+  el.style.outline='2px solid var(--go)';
+  window._selIssue={el, text:el.textContent, idx:el.dataset.i};
+  id('sel-issue').textContent=el.textContent;
+}
+
+function addToBucket(bi){
+  if(!window._selIssue){toast('Click an issue first');return}
+  const {el,text,idx}=window._selIssue;
+  el.classList.add('used');el.style.outline='';
+  window._bucketItems[bi].push(text);
+  const bktEl=id('bkt-'+bi);
+  const item=document.createElement('div');
+  item.className='bi';
+  item.innerHTML=`<span>${text}</span><span class="rm" onclick="removeFromBucket(${bi},'${text.replace(/'/g,"\\'")}',this)">×</span>`;
+  bktEl.appendChild(item);
+  window._selIssue=null;
+  id('sel-issue').textContent='— click an issue above —';
+  updateMECEBadges();
+}
+
+function removeFromBucket(bi,text,rmEl){
+  window._bucketItems[bi]=window._bucketItems[bi].filter(t=>t!==text);
+  rmEl.parentElement.remove();
+  // Re-enable in pool
+  id('issue-pool').querySelectorAll('.ic').forEach(el=>{
+    if(el.textContent===text) el.classList.remove('used');
+  });
+  updateMECEBadges();
+}
+
+function updateMECEBadges(){
+  const allAssigned=window._bucketItems.flat();
+  const total=caseActive.issues.length;
+  const assigned=allAssigned.length;
+  const unique=new Set(allAssigned).size;
+  const me=unique===assigned; // no duplicates
+  const ce=assigned>=Math.max(4, total*0.7); // at least 70% assigned
+  id('badge-me').className='mb '+(me?'mbp':'mbf');
+  id('badge-me').textContent=(me?'✓':'✗')+' Mutually Exclusive';
+  id('badge-ce').className='mb '+(ce?'mbp':assigned>0?'mbn':'mbf');
+  id('badge-ce').textContent=(ce?'✓':assigned>0?`~`:' ✗')+` Collectively Exhaustive (${assigned}/${total})`;
+}
+
+function checkMECE(){
+  updateMECEBadges();
+  showAnswer();
+}
+
+function showAnswer(){
+  id('step-build').style.display='none';
+  id('step-answer').style.display='block';
+  const c=caseActive;
+  // Render model answer
+  let maHtml='<div class="mah">Model Answer — MECE Structure</div>';
+  const ma=c.model||c.modelAnswer;if(ma){
+    Object.entries(ma).forEach(([bucket,items])=>{
+      maHtml+=`<div class="mab"><strong>${bucket}</strong></div>`;
+      items.forEach(it=>{maHtml+=`<div class="mab" style="padding-left:1.8rem;font-size:.76rem">→ ${it}</div>`});
+    });
+  }
+  id('model-ans').innerHTML=maHtml;
+  // Render rubric
+  let rubHtml='<h4>Self-Assessment Rubric</h4>';
+  if(c.rubric){
+    c.rubric.forEach(r=>{rubHtml+=`<div class="rr"><span>✦</span><span>${r}</span></div>`});
+  }
+  id('rub-box').innerHTML=rubHtml;
+}
+
+function rateCase(rating){
+  const map={strong:{c:1,w:0},partial:{c:0,w:0,s:1},weak:{c:0,w:1}};
+  const r=map[rating];
+  addS('case',{correct:r.c||0,wrong:r.w||0,skipped:r.s||0,total:1,time:0});
+  id('self-rate').innerHTML=`<div style="font-family:IBM Plex Mono,monospace;font-size:.75rem;color:var(--mu2);padding:.5rem">Recorded: <strong style="color:var(--te)">${rating==='strong'?'Strong ✓':rating==='partial'?'Partial ~':'Needs Work ✗'}</strong></div>
+    <button class="btn bt" onclick="backToGrid()">Next Case →</button>`;
+  toast('Case assessed!');
+}
+
+// ══════════════════════════════════════════════════
+// PROGRESS
+// ══════════════════════════════════════════════════
+function rprog(){
+  const t=P.totals;
+  const mods=[
+    {id:'fast',lbl:'⚡ Fast Math',c:'var(--go)'},
+    {id:'est',lbl:'◎ Estimates',c:'var(--cy)'},
+    {id:'gmat',lbl:'△ GMAT Quant',c:'var(--re)'},
+    {id:'di',lbl:'▦ Data Interp.',c:'var(--pu)'},
+    {id:'case',lbl:'⬡ Case Structure',c:'var(--te)'}
+  ];
+  let html='<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;margin-bottom:1.5rem">';
+  mods.forEach(m=>{
+    const mt=t[m.id]||{c:0,w:0,s:0,t:0};
+    const tot=mt.c+mt.w+mt.s;
+    const acc=mt.c+mt.w>0?Math.round(mt.c/(mt.c+mt.w)*100):0;
+    const qs=m.id==='case'?`${tot} cases`:`${tot} total`;
+    html+=`<div class="sc" style="border-top:2px solid ${m.c}">
+      <div class="sv" style="color:${m.c};font-size:1.5rem">${tot>0?acc+'%':'—'}</div>
+      <div class="sl">${m.lbl}</div>
+      <div style="font-family:IBM Plex Mono,monospace;font-size:.6rem;color:var(--mu);margin-top:.38rem">${mt.c}✓ ${mt.w}✗ · ${qs}</div>
+    </div>`;
+  });
+  html+='</div>';
+  if(!P.sessions.length){
+    html+='<div style="text-align:center;padding:3rem;color:var(--mu);font-family:IBM Plex Mono,monospace;font-size:.73rem;letter-spacing:.08em">NO SESSIONS YET — COMPLETE A PRACTICE SESSION</div>';
+  } else {
+    html+=`<div style="font-family:IBM Plex Mono,monospace;font-size:.6rem;color:var(--mu2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.65rem">Recent Sessions (last 30)</div>
+    <div class="hwrap"><table class="ht"><thead><tr>
+      <th>Date/Time</th><th>Module</th><th>Score</th><th>Accuracy</th><th>Time</th>
+    </tr></thead><tbody>`;
+    P.sessions.slice(0,30).forEach(s=>{
+      const d=new Date(s.date);
+      const ds=d.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:false});
+      const tot=(s.correct||0)+(s.wrong||0)+(s.skipped||0);
+      const acc=(s.correct||0)+(s.wrong||0)>0?Math.round((s.correct||0)/((s.correct||0)+(s.wrong||0))*100):0;
+      const ml={fast:'⚡ Fast',est:'◎ Est.',gmat:'△ GMAT',di:'▦ Data',case:'⬡ Case'}[s.tp||s.type]||'?';
+      const pc=acc>=80?'pg':acc>=60?'py':'pr2';
+      html+=`<tr>
+        <td style="font-family:IBM Plex Mono,monospace;font-size:.66rem;color:var(--mu)">${ds}</td>
+        <td style="font-family:IBM Plex Mono,monospace;font-size:.72rem">${ml}</td>
+        <td><strong>${s.correct||0}</strong>/${tot||1}</td>
+        <td><span class="pill ${pc}">${acc}%</span></td>
+        <td style="font-family:IBM Plex Mono,monospace;font-size:.68rem;color:var(--mu2)">${fmtT(s.time)}</td>
+      </tr>`;
+    });
+    html+=`</tbody></table></div>
+    <div style="margin-top:1.1rem">
+      <button class="btn bred" style="font-size:.63rem" onclick="clrHist()">Clear History</button>
+    </div>`;
+  }
+  id('prog-content').innerHTML=html;
+}
+
+function clrHist(){
+  if(!confirm('Clear all history?'))return;
+  P={sessions:[],totals:{fast:{c:0,w:0,s:0,t:0},est:{c:0,w:0,s:0,t:0},gmat:{c:0,w:0,s:0,t:0},di:{c:0,w:0,s:0,t:0},case:{c:0,w:0,s:0,t:0}}};
+  sp();rprog();toast('History cleared');
+}
+
+// ══════════════════════════════════════════════════
+// SHARED UTILITIES
+// ══════════════════════════════════════════════════
+function shuf(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function fmtN(n){if(n>=1e12)return(n/1e12).toFixed(1)+'T';if(n>=1e9)return(n/1e9).toFixed(1)+'B';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return n.toLocaleString()}
+function fmtT(s){if(!s)return'—';const m=Math.floor(s/60),sc=s%60;return m>0?`${m}m ${sc}s`:`${sc}s`}
+function toast(msg){const t=id('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2500)}
+function rcard(lbl,pct,c,w,s3,l3){
+  const g=pct>=90?'Excellent':pct>=75?'Strong':pct>=60?'Good':'Needs Work';
+  return `<div class="rc"><div class="rl">${lbl} — ${g}</div><div class="rsc">${pct}%</div>
+    <div style="font-family:IBM Plex Mono,monospace;font-size:.66rem;color:var(--mu);margin-top:.28rem">${c} correct · ${w} wrong</div>
+    <div class="rb">
+      <div><div class="rbv" style="color:var(--gr)">${c}</div><div class="rbl">Correct</div></div>
+      <div><div class="rbv" style="color:var(--re)">${w}</div><div class="rbl">Wrong</div></div>
+      <div><div class="rbv" style="color:var(--cy)">${s3}</div><div class="rbl">${l3}</div></div>
+    </div></div>`;
+}
+function brow(fn){return`<div style="display:flex;gap:.6rem;flex-wrap:wrap"><button class="btn bg" onclick="${fn}">Again →</button><button class="btn bgh" onclick="gv('dash')">Hub</button></div>`}
+
+// ── INIT ──
+document.addEventListener('DOMContentLoaded',()=>{
+  initFast();initEst();initGmat();initDI();rdash();
+});
+</script>
+</body>
+</html>

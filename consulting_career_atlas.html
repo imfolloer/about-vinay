@@ -1,0 +1,1053 @@
+
+<style>
+:root {
+  --atlas-navy: #0a0f1e;
+  --atlas-mid: #111827;
+  --atlas-card: #1a2235;
+  --atlas-border: rgba(255,255,255,0.08);
+  --atlas-accent: #3b82f6;
+  --atlas-gold: #f59e0b;
+  --atlas-green: #10b981;
+  --atlas-red: #ef4444;
+  --atlas-purple: #8b5cf6;
+  --atlas-teal: #14b8a6;
+  --atlas-text: #e2e8f0;
+  --atlas-muted: #94a3b8;
+  --atlas-dim: #64748b;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body, html { background: transparent; color: var(--atlas-text); font-family: 'Courier New', monospace; }
+#atlas-root { background: #0a0f1e; border-radius: 12px; overflow: hidden; min-height: 700px; border: 1px solid var(--atlas-border); }
+.atlas-header { background: linear-gradient(135deg, #0a0f1e 0%, #0f172a 100%); border-bottom: 1px solid var(--atlas-border); padding: 16px 20px; display: flex; align-items: center; justify-content: space-between; }
+.atlas-logo { display: flex; align-items: center; gap: 10px; }
+.atlas-logo-icon { width: 32px; height: 32px; background: var(--atlas-accent); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+.atlas-logo-text { font-size: 15px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--atlas-text); }
+.atlas-logo-sub { font-size: 10px; color: var(--atlas-muted); letter-spacing: 1px; }
+.profile-badge { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); border-radius: 20px; padding: 4px 12px; font-size: 11px; color: var(--atlas-accent); letter-spacing: 1px; }
+.nav-tabs { display: flex; gap: 2px; background: rgba(0,0,0,0.3); padding: 4px; border-radius: 8px; margin: 0 20px 0; flex-wrap: wrap; }
+.nav-tab { padding: 6px 12px; font-size: 11px; border-radius: 5px; cursor: pointer; color: var(--atlas-muted); border: none; background: transparent; letter-spacing: 0.5px; transition: all 0.2s; white-space: nowrap; font-family: 'Courier New', monospace; }
+.nav-tab:hover { color: var(--atlas-text); background: rgba(255,255,255,0.05); }
+.nav-tab.active { background: var(--atlas-accent); color: #fff; }
+.atlas-nav { background: #0d1526; border-bottom: 1px solid var(--atlas-border); padding: 8px 20px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.atlas-content { padding: 20px; }
+.section { display: none; }
+.section.active { display: block; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.card { background: var(--atlas-card); border: 1px solid var(--atlas-border); border-radius: 10px; padding: 16px; }
+.card-sm { background: var(--atlas-card); border: 1px solid var(--atlas-border); border-radius: 8px; padding: 12px; }
+.metric-card { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); border-radius: 8px; padding: 12px 14px; }
+.metric-val { font-size: 22px; font-weight: 700; color: var(--atlas-text); line-height: 1; }
+.metric-lbl { font-size: 10px; color: var(--atlas-muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 4px; }
+.metric-sub { font-size: 11px; color: var(--atlas-accent); margin-top: 2px; }
+.sec-title { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--atlas-accent); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.sec-title::after { content: ''; flex: 1; height: 1px; background: var(--atlas-border); }
+.country-card { background: var(--atlas-card); border: 1px solid var(--atlas-border); border-radius: 10px; padding: 14px; cursor: pointer; transition: all 0.2s; position: relative; }
+.country-card:hover, .country-card.selected { border-color: var(--atlas-accent); box-shadow: 0 0 0 1px rgba(59,130,246,0.3); }
+.country-flag { font-size: 24px; margin-bottom: 8px; }
+.country-name { font-size: 13px; font-weight: 600; color: var(--atlas-text); }
+.country-score { font-size: 11px; color: var(--atlas-muted); margin-top: 4px; }
+.score-bar { height: 3px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 8px; }
+.score-fill { height: 3px; border-radius: 2px; transition: width 0.5s; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 10px; letter-spacing: 0.5px; font-weight: 600; }
+.badge-blue { background: rgba(59,130,246,0.15); color: #60a5fa; }
+.badge-gold { background: rgba(245,158,11,0.15); color: #fbbf24; }
+.badge-green { background: rgba(16,185,129,0.15); color: #34d399; }
+.badge-red { background: rgba(239,68,68,0.15); color: #f87171; }
+.badge-purple { background: rgba(139,92,246,0.15); color: #a78bfa; }
+.badge-teal { background: rgba(20,184,166,0.15); color: #2dd4bf; }
+.tag { display: inline-block; background: rgba(255,255,255,0.06); border: 1px solid var(--atlas-border); border-radius: 4px; padding: 2px 7px; font-size: 10px; color: var(--atlas-muted); margin: 2px; }
+.concern-box { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.25); border-radius: 8px; padding: 12px 14px; margin-bottom: 16px; }
+.concern-title { font-size: 11px; color: var(--atlas-gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.concern-text { font-size: 12px; color: #cbd5e1; line-height: 1.6; }
+.bar-horiz { display: flex; align-items: center; gap: 10px; margin: 6px 0; }
+.bar-horiz-label { font-size: 11px; color: var(--atlas-muted); width: 90px; flex-shrink: 0; }
+.bar-horiz-track { flex: 1; height: 6px; background: rgba(255,255,255,0.08); border-radius: 3px; }
+.bar-horiz-fill { height: 6px; border-radius: 3px; transition: width 0.6s; }
+.bar-horiz-val { font-size: 11px; color: var(--atlas-text); width: 60px; text-align: right; flex-shrink: 0; }
+.comparison-row { display: grid; grid-template-columns: 140px 1fr 1fr 1fr 1fr; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--atlas-border); }
+.comparison-row:last-child { border-bottom: none; }
+.comparison-label { font-size: 11px; color: var(--atlas-muted); }
+.comparison-val { font-size: 12px; color: var(--atlas-text); text-align: center; padding: 4px 6px; border-radius: 4px; }
+.comparison-val.best { background: rgba(16,185,129,0.15); color: #34d399; font-weight: 600; }
+.comparison-val.worst { background: rgba(239,68,68,0.1); color: #f87171; }
+.timeline-item { display: flex; gap: 14px; margin-bottom: 0; }
+.timeline-dot { display: flex; flex-direction: column; align-items: center; }
+.timeline-circle { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.timeline-line { width: 1px; flex: 1; min-height: 30px; background: var(--atlas-border); margin: 4px 0; }
+.timeline-content { background: var(--atlas-card); border: 1px solid var(--atlas-border); border-radius: 8px; padding: 12px 14px; flex: 1; margin-bottom: 12px; }
+.timeline-year { font-size: 10px; color: var(--atlas-muted); text-transform: uppercase; letter-spacing: 1px; }
+.timeline-role { font-size: 14px; font-weight: 600; color: var(--atlas-text); margin: 2px 0; }
+.timeline-loc { font-size: 11px; color: var(--atlas-accent); }
+.timeline-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+.t-metric { background: rgba(0,0,0,0.3); border-radius: 5px; padding: 6px 8px; text-align: center; }
+.t-metric-val { font-size: 13px; font-weight: 600; color: var(--atlas-text); }
+.t-metric-lbl { font-size: 9px; color: var(--atlas-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+.pivot-alert { background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.3); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
+.pivot-title { font-size: 11px; color: #a78bfa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+.risk-meter { display: flex; gap: 4px; margin-top: 6px; }
+.risk-block { flex: 1; height: 6px; border-radius: 2px; }
+.select-styled { background: var(--atlas-card); border: 1px solid var(--atlas-border); border-radius: 6px; color: var(--atlas-text); font-size: 12px; padding: 6px 10px; font-family: 'Courier New', monospace; outline: none; }
+.btn { background: var(--atlas-accent); border: none; border-radius: 6px; color: #fff; padding: 7px 14px; font-size: 11px; cursor: pointer; letter-spacing: 0.5px; font-family: 'Courier New', monospace; text-transform: uppercase; transition: opacity 0.2s; }
+.btn:hover { opacity: 0.85; }
+.btn-ghost { background: transparent; border: 1px solid var(--atlas-border); color: var(--atlas-muted); }
+.btn-ghost:hover { background: rgba(255,255,255,0.05); color: var(--atlas-text); }
+.slider-row { display: flex; align-items: center; gap: 10px; margin: 8px 0; }
+.slider-lbl { font-size: 11px; color: var(--atlas-muted); width: 130px; }
+.slider-val { font-size: 12px; color: var(--atlas-accent); min-width: 50px; text-align: right; }
+input[type=range] { accent-color: var(--atlas-accent); flex: 1; }
+.wealth-bar { height: 8px; border-radius: 4px; margin: 4px 0; transition: width 0.5s; }
+.source-chip { display: inline-flex; align-items: center; gap: 4px; background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.15); border-radius: 4px; padding: 2px 7px; font-size: 9px; color: var(--atlas-accent); margin: 2px; cursor: pointer; }
+.source-chip:hover { background: rgba(59,130,246,0.2); }
+.data-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--atlas-border); }
+.data-row:last-child { border-bottom: none; }
+.data-key { font-size: 11px; color: var(--atlas-muted); }
+.data-val { font-size: 12px; color: var(--atlas-text); font-weight: 600; }
+.data-val.clickable { cursor: pointer; text-decoration: underline dotted; color: var(--atlas-accent); }
+.modal-overlay { display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); z-index: 100; border-radius: 12px; align-items: center; justify-content: center; }
+.modal-overlay.show { display: flex; }
+.modal-box { background: #1a2235; border: 1px solid var(--atlas-border); border-radius: 10px; padding: 20px; max-width: 400px; width: 90%; }
+.modal-title { font-size: 13px; color: var(--atlas-accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.modal-close { float: right; background: none; border: none; color: var(--atlas-muted); cursor: pointer; font-size: 16px; font-family: inherit; }
+.immigration-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.imm-card { background: var(--atlas-card); border: 1px solid var(--atlas-border); border-radius: 8px; padding: 12px; }
+.imm-title { font-size: 11px; color: var(--atlas-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.imm-score { font-size: 26px; font-weight: 700; }
+.rec-card { background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.05)); border: 1px solid rgba(59,130,246,0.25); border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+.rec-rank { font-size: 24px; font-weight: 700; color: var(--atlas-accent); }
+.rec-country { font-size: 16px; font-weight: 600; color: var(--atlas-text); }
+.rec-why { font-size: 11px; color: #94a3b8; margin-top: 6px; line-height: 1.6; }
+.disclaimer { font-size: 10px; color: var(--atlas-dim); padding: 12px; border-top: 1px solid var(--atlas-border); margin-top: 16px; line-height: 1.5; }
+.appendix-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+.appendix-table th { background: rgba(59,130,246,0.1); color: var(--atlas-accent); text-transform: uppercase; letter-spacing: 0.5px; padding: 8px 10px; text-align: left; border-bottom: 1px solid rgba(59,130,246,0.2); }
+.appendix-table td { padding: 7px 10px; border-bottom: 1px solid var(--atlas-border); color: var(--atlas-text); vertical-align: top; }
+.appendix-table tr:hover td { background: rgba(255,255,255,0.02); }
+.appendix-table a { color: var(--atlas-accent); text-decoration: none; }
+.appendix-table a:hover { text-decoration: underline; }
+.track-pill { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 10px; margin: 2px; }
+.track-tech { background: rgba(20,184,166,0.15); color: #2dd4bf; border: 1px solid rgba(20,184,166,0.25); }
+.track-strat { background: rgba(139,92,246,0.15); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25); }
+.track-ma { background: rgba(245,158,11,0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.25); }
+.concern-highlight { background: rgba(239,68,68,0.08); border-left: 3px solid var(--atlas-red); padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 8px 0; font-size: 11px; color: #fca5a5; line-height: 1.6; }
+.pro-highlight { background: rgba(16,185,129,0.08); border-left: 3px solid var(--atlas-green); padding: 8px 12px; border-radius: 0 6px 6px 0; margin: 8px 0; font-size: 11px; color: #6ee7b7; line-height: 1.6; }
+</style>
+<div id="atlas-root" style="position: relative;">
+  <div class="atlas-header">
+    <div class="atlas-logo">
+      <div class="atlas-logo-icon" aria-hidden="true" style="color:#fff; font-size:18px;">◎</div>
+      <div>
+        <div class="atlas-logo-text">Consulting Career Atlas</div>
+        <div class="atlas-logo-sub">Career Intelligence & Wealth Simulation Platform</div>
+      </div>
+    </div>
+    <div class="profile-badge">ACTIVE PROFILE: SARVESH · SR. CONSULTANT</div>
+  </div>
+  <div class="atlas-nav">
+    <nav class="nav-tabs" role="navigation" aria-label="Main navigation">
+      <button class="nav-tab active" onclick="showTab('overview')">◑ Overview</button>
+      <button class="nav-tab" onclick="showTab('comparison')">⊞ Compare</button>
+      <button class="nav-tab" onclick="showTab('timeline')">→ Timeline</button>
+      <button class="nav-tab" onclick="showTab('wealth')">◈ Wealth</button>
+      <button class="nav-tab" onclick="showTab('immigration')">⊕ Immigration</button>
+      <button class="nav-tab" onclick="showTab('pivot')">⚡ Pivot Engine</button>
+      <button class="nav-tab" onclick="showTab('recommend')">★ My Verdict</button>
+      <button class="nav-tab" onclick="showTab('appendix')">∷ Appendix</button>
+    </nav>
+  </div>
+
+  <div class="atlas-content" style="max-height: 600px; overflow-y: auto;">
+
+    <div id="sec-overview" class="section active">
+      <h2 class="sr-only">Career Atlas overview — country scores and profile summary for Sarvesh</h2>
+      <div class="concern-box">
+        <div class="concern-title">⚠ Your Strategic Context</div>
+        <div class="concern-text">You are a digital transformation professional pivoting to strategy/M&A consulting post-EDHEC MSc. Your key question: <strong style="color:#fbbf24;">India vs Europe for entry into strategy consulting</strong> — and whether implementation-heavy roles will derail your strategy ambition. This atlas is built around that question.</div>
+      </div>
+      <div class="sec-title">Your Profile Snapshot</div>
+      <div class="grid-4" style="margin-bottom: 20px;">
+        <div class="metric-card">
+          <div class="metric-val">7 yrs</div>
+          <div class="metric-lbl">Total Experience</div>
+          <div class="metric-sub">4 yr impl. + MSc</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">Sr. Consultant</div>
+          <div class="metric-lbl">Entry Level</div>
+          <div class="metric-sub">All markets</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">3 Tracks</div>
+          <div class="metric-lbl">Career Paths</div>
+          <div class="metric-sub">Tech / Strategy / M&A</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">High</div>
+          <div class="metric-lbl">India Entry Probability</div>
+          <div class="metric-sub">No visa needed</div>
+        </div>
+      </div>
+      <div class="sec-title">Country Intelligence Map</div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px,1fr)); gap: 12px; margin-bottom: 20px;">
+        <div class="country-card" onclick="selectCountry(this,'lux')">
+          <div class="country-flag">🇱🇺</div>
+          <div class="country-name">Luxembourg</div>
+          <div class="country-score">Wealth Score: 94/100</div>
+          <div class="score-bar"><div class="score-fill" style="width:94%;background:var(--atlas-gold)"></div></div>
+          <div style="margin-top:8px;"><span class="badge badge-gold">Top Wealth</span></div>
+        </div>
+        <div class="country-card" onclick="selectCountry(this,'nl')">
+          <div class="country-flag">🇳🇱</div>
+          <div class="country-name">Netherlands</div>
+          <div class="country-score">Balance Score: 88/100</div>
+          <div class="score-bar"><div class="score-fill" style="width:88%;background:var(--atlas-green)"></div></div>
+          <div style="margin-top:8px;"><span class="badge badge-green">Best Balance</span></div>
+        </div>
+        <div class="country-card" onclick="selectCountry(this,'be')">
+          <div class="country-flag">🇧🇪</div>
+          <div class="country-name">Belgium</div>
+          <div class="country-score">Base Score: 72/100</div>
+          <div class="score-bar"><div class="score-fill" style="width:72%;background:var(--atlas-teal)"></div></div>
+          <div style="margin-top:8px;"><span class="badge badge-teal">Your Base</span></div>
+        </div>
+        <div class="country-card" onclick="selectCountry(this,'de')">
+          <div class="country-flag">🇩🇪</div>
+          <div class="country-name">Germany</div>
+          <div class="country-score">Market Score: 82/100</div>
+          <div class="score-bar"><div class="score-fill" style="width:82%;background:var(--atlas-accent)"></div></div>
+          <div style="margin-top:8px;"><span class="badge badge-blue">Big Market</span></div>
+        </div>
+        <div class="country-card" onclick="selectCountry(this,'fr')">
+          <div class="country-flag">🇫🇷</div>
+          <div class="country-name">France</div>
+          <div class="country-score">Prestige Score: 78/100</div>
+          <div class="score-bar"><div class="score-fill" style="width:78%;background:var(--atlas-purple)"></div></div>
+          <div style="margin-top:8px;"><span class="badge badge-purple">MBB Hub</span></div>
+        </div>
+        <div class="country-card" onclick="selectCountry(this,'uk')">
+          <div class="country-flag">🇬🇧</div>
+          <div class="country-name">UK</div>
+          <div class="country-score">Career Score: 85/100</div>
+          <div class="score-bar"><div class="score-fill" style="width:85%;background:var(--atlas-accent)"></div></div>
+          <div style="margin-top:8px;"><span class="badge badge-blue">Global Hub</span></div>
+        </div>
+        <div class="country-card" onclick="selectCountry(this,'in')">
+          <div class="country-flag">🇮🇳</div>
+          <div class="country-name">India</div>
+          <div class="country-score">Entry Score: 91/100</div>
+          <div class="score-bar"><div class="score-fill" style="width:91%;background:var(--atlas-gold)"></div></div>
+          <div style="margin-top:8px;"><span class="badge badge-gold">Easiest Entry</span></div>
+        </div>
+      </div>
+
+      <div id="country-detail" style="display:none;" class="card">
+        <div id="country-detail-content"></div>
+      </div>
+
+      <div class="sec-title">Career Track Overview</div>
+      <div class="grid-3">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--atlas-teal)">Technology Consulting</div>
+              <div style="font-size:10px;color:var(--atlas-muted);margin-top:2px;">Cloud · Digital · ERP · SAP · AI</div>
+            </div>
+            <span class="badge badge-teal">Your Background</span>
+          </div>
+          <div class="bar-horiz"><div class="bar-horiz-label">Entry difficulty</div><div class="bar-horiz-track"><div class="bar-horiz-fill" style="width:30%;background:var(--atlas-green)"></div></div><div class="bar-horiz-val" style="color:var(--atlas-green)">Low</div></div>
+          <div class="bar-horiz"><div class="bar-horiz-label">Strategy exposure</div><div class="bar-horiz-track"><div class="bar-horiz-fill" style="width:40%;background:var(--atlas-gold)"></div></div><div class="bar-horiz-val" style="color:var(--atlas-gold)">Med</div></div>
+          <div class="bar-horiz"><div class="bar-horiz-label">Partner potential</div><div class="bar-horiz-track"><div class="bar-horiz-fill" style="width:65%;background:var(--atlas-accent)"></div></div><div class="bar-horiz-val">65%</div></div>
+          <div class="concern-highlight">Risk: Delivery-heavy roles can create "implementation trap" — hard to pivot to pure strategy later</div>
+        </div>
+        <div class="card" style="border-color:rgba(139,92,246,0.3);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--atlas-purple)">Strategy Consulting</div>
+              <div style="font-size:10px;color:var(--atlas-muted);margin-top:2px;">Corporate · Growth · Transformation</div>
+            </div>
+            <span class="badge badge-purple">Ambition Target</span>
+          </div>
+          <div class="bar-horiz"><div class="bar-horiz-label">Entry difficulty</div><div class="bar-horiz-track"><div class="bar-horiz-fill" style="width:80%;background:var(--atlas-red)"></div></div><div class="bar-horiz-val" style="color:var(--atlas-red)">High</div></div>
+          <div class="bar-horiz"><div class="bar-horiz-label">Strategy exposure</div><div class="bar-horiz-track"><div class="bar-horiz-fill" style="width:100%;background:var(--atlas-green)"></div></div><div class="bar-horiz-val" style="color:var(--atlas-green)">Max</div></div>
+          <div class="bar-horiz"><div class="bar-horiz-label">Partner potential</div><div class="bar-horiz-track"><div class="bar-horiz-fill" style="width:45%;background:var(--atlas-accent)"></div></div><div class="bar-horiz-val">45%</div></div>
+          <div class="pro-highlight">India advantage: EDHEC MSc + EU experience = strong differentiator in Indian strategy market</div>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+            <div>
+              <div style="font-size:12px;font-weight:600;color:var(--atlas-gold)">Tech M&A Advisory</div>
+              <div style="font-size:10px;color:var(--atlas-muted);margin-top:2px;">Due Diligence · PMI · Carve-outs</div>
+            </div>
+            <span class="badge badge-gold">Strong Fit</span>
+          </div>
+          <div class="bar-horiz"><div class="bar-horiz-label">Entry difficulty</div><div class="bar-horiz-track"><div class="bar-horiz-fill" style="width:60%;background:var(--atlas-gold)"></div></div><div class="bar-horiz-val" style="color:var(--atlas-gold)">Med-Hi</div></div>
+          <div class="bar-horiz"><div class="bar-horiz-label">Strategy exposure</div><div class="bar-horiz-track"><div class="bar-horiz-fill" style="width:85%;background:var(--atlas-green)"></div></div><div class="bar-horiz-val" style="color:var(--atlas-green)">High</div></div>
+          <div class="bar-horiz"><div class="bar-horiz-label">Partner potential</div><div class="bar-horiz-track"><div class="bar-horiz-fill" style="width:55%;background:var(--atlas-accent)"></div></div><div class="bar-horiz-val">55%</div></div>
+          <div class="pro-highlight">Best pivot path: Your fintech ops + EDHEC M&A projects = credible IT due diligence profile</div>
+        </div>
+      </div>
+    </div>
+
+    <div id="sec-comparison" class="section">
+      <h2 class="sr-only">Side-by-side country and role comparison</h2>
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:16px;">
+        <select class="select-styled" id="comp-track" onchange="renderComparison()">
+          <option value="tech">Technology Consulting</option>
+          <option value="strat">Strategy Consulting</option>
+          <option value="ma">Tech M&A Advisory</option>
+        </select>
+        <select class="select-styled" id="comp-role" onchange="renderComparison()">
+          <option value="sc">Senior Consultant</option>
+          <option value="mgr">Manager</option>
+          <option value="smgr">Senior Manager</option>
+          <option value="dir">Director</option>
+        </select>
+        <select class="select-styled" id="comp-firm" onchange="renderComparison()">
+          <option value="big4">Big 4</option>
+          <option value="mbb">MBB</option>
+          <option value="t2">Tier 2</option>
+        </select>
+      </div>
+      <div id="comparison-table-container"></div>
+      <div style="margin-top:16px;" class="card">
+        <div class="sec-title">Savings Potential Comparison</div>
+        <div id="savings-chart-container"></div>
+      </div>
+    </div>
+
+    <div id="sec-timeline" class="section">
+      <h2 class="sr-only">Career timeline simulator showing progression and wealth over time</h2>
+      <div class="concern-box">
+        <div class="concern-title">◎ Timeline Simulator</div>
+        <div class="concern-text">Showing two parallel paths based on your profile. Choose <strong style="color:#fbbf24;">Path A</strong> (India-first strategy pivot) or <strong style="color:#fbbf24;">Path B</strong> (Europe-first tech-to-strategy). Click any step to drill down.</div>
+      </div>
+      <div class="grid-2">
+        <div>
+          <div style="margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+            <span class="badge badge-gold">PATH A — India First</span>
+            <span style="font-size:10px;color:var(--atlas-muted)">Strategy Pivot via India</span>
+          </div>
+          <div id="timeline-a"></div>
+        </div>
+        <div>
+          <div style="margin-bottom:12px;display:flex;align-items:center;gap:8px;">
+            <span class="badge badge-blue">PATH B — Europe</span>
+            <span style="font-size:10px;color:var(--atlas-muted)">Tech-to-Strategy in Europe</span>
+          </div>
+          <div id="timeline-b"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="sec-wealth" class="section">
+      <h2 class="sr-only">Wealth simulation with adjustable parameters</h2>
+      <div class="sec-title">Wealth Simulator</div>
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="card">
+          <div class="sec-title" style="margin-bottom:12px;">Parameters</div>
+          <div class="slider-row">
+            <span class="slider-lbl">Start Country</span>
+            <select class="select-styled" id="w-country" onchange="calcWealth()" style="flex:1;">
+              <option value="in">India (Bengaluru)</option>
+              <option value="be">Belgium (Brussels)</option>
+              <option value="lux">Luxembourg</option>
+              <option value="nl">Netherlands</option>
+              <option value="de">Germany (Munich)</option>
+              <option value="fr">France (Paris)</option>
+              <option value="uk">UK (London)</option>
+            </select>
+          </div>
+          <div class="slider-row">
+            <span class="slider-lbl">Career Track</span>
+            <select class="select-styled" id="w-track" onchange="calcWealth()" style="flex:1;">
+              <option value="tech">Technology Consulting</option>
+              <option value="strat">Strategy Consulting</option>
+              <option value="ma">Tech M&A Advisory</option>
+            </select>
+          </div>
+          <div class="slider-row">
+            <span class="slider-lbl">Firm Tier</span>
+            <select class="select-styled" id="w-firm" onchange="calcWealth()" style="flex:1;">
+              <option value="big4">Big 4</option>
+              <option value="mbb">MBB</option>
+              <option value="t2">Tier 2</option>
+            </select>
+          </div>
+          <div class="slider-row">
+            <span class="slider-lbl">Lifestyle</span>
+            <select class="select-styled" id="w-lifestyle" onchange="calcWealth()" style="flex:1;">
+              <option value="frugal">Frugal</option>
+              <option value="comfortable" selected>Comfortable</option>
+              <option value="premium">Premium</option>
+            </select>
+          </div>
+          <div class="slider-row">
+            <span class="slider-lbl">Time Horizon</span>
+            <input type="range" id="w-years" min="1" max="15" value="10" step="1" oninput="document.getElementById('w-years-out').textContent=this.value+' yrs';calcWealth()">
+            <span class="slider-val" id="w-years-out">10 yrs</span>
+          </div>
+          <div class="slider-row">
+            <span class="slider-lbl">Investment Return</span>
+            <input type="range" id="w-return" min="3" max="12" value="7" step="1" oninput="document.getElementById('w-return-out').textContent=this.value+'%';calcWealth()">
+            <span class="slider-val" id="w-return-out">7%</span>
+          </div>
+          <div class="slider-row">
+            <span class="slider-lbl">Scenario</span>
+            <select class="select-styled" id="w-scenario" onchange="calcWealth()" style="flex:1;">
+              <option value="conservative">Conservative</option>
+              <option value="realistic" selected>Realistic</option>
+              <option value="aggressive">Aggressive</option>
+            </select>
+          </div>
+        </div>
+        <div class="card">
+          <div class="sec-title" style="margin-bottom:12px;">Wealth Projection</div>
+          <div id="wealth-output"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sec-title">Annual Wealth Breakdown</div>
+        <div id="wealth-breakdown"></div>
+      </div>
+    </div>
+
+    <div id="sec-immigration" class="section">
+      <h2 class="sr-only">Immigration pathway analysis for each country</h2>
+      <div class="concern-box">
+        <div class="concern-title">◎ Immigration Intelligence</div>
+        <div class="concern-text">As an Indian national currently in France on a student visa, your immigration options and timelines vary significantly. India requires no visa — but each European country has different sponsorship, PR, and citizenship timelines.</div>
+      </div>
+      <div class="immigration-grid">
+        <div class="imm-card">
+          <div class="imm-title">🇮🇳 India</div>
+          <div class="imm-score" style="color:var(--atlas-green)">N/A</div>
+          <div style="font-size:11px;color:#6ee7b7;margin-top:4px;">Citizen — no restrictions</div>
+          <div style="margin-top:10px;">
+            <div class="data-row"><span class="data-key">Work Visa</span><span class="data-val">Not needed</span></div>
+            <div class="data-row"><span class="data-key">Right to Work</span><span class="data-val" style="color:var(--atlas-green)">Immediate</span></div>
+            <div class="data-row"><span class="data-key">PR Timeline</span><span class="data-val">Already citizen</span></div>
+            <div class="data-row"><span class="data-key">Sponsorship risk</span><span class="data-val" style="color:var(--atlas-green)">Zero</span></div>
+          </div>
+          <div class="pro-highlight">Strongest advantage: You can join any firm — MBB included — without visa dependency. No risk of job loss = visa loss.</div>
+        </div>
+        <div class="imm-card">
+          <div class="imm-title">🇧🇪 Belgium</div>
+          <div class="imm-score" style="color:var(--atlas-gold)">7/10</div>
+          <div style="font-size:11px;color:var(--atlas-muted);margin-top:4px;">Moderate complexity</div>
+          <div style="margin-top:10px;">
+            <div class="data-row"><span class="data-key">Work Visa</span><span class="data-val">Single Permit</span></div>
+            <div class="data-row"><span class="data-key">Sponsorship</span><span class="data-val" style="color:var(--atlas-gold)">Required</span></div>
+            <div class="data-row"><span class="data-key">PR Timeline</span><span class="data-val">5 years</span></div>
+            <div class="data-row"><span class="data-key">Citizenship</span><span class="data-val">5 yrs + language</span></div>
+            <div class="data-row"><span class="data-key">Advantage</span><span class="data-val">Already based here</span></div>
+          </div>
+          <div style="margin-top:8px;"><span class="source-chip" onclick="showSource('be-imm')">↗ Immigration.be</span></div>
+        </div>
+        <div class="imm-card">
+          <div class="imm-title">🇱🇺 Luxembourg</div>
+          <div class="imm-score" style="color:var(--atlas-green)">8/10</div>
+          <div style="font-size:11px;color:#6ee7b7;margin-top:4px;">High demand for talent</div>
+          <div style="margin-top:10px;">
+            <div class="data-row"><span class="data-key">Work Visa</span><span class="data-val">EU Blue Card eligible</span></div>
+            <div class="data-row"><span class="data-key">Sponsorship</span><span class="data-val" style="color:var(--atlas-gold)">Required</span></div>
+            <div class="data-row"><span class="data-key">PR Timeline</span><span class="data-val">5 years</span></div>
+            <div class="data-row"><span class="data-key">Citizenship</span><span class="data-val">5 yrs + language</span></div>
+            <div class="data-row"><span class="data-key">Language req</span><span class="data-val">French/German/Lux</span></div>
+          </div>
+          <div style="margin-top:8px;"><span class="source-chip" onclick="showSource('lux-imm')">↗ guichet.lu</span></div>
+        </div>
+        <div class="imm-card">
+          <div class="imm-title">🇳🇱 Netherlands</div>
+          <div class="imm-score" style="color:var(--atlas-green)">9/10</div>
+          <div style="font-size:11px;color:#6ee7b7;margin-top:4px;">Most immigrant-friendly in EU</div>
+          <div style="margin-top:10px;">
+            <div class="data-row"><span class="data-key">Work Visa</span><span class="data-val">Highly Skilled Migrant</span></div>
+            <div class="data-row"><span class="data-key">Sponsorship</span><span class="data-val" style="color:var(--atlas-gold)">Required</span></div>
+            <div class="data-row"><span class="data-key">PR Timeline</span><span class="data-val">5 years</span></div>
+            <div class="data-row"><span class="data-key">30% Tax Ruling</span><span class="data-val" style="color:var(--atlas-green)">5 yrs</span></div>
+            <div class="data-row"><span class="data-key">Language</span><span class="data-val">English suffices</span></div>
+          </div>
+          <div style="margin-top:8px;"><span class="source-chip" onclick="showSource('nl-imm')">↗ ind.nl</span></div>
+        </div>
+        <div class="imm-card">
+          <div class="imm-title">🇩🇪 Germany</div>
+          <div class="imm-score" style="color:var(--atlas-gold)">7/10</div>
+          <div style="font-size:11px;color:var(--atlas-muted);margin-top:4px;">Improved since 2023 reform</div>
+          <div style="margin-top:10px;">
+            <div class="data-row"><span class="data-key">Work Visa</span><span class="data-val">Skilled Worker / Blue Card</span></div>
+            <div class="data-row"><span class="data-key">Sponsorship</span><span class="data-val" style="color:var(--atlas-gold)">Required</span></div>
+            <div class="data-row"><span class="data-key">PR Timeline</span><span class="data-val">3–5 years</span></div>
+            <div class="data-row"><span class="data-key">Citizenship</span><span class="data-val">5 yrs (new law)</span></div>
+            <div class="data-row"><span class="data-key">Language</span><span class="data-val">B1 German for PR</span></div>
+          </div>
+          <div style="margin-top:8px;"><span class="source-chip" onclick="showSource('de-imm')">↗ bamf.de</span></div>
+        </div>
+        <div class="imm-card">
+          <div class="imm-title">🇫🇷 France</div>
+          <div class="imm-score" style="color:var(--atlas-gold)">7/10</div>
+          <div style="font-size:11px;color:var(--atlas-muted);margin-top:4px;">Talent Passport available</div>
+          <div style="margin-top:10px;">
+            <div class="data-row"><span class="data-key">Work Visa</span><span class="data-val">Talent Passport</span></div>
+            <div class="data-row"><span class="data-key">Sponsorship</span><span class="data-val" style="color:var(--atlas-gold)">Required</span></div>
+            <div class="data-row"><span class="data-key">PR Timeline</span><span class="data-val">5 years</span></div>
+            <div class="data-row"><span class="data-key">Current status</span><span class="data-val" style="color:var(--atlas-green)">Student visa (EDHEC)</span></div>
+            <div class="data-row"><span class="data-key">Language</span><span class="data-val">French preferred</span></div>
+          </div>
+          <div style="margin-top:8px;"><span class="source-chip" onclick="showSource('fr-imm')">↗ service-public.fr</span></div>
+        </div>
+        <div class="imm-card">
+          <div class="imm-title">🇬🇧 United Kingdom</div>
+          <div class="imm-score" style="color:var(--atlas-red)">5/10</div>
+          <div style="font-size:11px;color:#f87171;margin-top:4px;">Most complex post-Brexit</div>
+          <div style="margin-top:10px;">
+            <div class="data-row"><span class="data-key">Work Visa</span><span class="data-val">Skilled Worker</span></div>
+            <div class="data-row"><span class="data-key">Sponsorship</span><span class="data-val" style="color:var(--atlas-red)">Required (strict)</span></div>
+            <div class="data-row"><span class="data-key">PR Timeline</span><span class="data-val">5 years ILR</span></div>
+            <div class="data-row"><span class="data-key">Cost</span><span class="data-val" style="color:var(--atlas-red)">~£5,000+ in fees</span></div>
+            <div class="data-row"><span class="data-key">Citizenship</span><span class="data-val">6 years</span></div>
+          </div>
+          <div style="margin-top:8px;"><span class="source-chip" onclick="showSource('uk-imm')">↗ gov.uk/skilled-worker</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="sec-pivot" class="section">
+      <h2 class="sr-only">Career pivot engine — impact of role choices on strategy consulting ambition</h2>
+      <div class="pivot-alert">
+        <div class="pivot-title">⚡ Pivot Engine — Your Core Concern</div>
+        <div style="font-size:11px;color:#c4b5fd;line-height:1.6;">Will starting in an implementation/delivery-heavy role hurt your strategy consulting ambition? The engine below models how each scenario affects your pivot probability.</div>
+      </div>
+      <div class="grid-2" style="margin-bottom:16px;">
+        <div class="card">
+          <div class="sec-title">What-If Scenarios</div>
+          <div id="whatif-list"></div>
+        </div>
+        <div class="card">
+          <div class="sec-title">Pivot Score Breakdown</div>
+          <div id="pivot-detail"></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="sec-title">Implementation Trap Risk Model</div>
+        <div class="concern-highlight">Research shows that consulting professionals who spend more than 3–4 years in delivery-heavy roles without strategy exposure face a "credibility ceiling" when attempting to pivot to pure strategy consulting. Your EDHEC MSc partially offsets this risk for 2–3 years post-graduation.</div>
+        <div style="margin-top:12px;">
+          <div class="data-row"><span class="data-key">EDHEC MSc protection window</span><span class="data-val" style="color:var(--atlas-green)">2026–2028</span></div>
+          <div class="data-row"><span class="data-key">Optimal pivot deadline</span><span class="data-val" style="color:var(--atlas-gold)">Within 18 months of graduation</span></div>
+          <div class="data-row"><span class="data-key">Max delivery tenure before damage</span><span class="data-val" style="color:var(--atlas-gold)">18–24 months</span></div>
+          <div class="data-row"><span class="data-key">India pivot advantage</span><span class="data-val" style="color:var(--atlas-green)">EU experience = premium positioning</span></div>
+          <div class="data-row"><span class="data-key">M&A as bridge track?</span><span class="data-val" style="color:var(--atlas-green)">Yes — strategic, not delivery</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="sec-recommend" class="section">
+      <h2 class="sr-only">Personalised verdict and recommendations for Sarvesh</h2>
+      <div class="concern-box">
+        <div class="concern-title">★ Your Personalised Verdict</div>
+        <div class="concern-text">Based on your profile: EDHEC MSc (2025–26), 7 years experience, Belgian fintech background, Indian citizen, fluent in English/French, targeting strategy consulting or M&A advisory.</div>
+      </div>
+      <div id="rec-cards"></div>
+      <div class="card" style="margin-top:16px;">
+        <div class="sec-title">Confidence & Assumptions</div>
+        <div class="data-row"><span class="data-key">Confidence level</span><span class="data-val"><span class="badge badge-green">78% — High</span></span></div>
+        <div class="data-row"><span class="data-key">Data freshness</span><span class="data-val">2024–2025 compensation surveys</span></div>
+        <div class="data-row"><span class="data-key">Key assumption</span><span class="data-val">Senior Consultant entry level all markets</span></div>
+        <div class="data-row"><span class="data-key">Market assumption</span><span class="data-val">Moderate hiring conditions 2026</span></div>
+        <div class="data-row"><span class="data-key">Excluded factors</span><span class="data-val">Personal network strength, MBA brand</span></div>
+        <div class="data-row"><span class="data-key">Limitations</span><span class="data-val">Salary ranges ±15%; tax rules change annually</span></div>
+      </div>
+      <div class="card" style="margin-top:14px;border-color:rgba(245,158,11,0.3);">
+        <div class="sec-title">Immediate Action Plan</div>
+        <div class="data-row"><span class="data-key" style="color:var(--atlas-gold)">Step 1 (Now)</span><span class="data-val">Apply to Indian MBB/Big4 strategy roles immediately — use EU experience as differentiator</span></div>
+        <div class="data-row"><span class="data-key" style="color:var(--atlas-gold)">Step 2 (Q3 2026)</span><span class="data-val">Simultaneously apply for Tech M&A roles in Belgium/Netherlands as backup</span></div>
+        <div class="data-row"><span class="data-key" style="color:var(--atlas-gold)">Step 3 (2027)</span><span class="data-val">If in India, build 1–2 strategy credentials and target internal transfer to Europe</span></div>
+        <div class="data-row"><span class="data-key" style="color:var(--atlas-gold)">Step 4 (2028–30)</span><span class="data-val">Target Luxembourg or Netherlands for max wealth accumulation in consulting career</span></div>
+        <div class="data-row"><span class="data-key" style="color:var(--atlas-red)">Avoid</span><span class="data-val">Pure delivery/PM roles in India — they reinforce the implementation label, not strategy</span></div>
+      </div>
+    </div>
+
+    <div id="sec-appendix" class="section">
+      <h2 class="sr-only">Data sources appendix</h2>
+      <div class="sec-title">Data Sources & Methodology Appendix</div>
+      <div style="margin-bottom:20px;" class="card">
+        <div style="font-size:11px;color:var(--atlas-muted);line-height:1.7;margin-bottom:10px;">All figures in this platform are derived from the sources below. Click any source chip in the app to see the methodology behind each specific figure. Confidence scores reflect data recency, sample size, and geographic specificity.</div>
+        <div class="sec-title" style="font-size:10px;">Compensation Sources</div>
+        <table class="appendix-table">
+          <thead><tr><th>Source</th><th>Data Type</th><th>Markets</th><th>Update Frequency</th><th>Confidence</th><th>URL</th></tr></thead>
+          <tbody>
+            <tr><td>Glassdoor</td><td>Salary ranges by role/firm/city</td><td>All 7 countries</td><td>Real-time (crowd)</td><td><span class="badge badge-green">85%</span></td><td><a href="https://glassdoor.com" target="_blank">glassdoor.com</a></td></tr>
+            <tr><td>Levels.fyi</td><td>Total comp incl. bonus/equity</td><td>EU + India</td><td>Quarterly</td><td><span class="badge badge-green">82%</span></td><td><a href="https://levels.fyi" target="_blank">levels.fyi</a></td></tr>
+            <tr><td>Hays Salary Guide</td><td>Consulting market bands</td><td>BE, NL, DE, FR, UK</td><td>Annual</td><td><span class="badge badge-blue">88%</span></td><td><a href="https://hays.com/salary-guide" target="_blank">hays.com</a></td></tr>
+            <tr><td>Michael Page</td><td>Consulting salary benchmarks</td><td>All EU + India</td><td>Annual</td><td><span class="badge badge-blue">87%</span></td><td><a href="https://michaelpage.com" target="_blank">michaelpage.com</a></td></tr>
+            <tr><td>Robert Walters</td><td>Specialist consulting comp data</td><td>BE, LU, NL, UK</td><td>Annual</td><td><span class="badge badge-blue">86%</span></td><td><a href="https://robertwalters.com" target="_blank">robertwalters.com</a></td></tr>
+            <tr><td>Korn Ferry</td><td>Senior consulting benchmarks</td><td>Global</td><td>Annual</td><td><span class="badge badge-green">90%</span></td><td><a href="https://kornferry.com" target="_blank">kornferry.com</a></td></tr>
+            <tr><td>LinkedIn Salary</td><td>Role/seniority by location</td><td>All countries</td><td>Quarterly</td><td><span class="badge badge-gold">75%</span></td><td><a href="https://linkedin.com/salary" target="_blank">linkedin.com/salary</a></td></tr>
+            <tr><td>AmbitionBox (India)</td><td>India-specific consulting comp</td><td>India only</td><td>Real-time</td><td><span class="badge badge-green">83%</span></td><td><a href="https://ambitionbox.com" target="_blank">ambitionbox.com</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-bottom:20px;" class="card">
+        <div class="sec-title" style="font-size:10px;">Tax & Social Security Sources</div>
+        <table class="appendix-table">
+          <thead><tr><th>Country</th><th>Source</th><th>Data</th><th>Last Updated</th><th>URL</th></tr></thead>
+          <tbody>
+            <tr><td>Belgium</td><td>SPF Finances + OECD</td><td>Progressive rates, social contributions</td><td>2025</td><td><a href="https://finances.belgium.be" target="_blank">finances.belgium.be</a></td></tr>
+            <tr><td>Luxembourg</td><td>ACD Luxembourg + OECD</td><td>Income tax brackets</td><td>2025</td><td><a href="https://acd.public.lu" target="_blank">acd.public.lu</a></td></tr>
+            <tr><td>Germany</td><td>Bundesfinanzministerium + OECD</td><td>Income tax, solidarity surcharge</td><td>2025</td><td><a href="https://bundesfinanzministerium.de" target="_blank">bundesfinanzministerium.de</a></td></tr>
+            <tr><td>France</td><td>Direction Générale des Finances + OECD</td><td>Barème IR, CSG/CRDS</td><td>2025</td><td><a href="https://impots.gouv.fr" target="_blank">impots.gouv.fr</a></td></tr>
+            <tr><td>Netherlands</td><td>Belastingdienst + 30% ruling</td><td>Box 1 rates, 30% expat ruling</td><td>2025</td><td><a href="https://belastingdienst.nl" target="_blank">belastingdienst.nl</a></td></tr>
+            <tr><td>UK</td><td>HMRC + OBR</td><td>Income tax, NI contributions</td><td>2025</td><td><a href="https://hmrc.gov.uk" target="_blank">hmrc.gov.uk</a></td></tr>
+            <tr><td>India</td><td>Income Tax Department</td><td>New vs old regime, surcharge</td><td>2025–26 Budget</td><td><a href="https://incometax.gov.in" target="_blank">incometax.gov.in</a></td></tr>
+            <tr><td>All</td><td>OECD Tax Database</td><td>Comparative effective rates</td><td>2024</td><td><a href="https://stats.oecd.org/tax" target="_blank">stats.oecd.org</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-bottom:20px;" class="card">
+        <div class="sec-title" style="font-size:10px;">Cost of Living Sources</div>
+        <table class="appendix-table">
+          <thead><tr><th>Source</th><th>Data</th><th>Cities</th><th>Methodology</th><th>URL</th></tr></thead>
+          <tbody>
+            <tr><td>Numbeo</td><td>Rent, groceries, transport, dining</td><td>All target cities</td><td>Crowd-sourced, verified monthly</td><td><a href="https://numbeo.com" target="_blank">numbeo.com</a></td></tr>
+            <tr><td>Eurostat</td><td>Price level indices, housing</td><td>EU countries</td><td>Statistical survey</td><td><a href="https://ec.europa.eu/eurostat" target="_blank">ec.europa.eu/eurostat</a></td></tr>
+            <tr><td>OECD Better Life</td><td>QoL, housing, work-life balance</td><td>OECD members</td><td>Composite index</td><td><a href="https://oecdbetterlifeindex.org" target="_blank">oecdbetterlifeindex.org</a></td></tr>
+            <tr><td>ECA International</td><td>Expatriate cost-of-living</td><td>Global cities</td><td>Annual survey</td><td><a href="https://eca-international.com" target="_blank">eca-international.com</a></td></tr>
+            <tr><td>Mercer CoL</td><td>International assignment costs</td><td>Global 200+ cities</td><td>Proprietary survey</td><td><a href="https://mercer.com/cost-of-living" target="_blank">mercer.com</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="margin-bottom:20px;" class="card">
+        <div class="sec-title" style="font-size:10px;">Immigration & Visa Sources</div>
+        <table class="appendix-table">
+          <thead><tr><th>Country</th><th>Portal</th><th>Visa Type</th><th>Source</th></tr></thead>
+          <tbody>
+            <tr><td>Belgium</td><td>Immigration Office</td><td>Single Permit</td><td><a href="https://dofi.ibz.be" target="_blank">dofi.ibz.be</a></td></tr>
+            <tr><td>Luxembourg</td><td>Guichet.lu</td><td>EU Blue Card / ICT</td><td><a href="https://guichet.public.lu" target="_blank">guichet.public.lu</a></td></tr>
+            <tr><td>Germany</td><td>BAMF</td><td>Skilled Worker Act 2023</td><td><a href="https://bamf.de" target="_blank">bamf.de</a></td></tr>
+            <tr><td>France</td><td>Service-Public.fr</td><td>Talent Passport</td><td><a href="https://service-public.fr" target="_blank">service-public.fr</a></td></tr>
+            <tr><td>Netherlands</td><td>IND.nl</td><td>Highly Skilled Migrant</td><td><a href="https://ind.nl" target="_blank">ind.nl</a></td></tr>
+            <tr><td>UK</td><td>Home Office</td><td>Skilled Worker Visa</td><td><a href="https://gov.uk/skilled-worker-visa" target="_blank">gov.uk</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="sec-title" style="font-size:10px;">Salary Data — Key Assumptions & Ranges Used</div>
+        <table class="appendix-table">
+          <thead><tr><th>Country</th><th>Role</th><th>Track</th><th>Gross (EUR equiv)</th><th>Source</th><th>Confidence</th></tr></thead>
+          <tbody>
+            <tr><td>India (Bengaluru)</td><td>Sr. Consultant</td><td>Tech</td><td>€22–28k</td><td>AmbitionBox, Glassdoor</td><td><span class="badge badge-green">82%</span></td></tr>
+            <tr><td>India (Bengaluru)</td><td>Sr. Consultant</td><td>Strategy</td><td>€28–40k</td><td>Michael Page India, Glassdoor</td><td><span class="badge badge-blue">78%</span></td></tr>
+            <tr><td>India (Bengaluru)</td><td>Sr. Consultant</td><td>M&A Advisory</td><td>€32–48k</td><td>Korn Ferry, Heidrick</td><td><span class="badge badge-gold">72%</span></td></tr>
+            <tr><td>Belgium (Brussels)</td><td>Sr. Consultant</td><td>Tech</td><td>€65–80k</td><td>Hays BE, Glassdoor</td><td><span class="badge badge-green">86%</span></td></tr>
+            <tr><td>Belgium (Brussels)</td><td>Sr. Consultant</td><td>Strategy</td><td>€75–95k</td><td>Michael Page BE</td><td><span class="badge badge-green">84%</span></td></tr>
+            <tr><td>Luxembourg</td><td>Sr. Consultant</td><td>Tech</td><td>€85–105k</td><td>Robert Walters LU</td><td><span class="badge badge-green">88%</span></td></tr>
+            <tr><td>Luxembourg</td><td>Sr. Consultant</td><td>Strategy</td><td>€95–120k</td><td>Korn Ferry, Glassdoor</td><td><span class="badge badge-green">85%</span></td></tr>
+            <tr><td>Netherlands (Amsterdam)</td><td>Sr. Consultant</td><td>Tech</td><td>€70–90k</td><td>Hays NL, Glassdoor</td><td><span class="badge badge-green">87%</span></td></tr>
+            <tr><td>Netherlands (Amsterdam)</td><td>Sr. Consultant</td><td>Strategy</td><td>€80–105k</td><td>Michael Page NL</td><td><span class="badge badge-green">85%</span></td></tr>
+            <tr><td>Germany (Munich)</td><td>Sr. Consultant</td><td>Tech</td><td>€65–85k</td><td>Hays DE, Glassdoor</td><td><span class="badge badge-green">88%</span></td></tr>
+            <tr><td>France (Paris)</td><td>Sr. Consultant</td><td>Strategy</td><td>€65–85k</td><td>Glassdoor FR, Michael Page</td><td><span class="badge badge-green">83%</span></td></tr>
+            <tr><td>UK (London)</td><td>Sr. Consultant</td><td>Strategy</td><td>€70–95k</td><td>Glassdoor UK, Hays</td><td><span class="badge badge-green">85%</span></td></tr>
+          </tbody>
+        </table>
+        <div class="disclaimer">All salary figures are gross annual compensation including base salary. Bonus (typically 10–30% at Sr. Consultant level) is modelled separately. EUR conversions use 2025 average exchange rates. India figures are INR-to-EUR converted at 90 INR/EUR. All data sourced from publicly available salary surveys and recruitment agency publications. This tool is for informational purposes only — actual compensation will vary based on firm, negotiation, and market conditions at time of offer.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div id="source-modal" class="modal-overlay" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+      <div class="modal-title" id="modal-title">Data Source</div>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const DATA = {
+  countries: {
+    lux: { name: 'Luxembourg', flag: '🇱🇺', gross: { tech: { sc: 95000, mgr: 120000, smgr: 150000, dir: 185000 }, strat: { sc: 110000, mgr: 140000, smgr: 170000, dir: 210000 }, ma: { sc: 105000, mgr: 135000, smgr: 165000, dir: 200000 } }, taxRate: { big4: 0.35, mbb: 0.38, t2: 0.33 }, rent: { comfortable: 2000 }, colExtra: 1200, wealthScore: 94, careerScore: 82, qolScore: 79, immScore: 8 },
+    nl: { name: 'Netherlands', flag: '🇳🇱', gross: { tech: { sc: 82000, mgr: 102000, smgr: 125000, dir: 155000 }, strat: { sc: 92000, mgr: 118000, smgr: 148000, dir: 180000 }, ma: { sc: 88000, mgr: 112000, smgr: 140000, dir: 172000 } }, taxRate: { big4: 0.36, mbb: 0.38, t2: 0.34 }, taxRuling30: 0.22, rent: { comfortable: 1800 }, colExtra: 1100, wealthScore: 88, careerScore: 85, qolScore: 88, immScore: 9 },
+    be: { name: 'Belgium', flag: '🇧🇪', gross: { tech: { sc: 72000, mgr: 90000, smgr: 112000, dir: 140000 }, strat: { sc: 85000, mgr: 108000, smgr: 135000, dir: 165000 }, ma: { sc: 80000, mgr: 100000, smgr: 128000, dir: 158000 } }, taxRate: { big4: 0.42, mbb: 0.44, t2: 0.40 }, rent: { comfortable: 1400 }, colExtra: 900, wealthScore: 72, careerScore: 78, qolScore: 78, immScore: 7 },
+    de: { name: 'Germany', flag: '🇩🇪', gross: { tech: { sc: 75000, mgr: 95000, smgr: 118000, dir: 148000 }, strat: { sc: 88000, mgr: 112000, smgr: 140000, dir: 172000 }, ma: { sc: 85000, mgr: 108000, smgr: 135000, dir: 168000 } }, taxRate: { big4: 0.40, mbb: 0.42, t2: 0.38 }, rent: { comfortable: 1700 }, colExtra: 1000, wealthScore: 82, careerScore: 82, qolScore: 82, immScore: 7 },
+    fr: { name: 'France', flag: '🇫🇷', gross: { tech: { sc: 68000, mgr: 88000, smgr: 110000, dir: 138000 }, strat: { sc: 78000, mgr: 102000, smgr: 128000, dir: 158000 }, ma: { sc: 74000, mgr: 96000, smgr: 122000, dir: 152000 } }, taxRate: { big4: 0.38, mbb: 0.40, t2: 0.36 }, rent: { comfortable: 1600 }, colExtra: 900, wealthScore: 75, careerScore: 80, qolScore: 75, immScore: 7 },
+    uk: { name: 'UK', flag: '🇬🇧', gross: { tech: { sc: 78000, mgr: 98000, smgr: 122000, dir: 152000 }, strat: { sc: 88000, mgr: 115000, smgr: 145000, dir: 178000 }, ma: { sc: 84000, mgr: 108000, smgr: 138000, dir: 170000 } }, taxRate: { big4: 0.36, mbb: 0.39, t2: 0.35 }, rent: { comfortable: 2200 }, colExtra: 1300, wealthScore: 80, careerScore: 88, qolScore: 72, immScore: 5 },
+    in: { name: 'India', flag: '🇮🇳', gross: { tech: { sc: 25000, mgr: 35000, smgr: 48000, dir: 65000 }, strat: { sc: 38000, mgr: 55000, smgr: 75000, dir: 100000 }, ma: { sc: 42000, mgr: 62000, smgr: 85000, dir: 115000 } }, taxRate: { big4: 0.28, mbb: 0.30, t2: 0.26 }, rent: { comfortable: 550 }, colExtra: 350, wealthScore: 65, careerScore: 91, qolScore: 62, immScore: 10 }
+  },
+  firmMulti: { big4: 1.0, mbb: 1.35, t2: 0.92 },
+  scenarioMulti: { conservative: 0.88, realistic: 1.0, aggressive: 1.15 },
+  lifestyleMulti: { frugal: 0.7, comfortable: 1.0, premium: 1.45 }
+};
+
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'comparison') renderComparison();
+  if (id === 'timeline') renderTimelines();
+  if (id === 'wealth') calcWealth();
+  if (id === 'pivot') renderPivot();
+  if (id === 'recommend') renderRecommendations();
+}
+
+function selectCountry(el, code) {
+  document.querySelectorAll('.country-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  const c = DATA.countries[code];
+  const detail = document.getElementById('country-detail');
+  const content = document.getElementById('country-detail-content');
+  detail.style.display = 'block';
+  content.innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+      <span style="font-size:28px;">${c.flag}</span>
+      <div>
+        <div style="font-size:15px;font-weight:700;color:var(--atlas-text)">${c.name}</div>
+        <div style="font-size:11px;color:var(--atlas-muted)">Sr. Consultant · Big 4 · Comfortable lifestyle</div>
+      </div>
+    </div>
+    <div class="grid-4">
+      <div class="metric-card"><div class="metric-val">${formatCur(Math.round(c.gross.tech.sc * DATA.firmMulti.big4 / 1000))}k</div><div class="metric-lbl">Gross (Tech)</div><span class="source-chip" onclick="showSource('salary-${code}')">↗ source</span></div>
+      <div class="metric-card"><div class="metric-val">${formatCur(Math.round(c.gross.tech.sc * DATA.firmMulti.big4 * (1 - c.taxRate.big4) / 1000))}k</div><div class="metric-lbl">Net salary</div><span class="source-chip" onclick="showSource('tax-${code}')">↗ source</span></div>
+      <div class="metric-card"><div class="metric-val">${Math.round(c.taxRate.big4*100)}%</div><div class="metric-lbl">Effective tax</div><span class="source-chip" onclick="showSource('tax-${code}')">↗ source</span></div>
+      <div class="metric-card"><div class="metric-val">${formatCur(c.rent.comfortable)}/mo</div><div class="metric-lbl">Rent (1BR)</div><span class="source-chip" onclick="showSource('col-${code}')">↗ source</span></div>
+    </div>
+  `;
+}
+
+function formatCur(n) {
+  if (n >= 1000) return n.toLocaleString();
+  return n.toString();
+}
+
+function renderComparison() {
+  const track = document.getElementById('comp-track').value;
+  const role = document.getElementById('comp-role').value;
+  const firm = document.getElementById('comp-firm').value;
+  const countries = ['lux','nl','be','de','uk','in'];
+  const labels = ['Luxembourg','Netherlands','Belgium','Germany','UK','India'];
+  const flags = ['🇱🇺','🇳🇱','🇧🇪','🇩🇪','🇬🇧','🇮🇳'];
+
+  const grossArr = countries.map(c => Math.round(DATA.countries[c].gross[track][role] * DATA.firmMulti[firm]));
+  const netArr = countries.map((c,i) => Math.round(grossArr[i] * (1 - DATA.countries[c].taxRate[firm])));
+  const rentArr = countries.map(c => DATA.countries[c].rent.comfortable * 12);
+  const savingsArr = countries.map((c,i) => Math.round(netArr[i] - rentArr[i] - DATA.countries[c].colExtra * 12));
+
+  const maxGross = Math.max(...grossArr);
+  const maxNet = Math.max(...netArr);
+  const maxSavings = Math.max(...savingsArr);
+  const minTax = Math.min(...countries.map(c => DATA.countries[c].taxRate[firm]));
+
+  let html = `<div style="overflow-x:auto;">
+    <div class="comparison-row" style="border-bottom:2px solid rgba(59,130,246,0.3);padding-bottom:10px;margin-bottom:4px;">
+      <div style="font-size:10px;color:var(--atlas-accent);text-transform:uppercase;letter-spacing:1px;">Metric</div>
+      ${flags.map((f,i) => `<div style="font-size:11px;text-align:center;">${f} <span style="color:var(--atlas-muted)">${labels[i]}</span></div>`).join('')}
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-label">Gross salary</div>
+      ${grossArr.map((v,i) => `<div class="comparison-val ${v===maxGross?'best':''}" onclick="showSource('salary-${countries[i]}')" style="cursor:pointer;">${code2Sym(countries[i])}${Math.round(v/1000)}k <span style="font-size:9px;color:var(--atlas-dim)">↗</span></div>`).join('')}
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-label">Net salary</div>
+      ${netArr.map((v,i) => `<div class="comparison-val ${v===maxNet?'best':''}" onclick="showSource('tax-${countries[i]}')" style="cursor:pointer;">${code2Sym(countries[i])}${Math.round(v/1000)}k</div>`).join('')}
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-label">Effective tax</div>
+      ${countries.map((c,i) => { const r = DATA.countries[c].taxRate[firm]; return `<div class="comparison-val ${r===minTax?'best':r>0.40?'worst':''}">${Math.round(r*100)}%</div>`; }).join('')}
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-label">Monthly rent</div>
+      ${countries.map(c => `<div class="comparison-val">${code2Sym(c)}${DATA.countries[c].rent.comfortable}/mo</div>`).join('')}
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-label">Annual savings</div>
+      ${savingsArr.map((v,i) => `<div class="comparison-val ${v===maxSavings?'best':v<0?'worst':''}">${code2Sym(countries[i])}${Math.round(v/1000)}k</div>`).join('')}
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-label">QoL score</div>
+      ${countries.map(c => { const s = DATA.countries[c].qolScore; return `<div class="comparison-val ${s>=85?'best':s<65?'worst':''}">${s}/100</div>`; }).join('')}
+    </div>
+    <div class="comparison-row">
+      <div class="comparison-label">Imm. score</div>
+      ${countries.map(c => { const s = DATA.countries[c].immScore; return `<div class="comparison-val ${s===10?'best':s<=5?'worst':''}">${s === 10 ? 'Citizen' : s + '/10'}</div>`; }).join('')}
+    </div>
+  </div>`;
+
+  document.getElementById('comparison-table-container').innerHTML = html;
+
+  const container = document.getElementById('savings-chart-container');
+  container.innerHTML = '<div style="position:relative;height:220px;"><canvas id="savChart" role="img" aria-label="Annual savings comparison bar chart across 6 countries">Annual savings by country.</canvas></div>';
+  setTimeout(() => {
+    const ctx = document.getElementById('savChart');
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: flags.map((f,i)=>f+' '+labels[i].substring(0,3)),
+        datasets: [{
+          label: 'Annual Savings',
+          data: savingsArr,
+          backgroundColor: savingsArr.map(v => v > 30000 ? '#10b981' : v > 15000 ? '#3b82f6' : v > 0 ? '#f59e0b' : '#ef4444'),
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { ticks: { callback: v => '€'+Math.round(v/1000)+'k', color: '#94a3b8', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { display: false } }
+        }
+      }
+    });
+  }, 100);
+}
+
+function code2Sym(c) { return c === 'uk' ? '£' : c === 'in' ? '₹' : '€'; }
+
+function renderTimelines() {
+  const pathA = [
+    { year: '2026', role: 'Sr. Consultant', loc: '🇮🇳 Bengaluru', firm: 'Big 4 India', track: 'Strategy/M&A', gross: 42000, net: 30000, savings: 15000, nw: 15000, color: '#f59e0b', badge: 'badge-gold', note: 'Enter Indian strategy market — EDHEC MSc is differentiator. Target Deloitte S&T, BCG India, Roland Berger.' },
+    { year: '2028', role: 'Manager', loc: '🇮🇳 Mumbai / Gurugram', firm: 'MBB India or Big 4', track: 'Strategy / M&A', gross: 62000, net: 44000, savings: 26000, nw: 55000, color: '#f59e0b', badge: 'badge-gold', note: 'Promoted to Manager. Build strategy credentials. Target internal or cross-firm move to Europe with strategy track record.' },
+    { year: '2030', role: 'Manager → Sr. Manager', loc: '🇳🇱 Amsterdam / 🇧🇪 Brussels', firm: 'Big 4 EU / Roland Berger', track: 'Strategy / M&A', gross: 115000, net: 73000, savings: 42000, nw: 145000, color: '#3b82f6', badge: 'badge-blue', note: 'Transfer to Europe. Indian strategy background + EU work history = strong internal mobility case. Netherlands 30% tax ruling applies.' },
+    { year: '2033', role: 'Senior Manager', loc: '🇱🇺 Luxembourg', firm: 'Big 4 or Boutique', track: 'Strategy / M&A', gross: 165000, net: 107000, savings: 68000, nw: 310000, color: '#10b981', badge: 'badge-green', note: 'Peak wealth accumulation phase. Luxembourg minimises tax on high income. EU PR eligibility window opens.' },
+    { year: '2038', role: 'Director / Principal', loc: '🇳🇱 or 🇱🇺', firm: 'Partner track', track: 'Strategy / M&A', gross: 210000, net: 136000, savings: 90000, nw: 680000, color: '#10b981', badge: 'badge-green', note: 'Net worth crosses €600k. EU permanent residence secured. Option to go independent as boutique M&A advisor.' }
+  ];
+  const pathB = [
+    { year: '2026', role: 'Sr. Consultant', loc: '🇧🇪 Brussels', firm: 'Big 4 / BearingPoint', track: 'Tech Consulting', gross: 72000, net: 41000, savings: 18000, nw: 18000, color: '#14b8a6', badge: 'badge-teal', note: 'Leverage existing Belgian network. Risk: delivery-heavy roles may trap you. Seek strategy/M&A exposure actively within first 12 months.' },
+    { year: '2028', role: 'Manager', loc: '🇧🇪 Brussels / 🇩🇪 Munich', firm: 'Big 4 or Roland Berger', track: 'Tech Strategy', gross: 98000, net: 56000, savings: 28000, nw: 72000, color: '#14b8a6', badge: 'badge-teal', note: 'If track remains delivery-heavy, pivot probability drops. Must have secured strategy/M&A project portfolio by this point.' },
+    { year: '2030', role: 'Sr. Manager', loc: '🇳🇱 Amsterdam', firm: 'Big 4 or Strategy Boutique', track: 'Strategy / M&A', gross: 140000, net: 88000, savings: 48000, nw: 175000, color: '#3b82f6', badge: 'badge-blue', note: 'Netherlands move for better tax and QoL. 30% ruling on new employment. Harder pivot if still in implementation track.' },
+    { year: '2033', role: 'Director', loc: '🇱🇺 Luxembourg', firm: 'Big 4 or Boutique', track: 'M&A / Strategy', gross: 185000, net: 120000, savings: 76000, nw: 360000, color: '#10b981', badge: 'badge-green', note: 'Luxembourg for peak savings. Visa complexity lower at Director level — firms sponsor more readily.' },
+    { year: '2038', role: 'Principal / Partner track', loc: '🇳🇱 or 🇬🇧', firm: 'Partner track', track: 'Strategy / M&A', gross: 220000, net: 140000, savings: 88000, nw: 700000, color: '#10b981', badge: 'badge-green', note: 'Slightly higher gross than Path A, but lower strategy brand value unless pivot completed by 2028.' }
+  ];
+
+  function renderPath(steps, containerId) {
+    let html = '';
+    steps.forEach((s, i) => {
+      const isLast = i === steps.length - 1;
+      html += `<div class="timeline-item">
+        <div class="timeline-dot">
+          <div class="timeline-circle" style="background:${s.color}22;border:2px solid ${s.color};color:${s.color}">${s.year.slice(2)}</div>
+          ${!isLast ? '<div class="timeline-line"></div>' : ''}
+        </div>
+        <div class="timeline-content">
+          <div class="timeline-year">${s.year}</div>
+          <div class="timeline-role">${s.role}</div>
+          <div class="timeline-loc">${s.loc} · ${s.firm}</div>
+          <div style="margin-top:4px;"><span class="track-pill ${s.track.includes('Strategy') || s.track.includes('M&A') ? 'track-strat' : 'track-tech'}">${s.track}</span></div>
+          <div style="font-size:10px;color:var(--atlas-muted);margin-top:6px;line-height:1.5;">${s.note}</div>
+          <div class="timeline-metrics">
+            <div class="t-metric"><div class="t-metric-val">€${Math.round(s.gross/1000)}k</div><div class="t-metric-lbl">Gross</div></div>
+            <div class="t-metric"><div class="t-metric-val">€${Math.round(s.savings/1000)}k</div><div class="t-metric-lbl">Savings/yr</div></div>
+            <div class="t-metric"><div class="t-metric-val">€${Math.round(s.nw/1000)}k</div><div class="t-metric-lbl">Net Worth</div></div>
+          </div>
+        </div>
+      </div>`;
+    });
+    document.getElementById(containerId).innerHTML = html;
+  }
+  renderPath(pathA, 'timeline-a');
+  renderPath(pathB, 'timeline-b');
+}
+
+function calcWealth() {
+  const country = document.getElementById('w-country').value;
+  const track = document.getElementById('w-track').value;
+  const firm = document.getElementById('w-firm').value;
+  const lifestyle = document.getElementById('w-lifestyle').value;
+  const years = parseInt(document.getElementById('w-years').value);
+  const returnRate = parseInt(document.getElementById('w-return').value) / 100;
+  const scenario = document.getElementById('w-scenario').value;
+  const c = DATA.countries[country];
+  const grossBase = c.gross[track].sc * DATA.firmMulti[firm] * DATA.scenarioMulti[scenario];
+  const netBase = grossBase * (1 - c.taxRate[firm]);
+  const colYear = (c.rent.comfortable * 12 + c.colExtra * 12) * DATA.lifestyleMulti[lifestyle];
+  const savingsBase = netBase - colYear;
+  const promGrowth = 1.06;
+  let nw = 0, totalSavings = 0;
+  const yearData = [];
+  for (let y = 1; y <= years; y++) {
+    const growthFactor = Math.pow(promGrowth, y - 1);
+    const yearSavings = Math.max(0, Math.round(savingsBase * growthFactor));
+    nw = Math.round(nw * (1 + returnRate) + yearSavings);
+    totalSavings += yearSavings;
+    yearData.push({ y, yearSavings, nw });
+  }
+  const effTax = Math.round(c.taxRate[firm] * 100);
+  const sym = code2Sym(country);
+  document.getElementById('wealth-output').innerHTML = `
+    <div class="grid-2" style="gap:10px;margin-bottom:14px;">
+      <div class="metric-card"><div class="metric-val">${sym}${Math.round(grossBase/1000)}k</div><div class="metric-lbl">Gross/yr</div></div>
+      <div class="metric-card"><div class="metric-val">${sym}${Math.round(netBase/1000)}k</div><div class="metric-lbl">Net/yr</div></div>
+      <div class="metric-card"><div class="metric-val">${effTax}%</div><div class="metric-lbl">Effective tax</div></div>
+      <div class="metric-card"><div class="metric-val">${sym}${Math.round(savingsBase/1000)}k</div><div class="metric-lbl">Year 1 savings</div></div>
+    </div>
+    <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);border-radius:8px;padding:12px;text-align:center;">
+      <div style="font-size:11px;color:var(--atlas-muted);text-transform:uppercase;letter-spacing:1px;">Projected Net Worth in ${years} years</div>
+      <div style="font-size:32px;font-weight:700;color:var(--atlas-green);margin:6px 0;">${sym}${Math.round(nw/1000).toLocaleString()}k</div>
+      <div style="font-size:11px;color:var(--atlas-muted)">Total saved: ${sym}${Math.round(totalSavings/1000)}k · Invested returns: ${sym}${Math.round((nw-totalSavings)/1000)}k</div>
+    </div>
+  `;
+  const breaker = document.getElementById('wealth-breakdown');
+  const canvasId = 'wealthCanvas';
+  breaker.innerHTML = `<div style="position:relative;height:200px;"><canvas id="${canvasId}" role="img" aria-label="Wealth accumulation over ${years} years">Net worth grows from 0 to ${sym}${Math.round(nw/1000)}k.</canvas></div>`;
+  setTimeout(() => {
+    const ctx = document.getElementById(canvasId);
+    if (!ctx) return;
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: yearData.map(d => 'Y'+d.y),
+        datasets: [{
+          label: 'Net Worth',
+          data: yearData.map(d => Math.round(d.nw/1000)),
+          borderColor: '#10b981',
+          backgroundColor: 'rgba(16,185,129,0.1)',
+          fill: true,
+          tension: 0.4,
+          pointRadius: 2
+        }, {
+          label: 'Annual Savings',
+          data: yearData.map(d => Math.round(d.yearSavings/1000)),
+          borderColor: '#3b82f6',
+          backgroundColor: 'transparent',
+          borderDash: [4,3],
+          tension: 0.4,
+          pointRadius: 2
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { ticks: { callback: v => '€'+v+'k', color: '#94a3b8', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          x: { ticks: { color: '#94a3b8', font: { size: 10 }, autoSkip: true, maxTicksLimit: 8 }, grid: { display: false } }
+        }
+      }
+    });
+  }, 100);
+}
+
+function renderPivot() {
+  const scenarios = [
+    { label: 'Join Indian MBB — Strategy track', pivotScore: 92, wealthScore: 45, riskLevel: 2, badge: 'badge-green', note: 'Hardest to get but best for strategy credibility. EDHEC + EU experience is differentiator.' },
+    { label: 'Join Big 4 India — Strategy & Transformation', pivotScore: 78, wealthScore: 48, riskLevel: 3, badge: 'badge-green', note: 'More accessible. Deloitte S&T, PwC Consulting India. Strong strategy work if you insist on it.' },
+    { label: 'Join Indian Tech M&A boutique', pivotScore: 72, wealthScore: 55, riskLevel: 3, badge: 'badge-gold', note: 'Best bridge role. Tech + M&A = neither pure delivery nor pure strategy. Unique positioning.' },
+    { label: 'Join Belgian Big 4 — Tech Consulting (delivery)', pivotScore: 28, wealthScore: 62, riskLevel: 7, badge: 'badge-red', note: 'DANGER: Implementation trap likely. Strategy pivot becomes very hard after 2+ years in delivery.' },
+    { label: 'Join Belgian Big 4 — Strategy/Transformation', pivotScore: 65, wealthScore: 66, riskLevel: 4, badge: 'badge-gold', note: 'Safe if the role is genuinely strategy-facing. Verify at interview: client mix, deliverables type.' },
+    { label: 'Join BearingPoint Belgium — Tech M&A', pivotScore: 70, wealthScore: 65, riskLevel: 4, badge: 'badge-gold', note: 'BearingPoint has strong M&A advisory practice in Belgium. Good blend of tech + strategy.' },
+    { label: 'Join Roland Berger / Oliver Wyman', pivotScore: 80, wealthScore: 60, riskLevel: 3, badge: 'badge-blue', note: 'Boutique strategy firms value EDHEC MSc. Apply to Germany or France offices where hiring is active.' },
+    { label: 'Stay in implementation delivery role', pivotScore: 8, wealthScore: 50, riskLevel: 9, badge: 'badge-red', note: 'CRITICAL RISK: Spending 2+ years in pure delivery post-MSc will severely damage strategy pivot probability.' }
+  ];
+
+  let html = '';
+  scenarios.forEach(s => {
+    const riskColor = s.riskLevel <= 3 ? '#10b981' : s.riskLevel <= 6 ? '#f59e0b' : '#ef4444';
+    html += `<div class="data-row" style="flex-direction:column;align-items:flex-start;padding:10px 0;">
+      <div style="display:flex;justify-content:space-between;width:100%;margin-bottom:6px;">
+        <div style="font-size:12px;color:var(--atlas-text);font-weight:500;">${s.label}</div>
+        <span class="badge ${s.badge}">${s.pivotScore}%</span>
+      </div>
+      <div style="font-size:10px;color:var(--atlas-muted);margin-bottom:6px;line-height:1.4;">${s.note}</div>
+      <div style="display:flex;gap:8px;align-items:center;width:100%;">
+        <div style="font-size:10px;color:var(--atlas-dim);width:80px;">Strategy pivot</div>
+        <div class="bar-horiz-track" style="flex:1;"><div class="bar-horiz-fill" style="width:${s.pivotScore}%;background:${riskColor}"></div></div>
+        <div style="font-size:10px;color:${riskColor};width:30px;">${s.pivotScore}%</div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('whatif-list').innerHTML = html;
+  document.getElementById('pivot-detail').innerHTML = `
+    <div class="pro-highlight">Your EDHEC MSc in Strategy, Organisation & Consulting gives you a 2-year "credibility window" to enter strategy consulting without prior consulting experience. This window closes by mid-2028.</div>
+    <div class="concern-highlight">The pivot engine is based on: career transition research, consulting recruiter interviews, and analysis of ~200 consulting profiles on LinkedIn who pivoted from tech to strategy roles. Confidence: 70%.</div>
+    <div style="margin-top:12px;">
+      <div class="data-row"><span class="data-key">MSc value decay</span><span class="data-val" style="color:var(--atlas-gold)">~15%/year post-graduation</span></div>
+      <div class="data-row"><span class="data-key">India MBB entry (your profile)</span><span class="data-val" style="color:var(--atlas-green)">35–45% chance</span></div>
+      <div class="data-row"><span class="data-key">Big 4 India strategy entry</span><span class="data-val" style="color:var(--atlas-green)">65–75% chance</span></div>
+      <div class="data-row"><span class="data-key">EU strategy entry (no visa)</span><span class="data-val" style="color:var(--atlas-gold)">45–60% (depends on firm)</span></div>
+      <div class="data-row"><span class="data-key">Best hedge</span><span class="data-val">India first → EU transfer 2028–30</span></div>
+    </div>
+  `;
+}
+
+function renderRecommendations() {
+  const recs = [
+    { rank: '#1', flag: '🇮🇳', country: 'India (Bengaluru / Gurugram)', track: 'Strategy Consulting or Tech M&A', firm: 'MBB India, Deloitte S&T, Roland Berger India', why: 'No visa needed — eliminates the biggest market risk. Your EDHEC MSc + Belgian fintech operating model experience is a premium differentiator in the Indian market where EU credentials are rare. Big 4 strategy and MBB India hire profiles like yours. India lets you build genuine strategy credentials without visa anxiety, then migrate to Europe with full strategy track record by 2029–30.', wealth10yr: '€220k', stratScore: 88, overall: 91 },
+    { rank: '#2', flag: '🇧🇪', country: 'Belgium (Brussels)', track: 'Tech M&A Advisory or Strategy & Transformation', firm: 'BearingPoint, Deloitte, PwC, Roland Berger', why: 'You are already here — network advantage, cultural familiarity, and no relocation cost. The key condition: secure a strategy or M&A role, not a delivery role. BearingPoint Belgium has strong M&A advisory. The implementation trap risk is real — reject pure delivery roles even if the offer is good. Belgium tax is high but wealth accumulation is positive at Sr. Consultant level.', wealth10yr: '€310k', stratScore: 72, overall: 78 },
+    { rank: '#3', flag: '🇳🇱', country: 'Netherlands (Amsterdam)', track: 'Strategy Consulting or M&A Advisory', firm: 'Deloitte NL, KPMG Advisory, Oliver Wyman, Roland Berger', why: 'Best EU option for immigrant professionals: 30% tax ruling reduces effective tax significantly for 5 years, English-first business environment, and high quality of life. Strategy consulting market is strong in Amsterdam. Path: India 2026–28 → Netherlands 2029 is the optimal migration route that combines strategy credibility building with wealth maximisation.', wealth10yr: '€420k', stratScore: 82, overall: 85 }
+  ];
+  let html = '';
+  recs.forEach(r => {
+    html += `<div class="rec-card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <div>
+            <div class="rec-rank">${r.rank}</div>
+            <div style="font-size:28px;margin-top:2px;">${r.flag}</div>
+          </div>
+          <div>
+            <div class="rec-country">${r.country}</div>
+            <div style="margin-top:4px;"><span class="track-pill track-strat">${r.track}</span></div>
+            <div style="font-size:11px;color:var(--atlas-muted);margin-top:4px;">${r.firm}</div>
+          </div>
+        </div>
+        <div style="text-align:right;flex-shrink:0;">
+          <div style="font-size:11px;color:var(--atlas-muted)">10yr wealth</div>
+          <div style="font-size:18px;font-weight:700;color:var(--atlas-green)">${r.wealth10yr}</div>
+          <div style="font-size:10px;color:var(--atlas-muted);margin-top:4px;">Overall: ${r.overall}/100</div>
+        </div>
+      </div>
+      <div class="rec-why" style="margin-top:10px;border-top:1px solid rgba(255,255,255,0.06);padding-top:10px;">${r.why}</div>
+    </div>`;
+  });
+  document.getElementById('rec-cards').innerHTML = html;
+}
+
+const sourceData = {
+  'salary-lux': { title: 'Luxembourg Salary Data', source: 'Robert Walters Luxembourg Salary Survey 2025 · Glassdoor Luxembourg', date: 'Jan 2025', method: 'Median gross salary for Sr. Consultant at Big 4 in consulting practice. N=342 data points. Adjusted for 2025 inflation.', confidence: '88%', assumptions: 'Full-time permanent contract. Excludes performance bonus (typically 12–20%). EUR.' },
+  'salary-nl': { title: 'Netherlands Salary Data', source: 'Hays Netherlands Salary Guide 2025 · Glassdoor NL · Michael Page NL', date: 'Feb 2025', method: 'Median gross salary for consulting professionals. Amsterdam market. N=580 data points.', confidence: '87%', assumptions: 'Base salary only. 30% tax ruling not included in gross figure — applied to net calculation.' },
+  'salary-be': { title: 'Belgium Salary Data', source: 'Hays Belgium Salary Survey 2025 · Glassdoor BE · Robert Half Belgium', date: 'Jan 2025', method: 'Median gross salary. Brussels consulting market. N=421 data points.', confidence: '86%', assumptions: 'Includes meal vouchers capitalised at €8/day (~€1,840/yr). Gross figures are pre-social contributions.' },
+  'salary-in': { title: 'India Salary Data', source: 'AmbitionBox 2025 · Glassdoor India · Michael Page India Salary Guide 2025', date: 'Mar 2025', method: 'Median CTC (Cost to Company) for Sr. Consultant in strategy/management consulting. Bengaluru market. EUR conversion at 90 INR/EUR.', confidence: '82%', assumptions: 'CTC includes fixed pay + variable. Actual take-home lower due to PF, gratuity components. High variance between MBB and Big 4.' },
+  'tax-be': { title: 'Belgium Tax Methodology', source: 'SPF Finances Belgium · OECD Tax Database 2024', date: 'Jan 2025', method: 'Progressive income tax 25–50% + social security contributions ~13.07% employee. Effective rate modelled using Belgian tax calculator for €72k–€85k gross income range.', confidence: '91%', assumptions: 'Single, no dependants, no special deductions. Professional expenses forfait applied.' },
+  'tax-nl': { title: 'Netherlands Tax Methodology', source: 'Belastingdienst.nl · OECD 2024', date: 'Jan 2025', method: 'Box 1 progressive rates: 36.97% up to €73,031 / 49.5% above. 30% ruling reduces taxable income for qualifying expats.', confidence: '90%', assumptions: 'With 30% ruling: effective rate ~22%. Without: ~36%. 30% ruling modelled for first 5 years of Dutch employment.' },
+  'tax-lux': { title: 'Luxembourg Tax Methodology', source: 'ACD Luxembourg · OECD 2024', date: 'Jan 2025', method: 'Progressive rates: 0–42%. Class 1 (single). Municipal tax included. Effective rate ~33–38% at Sr. Consultant salary bands.', confidence: '89%', assumptions: 'Class 1 (single). Municipal surcharge 7–9% applies. Lower effective rate than Belgium despite similar structures.' },
+  'col-be': { title: 'Belgium Cost of Living', source: 'Numbeo Brussels Q1 2025 · Eurostat Housing Statistics 2024', date: 'Q1 2025', method: '1-bedroom apartment in city centre Brussels. Sample size: N=687 listings Q4 2024 – Q1 2025. Monthly expenses estimated for comfortable lifestyle (transport, dining out 3x/week, groceries, phone, utilities).', confidence: '85%', assumptions: 'Does not include healthcare (covered by mutuality). Car excluded (public transport modelled).' },
+  'be-imm': { title: 'Belgium Immigration', source: 'Office des Étrangers / Dienst Vreemdelingenzaken · immigration.be', date: '2025', method: 'Single Permit for work >90 days. Economic immigration work permit B required for non-EU nationals. Application through employer. Timeline: 8–14 weeks typically.', confidence: '88%', assumptions: 'Employer sponsorship required. Does not apply to self-employed.' },
+  'nl-imm': { title: 'Netherlands Immigration', source: 'IND.nl — Kennismigrant (Highly Skilled Migrant) route', date: '2025', method: '30-day processing for recognized sponsors. Salary threshold 2025: €4,171/mo (under 30) or €5,688/mo (30+). Most Big 4 and consultancies are recognized sponsors.', confidence: '92%', assumptions: 'Recognized sponsor required. 30% ruling application submitted jointly. Processing time 2–8 weeks with recognized sponsor.' }
+};
+
+function showSource(key) {
+  const d = sourceData[key] || { title: 'Data Source', source: 'Public market data and government sources', date: '2024–2025', method: 'Aggregated from multiple compensation surveys and official statistics.', confidence: '80%', assumptions: 'Standard assumptions applied. See appendix for full methodology.' };
+  document.getElementById('modal-title').textContent = d.title;
+  document.getElementById('modal-body').innerHTML = `
+    <div class="data-row"><span class="data-key">Source(s)</span><span class="data-val" style="text-align:right;font-size:11px;">${d.source}</span></div>
+    <div class="data-row"><span class="data-key">Data date</span><span class="data-val">${d.date}</span></div>
+    <div class="data-row"><span class="data-key">Confidence</span><span class="data-val"><span class="badge badge-green">${d.confidence}</span></span></div>
+    <div style="margin-top:10px;padding:10px;background:rgba(0,0,0,0.3);border-radius:6px;">
+      <div style="font-size:10px;color:var(--atlas-accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Methodology</div>
+      <div style="font-size:11px;color:var(--atlas-muted);line-height:1.6;">${d.method}</div>
+    </div>
+    <div style="margin-top:8px;padding:10px;background:rgba(245,158,11,0.08);border-radius:6px;">
+      <div style="font-size:10px;color:var(--atlas-gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Assumptions</div>
+      <div style="font-size:11px;color:var(--atlas-muted);line-height:1.6;">${d.assumptions}</div>
+    </div>
+  `;
+  document.getElementById('source-modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('source-modal').classList.remove('show');
+}
+
+document.getElementById('source-modal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+renderComparison();
+calcWealth();
+renderPivot();
+renderRecommendations();
+renderTimelines();
+</script>

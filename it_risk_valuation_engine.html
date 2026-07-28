@@ -1,0 +1,603 @@
+
+<h2 class="sr-only">IT M&A Risk Quantification and Valuation Engine — enter findings across 8 IT due diligence pillars, choose risk mitigation pathways, and see the impact on EBITDA and final deal valuation through an interactive waterfall.</h2>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--color-text-primary);font-size:14px;line-height:1.6}
+.app{padding:0.75rem 0}
+.tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:1.25rem;border-bottom:0.5px solid var(--color-border-tertiary);padding-bottom:0.75rem}
+.tab{padding:5px 13px;border:0.5px solid var(--color-border-secondary);border-radius:20px;background:var(--color-background-primary);font-size:12px;cursor:pointer;transition:all .15s;color:var(--color-text-secondary);white-space:nowrap}
+.tab.on{background:var(--color-background-secondary);border-color:var(--color-border-primary);color:var(--color-text-primary);font-weight:500}
+.tab:hover:not(.on){background:var(--color-background-secondary)}
+.pg{display:none}.pg.on{display:block}
+
+.pillar-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem}
+.pillar-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem;background:var(--color-background-primary);cursor:pointer;transition:border-color .15s}
+.pillar-card:hover{border-color:var(--color-border-secondary)}
+.pillar-card.active{border-color:#7F77DD;background:#EEEDFE}
+.pillar-head{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.pillar-icon{font-size:18px;color:var(--color-text-secondary)}
+.pillar-name{font-size:13px;font-weight:500}
+.pillar-risk{font-size:12px;color:var(--color-text-secondary)}
+.risk-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:4px}
+.dot-high{background:#E24B4A}.dot-med{background:#BA7517}.dot-low{background:#1D9E75}.dot-none{background:#B4B2A9}
+
+.detail-panel{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem;background:var(--color-background-primary);margin-bottom:1rem}
+.dp-header{display:flex;align-items:center;gap:10px;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+.dp-icon{font-size:22px;color:#7F77DD}
+.dp-title{font-size:16px;font-weight:500}
+.dp-sub{font-size:12px;color:var(--color-text-secondary);margin-top:2px}
+.section-label{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;margin-top:1rem}
+
+.finding-row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.finding-row:last-child{border-bottom:none}
+.f-label{font-size:13px}
+.f-controls{display:flex;align-items:center;gap:6px}
+.f-input{width:80px;border:0.5px solid var(--color-border-secondary);border-radius:6px;padding:4px 8px;font-size:13px;background:var(--color-background-primary);color:var(--color-text-primary)}
+.f-unit{font-size:12px;color:var(--color-text-secondary);min-width:20px}
+
+.severity-sel{border:0.5px solid var(--color-border-secondary);border-radius:6px;padding:4px 8px;font-size:12px;background:var(--color-background-primary);color:var(--color-text-primary)}
+
+.pathway-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0}
+.pathway-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px;cursor:pointer;transition:all .15s;background:var(--color-background-primary)}
+.pathway-card:hover{border-color:var(--color-border-secondary);background:var(--color-background-secondary)}
+.pathway-card.sel-chip{border-color:#E24B4A;background:#FCEBEB}
+.pathway-card.sel-escrow{border-color:#BA7517;background:#FAEEDA}
+.pathway-card.sel-multiple{border-color:#7F77DD;background:#EEEDFE}
+.pathway-card.sel-normal{border-color:#1D9E75;background:#E1F5EE}
+.pathway-card.sel-coc{border-color:#185FA5;background:#E6F1FB}
+.pathway-card.sel-ignore{border-color:#B4B2A9;background:#F1EFE8}
+.pw-name{font-size:12px;font-weight:500;margin-bottom:4px}
+.pw-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.4}
+.pw-impact{font-size:11px;font-weight:500;margin-top:6px}
+
+.impact-summary{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;margin-top:8px}
+.impact-row{display:flex;justify-content:space-between;font-size:13px;padding:3px 0}
+.impact-label{color:var(--color-text-secondary)}
+.impact-val{font-weight:500}
+.impact-val.neg{color:#E24B4A}
+.impact-val.pos{color:#1D9E75}
+.impact-val.warn{color:#BA7517}
+
+.metric-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1rem}
+.metric{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px}
+.metric-label{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px}
+.metric-value{font-size:20px;font-weight:500}
+.metric-value.danger{color:#E24B4A}
+.metric-value.warn{color:#BA7517}
+.metric-value.ok{color:#1D9E75}
+
+.waterfall-wrap{margin:1rem 0}
+.wf-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.wf-label{font-size:12px;color:var(--color-text-secondary);min-width:170px;text-align:right}
+.wf-bar-track{flex:1;height:28px;position:relative;border-radius:4px;overflow:hidden}
+.wf-bar-seg{height:100%;position:absolute;display:flex;align-items:center;padding:0 6px;font-size:11px;font-weight:500;white-space:nowrap;border-radius:4px}
+.wf-val{font-size:12px;font-weight:500;min-width:52px;text-align:right;color:var(--color-text-primary)}
+
+.bridge-table{width:100%;border-collapse:collapse;font-size:13px;margin:0.5rem 0}
+.bridge-table th{text-align:left;padding:6px 10px;background:var(--color-background-secondary);font-weight:500;font-size:12px;color:var(--color-text-secondary)}
+.bridge-table td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.bridge-table tr:last-child td{border-bottom:none;font-weight:500}
+.bridge-table tr.total-row td{background:var(--color-background-secondary);font-weight:500}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:500}
+.b-chip{background:#FCEBEB;color:#A32D2D}
+.b-escrow{background:#FAEEDA;color:#633806}
+.b-multiple{background:#EEEDFE;color:#3C3489}
+.b-normal{background:#E1F5EE;color:#085041}
+.b-coc{background:#E6F1FB;color:#0C447C}
+.b-ignore{background:#F1EFE8;color:#444441}
+.b-high{background:#FCEBEB;color:#A32D2D}
+.b-med{background:#FAEEDA;color:#633806}
+.b-low{background:#E1F5EE;color:#085041}
+
+.cue-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.cue-row:last-child{border-bottom:none}
+.cue-icon{font-size:16px;color:#7F77DD;flex-shrink:0;margin-top:2px}
+.cue-body{flex:1}
+.cue-name{font-size:13px;font-weight:500;margin-bottom:2px}
+.cue-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.cue-formula{font-family:var(--font-mono);font-size:12px;background:var(--color-background-secondary);padding:4px 8px;border-radius:4px;margin-top:4px;line-height:1.6}
+
+.formula-box{font-family:var(--font-mono);font-size:12px;background:var(--color-background-secondary);padding:10px 12px;border-radius:var(--border-radius-md);margin:8px 0;line-height:1.8;border-left:3px solid #7F77DD;border-radius:0 var(--border-radius-md) var(--border-radius-md) 0}
+
+.guide-step{display:flex;gap:12px;margin-bottom:1rem;align-items:flex-start}
+.gs-num{width:26px;height:26px;border-radius:50%;background:#EEEDFE;color:#3C3489;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:500;flex-shrink:0}
+.gs-body{flex:1}
+.gs-title{font-size:14px;font-weight:500;margin-bottom:4px}
+.gs-desc{font-size:13px;color:var(--color-text-secondary);line-height:1.6}
+
+.pathway-guide{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0.75rem}
+.pg-card{border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;background:var(--color-background-primary)}
+.pg-head{font-size:13px;font-weight:500;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.pg-body{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.pg-when{font-size:11px;margin-top:6px;color:var(--color-text-secondary)}
+.pg-when strong{color:var(--color-text-primary)}
+
+.run-btn{padding:8px 20px;border:0.5px solid #7F77DD;border-radius:var(--border-radius-md);background:#EEEDFE;color:#3C3489;font-size:13px;font-weight:500;cursor:pointer;margin-top:1rem}
+.run-btn:hover{background:#CECBF6}
+
+select,input[type=number]{font-family:var(--font-sans)}
+</style>
+
+<div class="app">
+
+<div class="tabs">
+  <button class="tab on" onclick="showTab('pillars')"><i class="ti ti-building" aria-hidden="true"></i> 1 · Enter findings</button>
+  <button class="tab" onclick="showTab('pathways')"><i class="ti ti-road" aria-hidden="true"></i> 2 · Risk pathways</button>
+  <button class="tab" onclick="showTab('valuation')"><i class="ti ti-chart-bar" aria-hidden="true"></i> 3 · Valuation bridge</button>
+  <button class="tab" onclick="showTab('guide')"><i class="ti ti-book" aria-hidden="true"></i> Methodology guide</button>
+</div>
+
+<!-- ════ PAGE 1: PILLARS ════ -->
+<div class="pg on" id="pg-pillars">
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-bottom:1rem">
+    <div class="metric"><div class="metric-label">Reported EBITDA</div><div class="metric-value" id="m-ebitda">£20.0M</div></div>
+    <div class="metric"><div class="metric-label">Total deductions</div><div class="metric-value danger" id="m-deduct">£0.0M</div></div>
+    <div class="metric"><div class="metric-label">Normalised EBITDA</div><div class="metric-value warn" id="m-norm">£20.0M</div></div>
+    <div class="metric"><div class="metric-label">Final deal value</div><div class="metric-value ok" id="m-deal">£160.0M</div></div>
+  </div>
+
+  <div style="display:flex;gap:10px;margin-bottom:1rem;align-items:center">
+    <div style="flex:1">
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">Reported EBITDA (£M)</div>
+      <input type="number" id="base-ebitda" value="20" min="1" max="500" step="0.5" style="width:120px" oninput="recalc()">
+    </div>
+    <div style="flex:1">
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">EV/EBITDA multiple (×)</div>
+      <input type="number" id="base-mult" value="8" min="3" max="20" step="0.5" style="width:100px" oninput="recalc()">
+    </div>
+    <div style="flex:1">
+      <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px">FS sector</div>
+      <select id="sector" onchange="recalc()" style="font-size:13px">
+        <option value="bank">Bank</option>
+        <option value="insurer">Insurer</option>
+        <option value="am">Asset manager</option>
+        <option value="fintech">Fintech</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="pillar-grid" id="pillarGrid"></div>
+
+  <div class="detail-panel" id="detailPanel" style="display:none"></div>
+
+</div>
+
+<!-- ════ PAGE 2: PATHWAYS ════ -->
+<div class="pg" id="pg-pathways">
+  <div style="font-size:14px;font-weight:500;margin-bottom:0.75rem">Risk mitigation pathway selector</div>
+  <div style="font-size:13px;color:var(--color-text-secondary);margin-bottom:1rem">For each finding with a severity, select the mitigation pathway. The app calculates the exact impact on EBITDA and deal price for each pathway.</div>
+
+  <div id="pathwayList"></div>
+  <button class="run-btn" onclick="showTab('valuation')">Calculate valuation bridge <i class="ti ti-arrow-right" aria-hidden="true"></i></button>
+</div>
+
+<!-- ════ PAGE 3: VALUATION ════ -->
+<div class="pg" id="pg-valuation">
+  <div style="font-size:14px;font-weight:500;margin-bottom:1rem">Valuation bridge & EBITDA walk</div>
+
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem">
+    <div class="metric"><div class="metric-label">Reported EBITDA</div><div class="metric-value" id="v-reported">—</div></div>
+    <div class="metric"><div class="metric-label">Normalised EBITDA</div><div class="metric-value warn" id="v-norm">—</div></div>
+    <div class="metric"><div class="metric-label">Gross EV</div><div class="metric-value" id="v-gev">—</div></div>
+    <div class="metric"><div class="metric-label">Net deal price</div><div class="metric-value ok" id="v-net">—</div></div>
+  </div>
+
+  <div class="waterfall-wrap" id="waterfallWrap"></div>
+
+  <div style="font-size:14px;font-weight:500;margin-top:1.25rem;margin-bottom:0.75rem">Full EBITDA bridge & deduction log</div>
+  <table class="bridge-table">
+    <thead><tr><th>Item</th><th>Pillar</th><th>Pathway</th><th>Mechanism</th><th style="text-align:right">EBITDA impact</th><th style="text-align:right">EV impact</th></tr></thead>
+    <tbody id="bridgeTbody"></tbody>
+  </table>
+
+  <div style="margin-top:1.25rem;padding:10px 14px;background:var(--color-background-secondary);border-radius:var(--border-radius-md);font-size:13px">
+    <div style="font-size:12px;font-weight:500;color:var(--color-text-secondary);margin-bottom:8px">DIRECT PRICE DEDUCTIONS (not EBITDA)</div>
+    <table class="bridge-table" style="margin:0">
+      <thead><tr><th>Item</th><th>Pathway</th><th style="text-align:right">Amount deducted</th></tr></thead>
+      <tbody id="directTbody"></tbody>
+    </table>
+  </div>
+
+  <div style="margin-top:1.25rem">
+    <div style="position:relative;width:100%;height:260px">
+      <canvas id="bridgeChart" role="img" aria-label="Waterfall chart showing EBITDA bridge from reported to normalised to final deal value"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- ════ PAGE 4: GUIDE ════ -->
+<div class="pg" id="pg-guide">
+  <div style="font-size:14px;font-weight:500;margin-bottom:0.75rem">Methodology: risk identification → quantification → pathway → valuation</div>
+
+  <div class="guide-step"><div class="gs-num">1</div><div class="gs-body"><div class="gs-title">Identify findings across 8 pillars</div><div class="gs-desc">Every DD finding belongs to one of the 8 pillars. Classify by severity: High (material deal risk), Medium (significant but manageable), Low (minor, note only). Severity determines which mitigation pathways are available.</div></div></div>
+  <div class="guide-step"><div class="gs-num">2</div><div class="gs-body"><div class="gs-title">Quantify the financial exposure</div><div class="gs-desc">For each finding, estimate: (a) one-time remediation cost, (b) recurring cost impact if ongoing, (c) regulatory fine exposure, (d) probability-weighted loss. Use benchmarks from the cue library below.</div></div></div>
+  <div class="guide-step"><div class="gs-num">3</div><div class="gs-body"><div class="gs-title">Choose the mitigation pathway</div><div class="gs-desc">Each finding maps to one of 6 pathways. The pathway determines whether the risk hits EBITDA (via normalisation or multiple compression) or hits price directly (via chip or escrow). Choose based on certainty, quantum, and negotiating position.</div></div></div>
+  <div class="guide-step"><div class="gs-num">4</div><div class="gs-body"><div class="gs-title">Build the valuation bridge</div><div class="gs-desc">Walk: Reported EBITDA → EBITDA adjustments → Normalised EBITDA × Multiple = Gross EV → minus direct price chips → minus escrow → Net deal price. Every £1M EBITDA adjustment = £(multiple)M EV impact.</div></div></div>
+
+  <div style="font-size:14px;font-weight:500;margin:1.25rem 0 0.75rem">The 6 mitigation pathways — when to use each</div>
+  <div class="pathway-guide">
+    <div class="pg-card"><div class="pg-head"><span class="badge b-chip">Price chip</span></div><div class="pg-body">Certain, quantifiable, one-time cost. Deducted directly from deal price (not EBITDA). Most aggressive — seller feels full impact upfront.</div><div class="pg-when"><strong>Use when:</strong> known remediation cost, cyber breach, open litigation, stranded contract</div></div>
+    <div class="pg-card"><div class="pg-head"><span class="badge b-escrow">Escrow</span></div><div class="pg-body">Risk is real but outcome uncertain. Funds held in trust; released to seller if risk doesn't materialise, to buyer if it does. Balances risk between parties.</div><div class="pg-when"><strong>Use when:</strong> regulatory investigation, conditional risk, pending cyber audit</div></div>
+    <div class="pg-card"><div class="pg-head"><span class="badge b-normal">EBITDA normalisation</span></div><div class="pg-body">Recurring cost that the target has understated or omitted. Adjusts the earnings base before applying the multiple. Maximum EV leverage — every £1M = £multiple M.</div><div class="pg-when"><strong>Use when:</strong> deferred maintenance, shadow IT, understated run-rate, dis-synergy</div></div>
+    <div class="pg-card"><div class="pg-head"><span class="badge b-multiple">Multiple compression</span></div><div class="pg-body">Risk increases uncertainty of future earnings. Apply a lower multiple to the whole deal. Reflects elevated integration or operational risk rather than a specific cost.</div><div class="pg-when"><strong>Use when:</strong> open FCA investigation, COBOL mainframe, structural IT fragility</div></div>
+    <div class="pg-card"><div class="pg-head"><span class="badge b-coc">Condition of close</span></div><div class="pg-body">Risk is deal-breaker if unresolved. Require the seller to remediate before close. No financial deduction but protects buyer from inheriting the risk.</div><div class="pg-when"><strong>Use when:</strong> critical cyber vulnerability, open regulatory action, data breach, EOL system in prod</div></div>
+    <div class="pg-card"><div class="pg-head"><span class="badge b-ignore">Note only</span></div><div class="pg-body">Risk is immaterial or already priced in. Documented in DD report but not reflected in valuation. Use sparingly — always justify why no adjustment.</div><div class="pg-when"><strong>Use when:</strong> minor findings, low financial exposure, risk fully mitigated by seller pre-close</div></div>
+  </div>
+
+  <div style="font-size:14px;font-weight:500;margin:1.25rem 0 0.75rem">Risk quantification cue library</div>
+  <div id="cueLib"></div>
+
+  <div style="font-size:14px;font-weight:500;margin:1.25rem 0 0.75rem">Core formulae</div>
+  <div class="formula-box">
+Normalised EBITDA = Reported EBITDA − understatements + one-off add-backs
+Gross EV          = Normalised EBITDA × EV/EBITDA multiple
+Net deal price    = Gross EV − price chips − escrow amounts
+EV impact         = EBITDA delta × multiple (for normalisation findings)
+Payback period    = One-time cost ÷ annual run-rate saving
+Dis-synergy       = standalone IT cost − embedded IT cost
+Stranded cost     = shared IT cost × (1 − carved-out entity share)
+Regulatory fine   = min(£17.5M, 4% of global revenue)   [GDPR max UK]
+Tech debt proxy   = deferred investment years × annual IT CapEx × 0.3–0.5</div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const PILLARS=[
+  {id:'apps',icon:'ti-apps',name:'Applications',sub:'Portfolio, EOL, licences, tech debt',findings:[
+    {id:'legacy_stack',label:'Legacy/EOL systems in production',unit:'£M remediation',desc:'COBOL, unsupported versions, mainframes requiring migration',benchLow:5,benchHigh:200,ebitdaType:'normal',mult:1},
+    {id:'tech_debt',label:'Technical debt (deferred investment)',unit:'£M/yr',desc:'Estimated annual cost of deferred upgrades and shortcuts',benchLow:0.5,benchHigh:8,ebitdaType:'normal',mult:1},
+    {id:'licence_overrun',label:'Unlicensed / non-compliant software',unit:'£M one-time',desc:'Shadow licence usage, audit exposure',benchLow:0.2,benchHigh:5,ebitdaType:'chip',mult:0},
+    {id:'app_redundancy',label:'Redundant duplicate applications',unit:'£M/yr saving',desc:'Rationalisation synergy (positive — add back to buyer model)',benchLow:0.5,benchHigh:10,ebitdaType:'none',mult:0},
+  ]},
+  {id:'infra',icon:'ti-server',name:'Infrastructure',sub:'Cloud, data centres, networks, DR',findings:[
+    {id:'dc_overrun',label:'Data centre lease / exit liability',unit:'£M one-time',desc:'Trapped leases, power commitments, exit penalties',benchLow:1,benchHigh:15,ebitdaType:'chip',mult:0},
+    {id:'dr_gap',label:'DR/BCP gap (untested or absent)',unit:'£M exposure',desc:'Probability-weighted cost of a DR failure in regulated context',benchLow:0.5,benchHigh:20,ebitdaType:'escrow',mult:0},
+    {id:'cloud_migration',label:'Forced cloud migration cost',unit:'£M one-time',desc:'Required migration of on-prem to cloud post-deal',benchLow:2,benchHigh:40,ebitdaType:'chip',mult:0},
+    {id:'infra_underinvest',label:'Infrastructure under-investment',unit:'£M/yr',desc:'Annual cost to reach market-standard resilience',benchLow:0.3,benchHigh:5,ebitdaType:'normal',mult:1},
+  ]},
+  {id:'arch',icon:'ti-topology-star',name:'Architecture',sub:'APIs, integrations, complexity',findings:[
+    {id:'spaghetti',label:'Undocumented point-to-point integrations',unit:'£M integration cost',desc:'Per interface: £50–150k to document + remediate × interface count',benchLow:1,benchHigh:30,ebitdaType:'chip',mult:0},
+    {id:'vendor_lock',label:'Proprietary vendor lock-in',unit:'£M/yr premium',desc:'Above-market pricing due to switching cost',benchLow:0.2,benchHigh:3,ebitdaType:'normal',mult:1},
+    {id:'api_debt',label:'API / integration modernisation',unit:'£M one-time',desc:'Cost to migrate from legacy ESB to API-first architecture',benchLow:1,benchHigh:20,ebitdaType:'chip',mult:0},
+  ]},
+  {id:'itfin',icon:'ti-coins',name:'IT Financials',sub:'Spend, CapEx/OpEx, shadow IT',findings:[
+    {id:'shadow_it',label:'Shadow IT (undisclosed spend)',unit:'% of reported IT spend',desc:'Typically 15–30% additional. Add to normalised cost base.',benchLow:5,benchHigh:30,ebitdaType:'normal',mult:1,isPercent:true},
+    {id:'capex_opex_misclass',label:'CapEx/OpEx misclassification',unit:'£M/yr',desc:'Costs capitalised that should be expensed — inflates EBITDA',benchLow:0.2,benchHigh:5,ebitdaType:'normal',mult:1},
+    {id:'deferred_maint',label:'Deferred IT maintenance',unit:'£M/yr',desc:'Annual maintenance spend below market — creates future liability',benchLow:0.3,benchHigh:8,ebitdaType:'normal',mult:1},
+    {id:'standalone_uplift',label:'Standalone IT cost uplift (carve-out)',unit:'£M/yr',desc:'Additional cost post-separation vs embedded cost',benchLow:0.5,benchHigh:10,ebitdaType:'normal',mult:1},
+  ]},
+  {id:'org',icon:'ti-users',name:'IT Organisation',sub:'Governance, key persons, outsourcing',findings:[
+    {id:'key_person',label:'Key person risk',unit:'£M retention/knowledge',desc:'Retention bonus + knowledge capture programme cost',benchLow:0.1,benchHigh:2,ebitdaType:'chip',mult:0},
+    {id:'governance_gap',label:'IT governance deficit',unit:'£M/yr',desc:'Cost to establish market-standard IT governance and controls',benchLow:0.2,benchHigh:3,ebitdaType:'normal',mult:1},
+  ]},
+  {id:'cyber',icon:'ti-shield-lock',name:'Cyber & Security',sub:'Vulnerabilities, DORA, pen test',findings:[
+    {id:'critical_vuln',label:'Critical unpatched vulnerabilities (CVEs)',unit:'£M remediation',desc:'Specialist remediation + emergency patching programme',benchLow:0.1,benchHigh:5,ebitdaType:'coc',mult:0},
+    {id:'cyber_breach_exposure',label:'Regulatory breach exposure (FCA/ICO)',unit:'£M fine risk',desc:'Probability-weighted: GDPR max 4% revenue or £17.5M',benchLow:0.5,benchHigh:17.5,ebitdaType:'escrow',mult:0},
+    {id:'dora_gap',label:'DORA compliance gap (EU)',unit:'£M remediation',desc:'ICT risk management, resilience testing uplift cost',benchLow:0.5,benchHigh:8,ebitdaType:'chip',mult:0},
+    {id:'pentest_findings',label:'Open pen test findings',unit:'£M remediation',desc:'Outstanding high/critical security findings',benchLow:0.1,benchHigh:3,ebitdaType:'coc',mult:0},
+  ]},
+  {id:'data',icon:'ti-database',name:'Data',sub:'Quality, GDPR, residency, MDM',findings:[
+    {id:'gdpr_gap',label:'GDPR / data protection gap',unit:'£M fine + remediation',desc:'Non-compliance remediation + fine exposure',benchLow:0.2,benchHigh:20,ebitdaType:'escrow',mult:0},
+    {id:'data_quality',label:'Poor master data quality',unit:'£M migration uplift',desc:'Additional migration cost due to duplicate/dirty records',benchLow:0.3,benchHigh:8,ebitdaType:'chip',mult:0},
+    {id:'data_residency',label:'Cross-border data residency violation',unit:'£M remediation',desc:'Cost to re-architect for GDPR/FCA data residency requirements',benchLow:0.5,benchHigh:10,ebitdaType:'chip',mult:0},
+  ]},
+  {id:'vendor',icon:'ti-briefcase',name:'Vendors & Contracts',sub:'CoC clauses, lock-in, exit costs',findings:[
+    {id:'coc_clause',label:'Change-of-control clause (major vendor)',unit:'£M/yr repricing',desc:'Vendor entitled to reprice post-deal; annual premium above current rate',benchLow:0.2,benchHigh:5,ebitdaType:'normal',mult:1},
+    {id:'exit_cost',label:'Early termination / exit penalties',unit:'£M one-time',desc:'Penalty for exiting vendor contracts post-close',benchLow:0.2,benchHigh:8,ebitdaType:'chip',mult:0},
+    {id:'single_vendor',label:'Single-vendor concentration risk',unit:'£M/yr dis-synergy',desc:'Loss of negotiating leverage; forced renewal at premium rates',benchLow:0.1,benchHigh:3,ebitdaType:'normal',mult:1},
+  ]},
+];
+
+const PATHWAY_META={
+  chip:{label:'Price chip',badge:'b-chip',desc:'Direct deduction from deal price',evMult:1,ebitdaHit:false},
+  escrow:{label:'Escrow',badge:'b-escrow',desc:'Held in trust pending outcome',evMult:0.5,ebitdaHit:false},
+  normal:{label:'EBITDA normalisation',badge:'b-normal',desc:'Adjust earnings base before multiple',evMult:0,ebitdaHit:true},
+  multiple:{label:'Multiple compression',badge:'b-multiple',desc:'Lower EV/EBITDA multiple',evMult:0,ebitdaHit:false,isMultiple:true},
+  coc:{label:'Condition of close',badge:'b-coc',desc:'Seller must remediate before close',evMult:0,ebitdaHit:false},
+  ignore:{label:'Note only',badge:'b-ignore',desc:'No financial adjustment',evMult:0,ebitdaHit:false},
+};
+
+const PATHWAY_OPTIONS={
+  chip:['chip','escrow','coc','ignore'],
+  escrow:['escrow','chip','multiple','ignore'],
+  normal:['normal','chip','multiple','ignore'],
+  coc:['coc','chip','escrow','ignore'],
+  none:['ignore'],
+};
+
+const CUES=[
+  {icon:'ti-cpu',name:'COBOL / mainframe core banking',formula:'Remediation = £50–300M · timeline 3–5 yrs · use: price chip + multiple compression −0.5×'},
+  {icon:'ti-plug-connected',name:'Undocumented point-to-point integrations',formula:'£50–150k per interface · count interfaces in scope · chip or escrow'},
+  {icon:'ti-shield-off',name:'Critical unpatched CVEs in production',formula:'Remediation £0.1–3M · make condition of close · price chip if unresolved at signing'},
+  {icon:'ti-eye-off',name:'Shadow IT (15–30% of true IT spend)',formula:'True IT spend = Reported ÷ (1 − shadow%) · EBITDA normalisation · multiply by EV/EBITDA'},
+  {icon:'ti-file-unknown',name:'CapEx/OpEx misclassification',formula:'If £X was capitalised but should be expensed: EBITDA overstated by £X · normalise down'},
+  {icon:'ti-alert-circle',name:'Open FCA/PRA regulatory investigation',formula:'Multiple compression −0.5 to −1× · condition of close or escrow · escalate to counsel'},
+  {icon:'ti-file-dollar',name:'Change-of-control vendor clause',formula:'Annual repricing = contract value × uplift% · EBITDA normalisation · negotiating leverage'},
+  {icon:'ti-database-off',name:'Poor master data quality',formula:'Migration uplift = base cost × quality factor (1.3–2.5×) · chip or note in SPA reps & warranties'},
+  {icon:'ti-shield-lock',name:'GDPR / data protection gap',formula:'Fine exposure = min(£17.5M, 4% global revenue) × breach probability · escrow ± chip'},
+  {icon:'ti-server-off',name:'DR/BCP absent or untested',formula:'Exposure = RPO × transaction volume × probability · escrow · demand evidence before close'},
+  {icon:'ti-cloud-upload',name:'Forced cloud migration (on-prem to cloud)',formula:'Cost = workload count × £5–50k per workload · chip · phase with DC lease expiry'},
+  {icon:'ti-users-group',name:'Key person dependency (1–2 people know system)',formula:'Retention cost = 6–12 months salary · chip or condition of close · knowledge capture programme'},
+  {icon:'ti-trending-up',name:'IT spend above benchmark (>10% revenue)',formula:'Normalise: (Actual% − Benchmark%) × Revenue = excess cost · EBITDA adjustment downward'},
+  {icon:'ti-trending-down',name:'IT spend below benchmark (<3% revenue)',formula:'Future uplift risk: (Benchmark% − Actual%) × Revenue = likely future cost increase · note + model'},
+  {icon:'ti-clock',name:'DC lease expiry within 18 months',formula:'Opportunity: time exit with integration · avoid lease renewal (£1–5M/yr) · factor into chip or synergy'},
+];
+
+let findings={};
+let pathways={};
+let activePillar=null;
+let chartInst=null;
+
+PILLARS.forEach(p=>p.findings.forEach(f=>{
+  findings[f.id]={value:'',severity:'none'};
+  pathways[f.id]=f.ebitdaType==='none'?'ignore':f.ebitdaType;
+}));
+
+function showTab(id){
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  document.querySelectorAll('.tab').forEach(t=>{if(t.getAttribute('onclick').includes("'"+id+"'"))t.classList.add('on')});
+  if(id==='valuation')renderValuation();
+  if(id==='pathways')renderPathways();
+}
+
+function getSeverityColor(sev){
+  return sev==='high'?'#E24B4A':sev==='med'?'BA7517':sev==='low'?'#1D9E75':'#B4B2A9';
+}
+
+function getPillarRisk(pid){
+  const p=PILLARS.find(x=>x.id===pid);
+  let maxSev='none';
+  p.findings.forEach(f=>{
+    const s=findings[f.id].severity;
+    if(s==='high')maxSev='high';
+    else if(s==='med'&&maxSev!=='high')maxSev='med';
+    else if(s==='low'&&maxSev==='none')maxSev='low';
+  });
+  return maxSev;
+}
+
+function renderPillars(){
+  const grid=document.getElementById('pillarGrid');
+  grid.innerHTML=PILLARS.map(p=>{
+    const risk=getPillarRisk(p.id);
+    const dotCls='dot-'+risk;
+    const count=p.findings.filter(f=>findings[f.id].severity!=='none').length;
+    return `<div class="pillar-card${activePillar===p.id?' active':''}" onclick="openPillar('${p.id}')">
+      <div class="pillar-head"><i class="ti ${p.icon} pillar-icon" aria-hidden="true"></i><span class="pillar-name">${p.name}</span></div>
+      <div class="pillar-risk"><span class="risk-dot ${dotCls}"></span>${count} finding${count!==1?'s':''} · ${risk==='none'?'no issues':risk+' risk'}</div>
+      <div style="font-size:11px;color:var(--color-text-secondary);margin-top:4px">${p.sub}</div>
+    </div>`;
+  }).join('');
+}
+
+function openPillar(pid){
+  activePillar=pid;
+  const p=PILLARS.find(x=>x.id===pid);
+  const panel=document.getElementById('detailPanel');
+  panel.style.display='block';
+  panel.innerHTML=`
+    <div class="dp-header">
+      <i class="ti ${p.icon} dp-icon" aria-hidden="true"></i>
+      <div><div class="dp-title">${p.name}</div><div class="dp-sub">${p.sub}</div></div>
+    </div>
+    <div class="section-label">Findings — enter value and severity</div>
+    ${p.findings.map(f=>{
+      const cur=findings[f.id];
+      return `<div class="finding-row">
+        <div>
+          <div class="f-label">${f.label}</div>
+          <div style="font-size:11px;color:var(--color-text-secondary)">${f.desc} · benchmark: £${f.benchLow}–${f.benchHigh}${f.isPercent?'%':'M'}</div>
+        </div>
+        <div class="f-controls">
+          <input class="f-input" type="number" value="${cur.value}" min="0" step="0.1" placeholder="—"
+            onchange="setFinding('${f.id}','value',this.value)" oninput="setFinding('${f.id}','value',this.value)">
+          <span class="f-unit">${f.isPercent?'%':'£M'}</span>
+          <select class="severity-sel" onchange="setFinding('${f.id}','severity',this.value)">
+            <option value="none"${cur.severity==='none'?' selected':''}>— no issue</option>
+            <option value="low"${cur.severity==='low'?' selected':''}>Low</option>
+            <option value="med"${cur.severity==='med'?' selected':''}>Medium</option>
+            <option value="high"${cur.severity==='high'?' selected':''}>High</option>
+          </select>
+        </div>
+      </div>`;
+    }).join('')}
+  `;
+  renderPillars();
+}
+
+function setFinding(fid,key,val){
+  findings[fid][key]=val;
+  recalc();
+  renderPillars();
+}
+
+function getActiveFindings(){
+  const active=[];
+  PILLARS.forEach(p=>p.findings.forEach(f=>{
+    const cur=findings[f.id];
+    if(cur.severity!=='none'&&cur.value!==''&&parseFloat(cur.value)>0){
+      active.push({...f,severity:cur.severity,value:parseFloat(cur.value),pathway:pathways[f.id]});
+    }
+  }));
+  return active;
+}
+
+function recalc(){
+  const base=parseFloat(document.getElementById('base-ebitda').value)||20;
+  const mult=parseFloat(document.getElementById('base-mult').value)||8;
+  const itSpend=base*0.06;
+  let ebitdaAdj=0,directAdj=0,multCompression=0;
+  getActiveFindings().forEach(f=>{
+    const pw=f.pathway||f.ebitdaType;
+    const pm=PATHWAY_META[pw];
+    if(!pm)return;
+    let val=f.value;
+    if(f.isPercent)val=itSpend*(val/100);
+    if(pm.ebitdaHit)ebitdaAdj+=val;
+    else if(pm.isMultiple)multCompression+=val;
+    else directAdj+=val*(pm.evMult||1);
+  });
+  const normEbitda=base-ebitdaAdj;
+  const effectiveMult=Math.max(mult-multCompression,0);
+  const grossEV=normEbitda*effectiveMult;
+  const netDeal=Math.max(grossEV-directAdj,0);
+  const totalDeduct=ebitdaAdj*mult+directAdj+multCompression*normEbitda;
+  document.getElementById('m-ebitda').textContent='£'+base.toFixed(1)+'M';
+  document.getElementById('m-deduct').textContent='−£'+totalDeduct.toFixed(1)+'M';
+  document.getElementById('m-norm').textContent='£'+normEbitda.toFixed(1)+'M';
+  document.getElementById('m-deal').textContent='£'+netDeal.toFixed(1)+'M';
+  ['m-norm','m-deal'].forEach(id=>{
+    const el=document.getElementById(id);
+    el.className='metric-value '+(parseFloat(el.textContent.replace(/[^0-9.]/g,''))<base?'danger':'ok');
+  });
+}
+
+function renderPathways(){
+  const active=getActiveFindings();
+  const list=document.getElementById('pathwayList');
+  if(!active.length){list.innerHTML='<div style="font-size:13px;color:var(--color-text-secondary);padding:1rem 0">No findings entered yet — go to tab 1 and enter findings for each pillar.</div>';return;}
+  list.innerHTML=active.map(f=>{
+    const pillar=PILLARS.find(p=>p.findings.find(x=>x.id===f.id));
+    const opts=PATHWAY_OPTIONS[f.ebitdaType]||['ignore'];
+    const cur=pathways[f.id]||opts[0];
+    const pm=PATHWAY_META[cur];
+    let impactDesc='No financial adjustment';
+    const mult=parseFloat(document.getElementById('base-mult').value)||8;
+    if(pm.ebitdaHit)impactDesc=`EBITDA −£${f.value.toFixed(1)}M → EV impact −£${(f.value*mult).toFixed(1)}M`;
+    else if(pm.isMultiple)impactDesc=`Multiple −${f.value.toFixed(1)}× compression`;
+    else if(pm.evMult>0)impactDesc=`Direct price −£${(f.value*pm.evMult).toFixed(1)}M`;
+    return `<div class="detail-panel" style="margin-bottom:0.75rem">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.75rem">
+        <i class="ti ${pillar.icon}" style="color:#7F77DD;font-size:16px" aria-hidden="true"></i>
+        <span style="font-size:13px;font-weight:500">${f.label}</span>
+        <span class="badge b-${f.severity}">${f.severity}</span>
+        <span style="font-size:12px;color:var(--color-text-secondary);margin-left:auto">£${f.value.toFixed(1)}M</span>
+      </div>
+      <div class="pathway-grid">
+        ${opts.map(pw=>{
+          const pmd=PATHWAY_META[pw];
+          return `<div class="pathway-card${cur===pw?' sel-'+pw:''}" onclick="setPathway('${f.id}','${pw}')">
+            <div class="pw-name">${pmd.label}</div>
+            <div class="pw-desc">${pmd.desc}</div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="impact-summary"><span class="impact-label">Selected impact: </span><span class="impact-val ${pm.ebitdaHit||pm.evMult>0?'neg':pm.isMultiple?'warn':'ok'}">${impactDesc}</span></div>
+    </div>`;
+  }).join('');
+}
+
+function setPathway(fid,pw){
+  pathways[fid]=pw;
+  recalc();
+  renderPathways();
+}
+
+function renderValuation(){
+  const base=parseFloat(document.getElementById('base-ebitda').value)||20;
+  const mult=parseFloat(document.getElementById('base-mult').value)||8;
+  const active=getActiveFindings();
+  let ebitdaAdj=0,directChip=0,directEscrow=0,multComp=0;
+  const rows=[],directRows=[];
+  const itSpend=base*0.06;
+
+  active.forEach(f=>{
+    const pw=pathways[f.id]||f.ebitdaType;
+    const pm=PATHWAY_META[pw];
+    if(!pm)return;
+    let val=f.value;
+    if(f.isPercent)val=itSpend*(val/100);
+    const pillar=PILLARS.find(p=>p.findings.find(x=>x.id===f.id));
+    if(pm.ebitdaHit){
+      ebitdaAdj+=val;
+      rows.push({label:f.label,pillar:pillar.name,pw,ebitda:-val,ev:-(val*mult),direct:0});
+    } else if(pw==='chip'){
+      directChip+=val;
+      directRows.push({label:f.label,pw,amount:val});
+    } else if(pw==='escrow'){
+      directEscrow+=val*0.5;
+      directRows.push({label:f.label,pw,amount:val*0.5,note:'50% of £'+val.toFixed(1)+'M'});
+    } else if(pm.isMultiple||pw==='multiple'){
+      multComp+=val;
+    }
+  });
+
+  const normEbitda=base-ebitdaAdj;
+  const effectiveMult=Math.max(mult-multComp,0);
+  const grossEV=normEbitda*effectiveMult;
+  const netDeal=Math.max(grossEV-directChip-directEscrow,0);
+
+  document.getElementById('v-reported').textContent='£'+base.toFixed(1)+'M';
+  document.getElementById('v-norm').textContent='£'+normEbitda.toFixed(1)+'M';
+  document.getElementById('v-gev').textContent='£'+grossEV.toFixed(1)+'M';
+  document.getElementById('v-net').textContent='£'+netDeal.toFixed(1)+'M';
+
+  const tbody=document.getElementById('bridgeTbody');
+  tbody.innerHTML=`<tr><td>Reported EBITDA</td><td>—</td><td>—</td><td>Starting point</td><td style="text-align:right">£${base.toFixed(1)}M</td><td style="text-align:right">—</td></tr>`
+    +rows.map(r=>`<tr><td>${r.label}</td><td>${r.pillar}</td><td><span class="badge ${PATHWAY_META[r.pw].badge}">${PATHWAY_META[r.pw].label}</span></td><td>Normalise earnings base</td><td style="text-align:right;color:#E24B4A">−£${Math.abs(r.ebitda).toFixed(1)}M</td><td style="text-align:right;color:#E24B4A">−£${Math.abs(r.ev).toFixed(1)}M</td></tr>`).join('')
+    +(multComp>0?`<tr><td>Multiple compression (IT risk)</td><td>Multiple factors</td><td><span class="badge b-multiple">Multiple compression</span></td><td>${mult}× → ${effectiveMult.toFixed(1)}×</td><td style="text-align:right">—</td><td style="text-align:right;color:#E24B4A">−£${(normEbitda*(mult-effectiveMult)).toFixed(1)}M</td></tr>`:'')
+    +`<tr class="total-row"><td>Normalised EBITDA × ${effectiveMult.toFixed(1)}× = Gross EV</td><td>—</td><td>—</td><td>Earnings base × multiple</td><td style="text-align:right">£${normEbitda.toFixed(1)}M</td><td style="text-align:right">£${grossEV.toFixed(1)}M</td></tr>`;
+
+  const dtbody=document.getElementById('directTbody');
+  dtbody.innerHTML=directRows.length
+    ?directRows.map(r=>`<tr><td>${r.label}${r.note?' <span style="color:var(--color-text-secondary);font-size:11px">('+r.note+')</span>':''}</td><td><span class="badge ${PATHWAY_META[r.pw].badge}">${PATHWAY_META[r.pw].label}</span></td><td style="text-align:right;color:#E24B4A">−£${r.amount.toFixed(1)}M</td></tr>`).join('')
+      +`<tr style="font-weight:500"><td>Net deal price</td><td>—</td><td style="text-align:right">£${netDeal.toFixed(1)}M</td></tr>`
+    :`<tr><td colspan="3" style="color:var(--color-text-secondary);font-size:13px">No direct price deductions.</td></tr>`;
+
+  renderChart(base,ebitdaAdj,multComp,normEbitda,effectiveMult,grossEV,directChip,directEscrow,netDeal,mult);
+
+  const wf=document.getElementById('waterfallWrap');
+  const maxVal=base*mult;
+  const wfItems=[
+    {label:'Gross EV (reported × '+mult+'×)',val:base*mult,color:'#5DCAA5'},
+    ...rows.map(r=>({label:r.label.slice(0,40)+'…',val:Math.abs(r.ev),color:'#F0997B',neg:true})),
+    ...(multComp>0?[{label:'Multiple compression (−'+multComp.toFixed(1)+'×)',val:normEbitda*(mult-effectiveMult),color:'#AFA9EC',neg:true}]:[]),
+    ...directRows.map(r=>({label:r.label.slice(0,38)+'…',val:r.amount,color:'#FAC775',neg:true})),
+    {label:'Net deal price',val:netDeal,color:'#7F77DD',total:true},
+  ];
+  wf.innerHTML='<div class="section-label" style="margin-top:0">Visual waterfall</div>'+wfItems.map(item=>{
+    const pct=Math.round(Math.max(item.val/maxVal*100,2));
+    const offset=item.total?0:0;
+    return `<div class="wf-bar-row">
+      <span class="wf-label">${item.label}</span>
+      <div class="wf-bar-track">
+        <div class="wf-bar-seg" style="background:${item.color};width:${pct}%;left:${offset}%">${item.neg?'−':''}£${item.val.toFixed(1)}M</div>
+      </div>
+      <span class="wf-val">${item.neg?'−':''}£${item.val.toFixed(1)}M</span>
+    </div>`;
+  }).join('');
+}
+
+function renderChart(base,ebitdaAdj,multComp,normEbitda,effectiveMult,grossEV,chip,escrow,netDeal,mult){
+  if(chartInst)chartInst.destroy();
+  const labels=['Reported EBITDA','Normalisation','Norm. EBITDA','× multiple','Gross EV','Price chips','Net deal'];
+  const data=[base,-ebitdaAdj,normEbitda,0,grossEV,-(chip+escrow),netDeal];
+  const colors=['#5DCAA5','#F0997B','#5DCAA5','#B4B2A9','#7F77DD','#FAC775','#3C3489'];
+  chartInst=new Chart(document.getElementById('bridgeChart'),{
+    type:'bar',
+    data:{labels,datasets:[{data:[base,0,0,0,0,0,0],backgroundColor:'#5DCAA5',label:'Reported'},{data:[0,-ebitdaAdj,normEbitda,normEbitda,grossEV,-(chip+escrow),netDeal],backgroundColor:['#5DCAA5','#F0997B','#5DCAA5','#B4B2A9','#7F77DD','#FAC775','#3C3489'],label:'Bridge'}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:(c)=>'£'+Math.abs(c.raw).toFixed(1)+'M'}}},scales:{x:{ticks:{font:{size:11},maxRotation:30}},y:{ticks:{callback:v=>'£'+Math.round(v)+'M',font:{size:11}}}}}
+  });
+}
+
+function renderCueLib(){
+  document.getElementById('cueLib').innerHTML=CUES.map(c=>`
+    <div class="cue-row">
+      <i class="ti ${c.icon} cue-icon" aria-hidden="true"></i>
+      <div class="cue-body">
+        <div class="cue-name">${c.name}</div>
+        <div class="cue-formula">${c.formula}</div>
+      </div>
+    </div>`).join('');
+}
+
+renderPillars();
+recalc();
+renderCueLib();
+</script>

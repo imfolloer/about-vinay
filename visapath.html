@@ -1,0 +1,1835 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>VisaPath AI — Global Immigration Platform</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#0f1117;color:#e8eaf0;font-size:14px;line-height:1.6;min-height:100vh}
+a{color:#60a5fa;text-decoration:none}
+a:hover{text-decoration:underline}
+/* ── scrollbar ── */
+::-webkit-scrollbar{width:5px;height:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#334155;border-radius:3px}
+/* ── vars ── */
+:root{
+  --bg0:#0f1117;--bg1:#161b27;--bg2:#1e2535;--bg3:#252d3e;
+  --bd:#2a3347;--bd2:#374151;
+  --t0:#e8eaf0;--t1:#94a3b8;--t2:#64748b;
+  --blue:#3b82f6;--blue-d:#1d4ed8;--blue-l:#1e3a5f;--blue-g:#60a5fa;
+  --teal:#14b8a6;--teal-l:#0d3330;--teal-g:#5eead4;
+  --green:#22c55e;--green-l:#0d2e1a;--green-g:#86efac;
+  --amber:#f59e0b;--amber-l:#2d1f07;--amber-g:#fcd34d;
+  --coral:#ef4444;--coral-l:#2d0f0f;--coral-g:#fca5a5;
+  --purple:#8b5cf6;--purple-l:#1e1540;--purple-g:#c4b5fd;
+  --pink:#ec4899;--pink-l:#2d0f1f;--pink-g:#f9a8d4;
+  --gold:#eab308;--gold-l:#2a1f00;
+  --rmd:8px;--rlg:12px;--rxl:16px;
+}
+/* ── layout ── */
+.app{max-width:900px;margin:0 auto;padding:0 16px 60px}
+/* ── nav ── */
+.nav{display:flex;align-items:center;gap:12px;padding:14px 0 12px;border-bottom:1px solid var(--bd);margin-bottom:20px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:8px;cursor:pointer;flex-shrink:0}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,#3b82f6,#8b5cf6);border-radius:var(--rmd);display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-name{font-size:17px;font-weight:600;background:linear-gradient(90deg,#60a5fa,#c4b5fd);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.beta{font-size:10px;background:var(--blue-l);color:var(--blue-g);padding:2px 7px;border-radius:20px;font-weight:500;border:1px solid var(--blue)}
+.nav-scroll{display:flex;gap:3px;flex-wrap:wrap;flex:1}
+.ntab{font-size:12px;padding:5px 11px;border-radius:var(--rmd);border:1px solid transparent;background:transparent;color:var(--t1);cursor:pointer;white-space:nowrap;transition:all .15s}
+.ntab:hover{background:var(--bg2);color:var(--t0)}
+.ntab.on{background:var(--bg2);color:var(--t0);border-color:var(--bd);font-weight:500}
+/* ── panes ── */
+.pane{display:none}.pane.on{display:block}
+/* ── headings ── */
+.ph{margin-bottom:20px}
+.ph h1{font-size:26px;font-weight:700;background:linear-gradient(90deg,#60a5fa,#c4b5fd,#f9a8d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2;margin-bottom:6px}
+.ph p{font-size:13px;color:var(--t1)}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;gap:10px;flex-wrap:wrap}
+.ch h2{font-size:18px;font-weight:600}
+/* ── section label ── */
+.slbl{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--t2);margin:16px 0 8px}
+/* ── form grid ── */
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.fg4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media(max-width:600px){.fg2,.fg3,.fg4{grid-template-columns:1fr 1fr}}
+.fld label{display:block;font-size:11px;color:var(--t1);margin-bottom:4px;font-weight:500}
+.fld select,.fld input[type=number],.fld input[type=text]{width:100%;font-size:13px;padding:8px 10px;border-radius:var(--rmd);border:1px solid var(--bd);background:var(--bg2);color:var(--t0);transition:border-color .15s}
+.fld select:focus,.fld input:focus{outline:none;border-color:var(--blue)}
+/* ── buttons ── */
+.btn-cta{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border:none;border-radius:var(--rmd);font-size:15px;font-weight:600;cursor:pointer;margin-top:16px;transition:opacity .15s}
+.btn-cta:hover{opacity:.88}.btn-cta:disabled{opacity:.4;cursor:not-allowed}
+.btn-sm{font-size:11px;padding:5px 11px;border-radius:var(--rmd);border:1px solid var(--bd);background:transparent;color:var(--t1);cursor:pointer;transition:all .15s}
+.btn-sm:hover{background:var(--bg2);color:var(--t0)}.btn-sm.on{background:var(--bg2);color:var(--t0);font-weight:500}
+/* ── inner tabs ── */
+.dtabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:14px}
+.dtab{font-size:11px;padding:5px 11px;border-radius:var(--rmd);border:1px solid var(--bd);background:transparent;color:var(--t1);cursor:pointer}
+.dtab.on{background:var(--bg3);color:var(--t0);font-weight:500;border-color:var(--bd2)}
+/* ── badges ── */
+.badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
+.b-green{background:var(--green-l);color:var(--green-g);border:1px solid #166534}
+.b-blue{background:var(--blue-l);color:var(--blue-g);border:1px solid #1e40af}
+.b-purple{background:var(--purple-l);color:var(--purple-g);border:1px solid #5b21b6}
+.b-amber{background:var(--amber-l);color:var(--amber-g);border:1px solid #92400e}
+.b-coral{background:var(--coral-l);color:var(--coral-g);border:1px solid #991b1b}
+.b-teal{background:var(--teal-l);color:var(--teal-g);border:1px solid #0f766e}
+.b-gold{background:var(--gold-l);color:#fde68a;border:1px solid #92400e}
+.b-pink{background:var(--pink-l);color:var(--pink-g);border:1px solid #9d174d}
+/* ── tags ── */
+.tag{font-size:10px;padding:2px 7px;border-radius:6px;background:var(--bg3);color:var(--t1);border:1px solid var(--bd)}
+.tag-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+/* ── cards ── */
+.cc{background:var(--bg1);border:1px solid var(--bd);border-radius:var(--rlg);padding:14px 16px;margin-bottom:10px;cursor:pointer;transition:border-color .2s}
+.cc:hover,.cc.open{border-color:var(--bd2)}
+.cc.open{border-color:var(--blue)}
+.cc-top{display:flex;align-items:flex-start;gap:12px}
+.cc-flag{font-size:28px;line-height:1;flex-shrink:0}
+.cc-mid{flex:1;min-width:0}
+.cc-nameline{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:2px}
+.cc-name{font-size:15px;font-weight:600}
+.cc-visa{font-size:12px;color:var(--t1);margin-top:1px}
+.cc-right{flex-shrink:0;display:flex;align-items:center;gap:8px}
+.cc-score{text-align:center;background:linear-gradient(135deg,var(--blue-l),var(--purple-l));border:1px solid var(--blue);border-radius:var(--rmd);padding:5px 10px}
+.cc-score-n{font-size:20px;font-weight:700;color:var(--blue-g);line-height:1}
+.cc-score-l{font-size:9px;color:var(--t2);margin-top:1px}
+.chev{font-size:13px;color:var(--t2);transition:transform .2s;margin-top:2px}
+.cc.open .chev{transform:rotate(180deg)}
+/* ── bars ── */
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.bar-lbl{font-size:11px;color:var(--t1);width:110px;flex-shrink:0}
+.bar-track{flex:1;height:5px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .5s}
+.bar-num{font-size:11px;color:var(--t2);width:30px;text-align:right}
+/* ── detail ── */
+.cc-detail{margin-top:12px;padding-top:12px;border-top:1px solid var(--bd)}
+.dg2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.dg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:12px}
+.di{background:var(--bg2);border-radius:var(--rmd);padding:10px 12px;border:1px solid var(--bd)}
+.di-l{font-size:10px;color:var(--t2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.di-v{font-size:13px;font-weight:500}
+/* ── pathway steps ── */
+.pstep{display:flex;gap:10px;margin-bottom:8px}
+.pstep-l{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.pdot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.pline{width:2px;flex:1;background:var(--bd);margin-top:4px;min-height:16px}
+.pstep-title{font-size:12px;font-weight:600;margin-bottom:2px}
+.pstep-desc{font-size:11px;color:var(--t1);line-height:1.5}
+.pstep-meta{font-size:10px;color:var(--t2);margin-top:3px}
+/* ── requirements ── */
+.req-group{margin-bottom:10px}
+.req-title{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--t2);margin-bottom:5px}
+.req-item{font-size:11px;padding:3px 9px;border-radius:6px;margin:2px;display:inline-block}
+.req-met{background:var(--green-l);color:var(--green-g);border:1px solid #166534}
+.req-chk{background:var(--amber-l);color:var(--amber-g);border:1px solid #92400e}
+.req-neu{background:var(--bg3);color:var(--t1);border:1px solid var(--bd)}
+/* ── gov links ── */
+.gov-section{margin-bottom:14px}
+.gov-cat{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--t2);margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--bd)}
+.gov-link{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rmd);margin-bottom:4px;transition:border-color .15s}
+.gov-link:hover{border-color:var(--bd2)}
+.gov-link-icon{font-size:14px;flex-shrink:0}
+.gov-link-body{flex:1;min-width:0}
+.gov-link-name{font-size:12px;font-weight:500;color:var(--t0)}
+.gov-link-desc{font-size:10px;color:var(--t2);margin-top:1px}
+.gov-link-url{font-size:10px;color:var(--blue-g);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
+/* ── compare ── */
+.cmp-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media(max-width:600px){.cmp-wrap{grid-template-columns:1fr}}
+.cmp-card{background:var(--bg1);border:1px solid var(--bd);border-radius:var(--rlg);overflow:hidden}
+.cmp-card.top{border-color:var(--blue)}
+.cmp-head{padding:12px;text-align:center;background:var(--bg2);border-bottom:1px solid var(--bd)}
+.cmp-flag{font-size:24px}
+.cmp-cname{font-size:13px;font-weight:600;margin-top:3px}
+.cmp-row{padding:8px 12px;border-bottom:1px solid var(--bd);font-size:11px}
+.cmp-row:last-child{border:none}
+.cmp-row-l{color:var(--t2);margin-bottom:2px;font-size:10px}
+.cmp-row-v{font-weight:500;font-size:12px}
+/* ── calculator ── */
+.calc-result-row{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--bd)}
+.calc-result-row:last-child{border:none}
+.calc-c{width:180px;flex-shrink:0;font-size:12px;color:var(--t1)}
+.calc-bar{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden}
+.calc-fill{height:100%;border-radius:3px}
+.calc-val{width:60px;text-align:right;font-size:12px;font-weight:500}
+/* ── occupations ── */
+.occ-search{width:100%;padding:10px 13px;font-size:14px;border:1px solid var(--bd);border-radius:var(--rmd);background:var(--bg1);color:var(--t0);margin-bottom:12px}
+.occ-search:focus{outline:none;border-color:var(--blue)}
+.occ-table{width:100%;border-collapse:collapse}
+.occ-table th{text-align:left;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--t2);padding:8px 10px;border-bottom:1px solid var(--bd)}
+.occ-table td{padding:9px 10px;border-bottom:1px solid var(--bd);font-size:12px;vertical-align:top}
+.occ-table tr:last-child td{border:none}
+.occ-table tr:hover td{background:var(--bg2)}
+/* ── PR simulator ── */
+.sim-score-big{font-size:56px;font-weight:700;text-align:center;line-height:1;margin:16px 0 4px}
+.sim-bar{height:12px;background:var(--bg3);border-radius:6px;overflow:hidden;margin-bottom:12px}
+.sim-fill{height:100%;border-radius:6px;transition:width .6s}
+/* ── news ── */
+.news-item{display:flex;gap:10px;padding:12px 0;border-bottom:1px solid var(--bd)}
+.news-item:last-child{border:none}
+.news-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.news-date{font-size:10px;color:var(--t2);margin-bottom:3px}
+.news-title{font-size:13px;font-weight:500;margin-bottom:3px}
+.news-body{font-size:11px;color:var(--t1);line-height:1.5}
+/* ── saved ── */
+.saved-card{display:flex;align-items:center;gap:12px;background:var(--bg1);border:1px solid var(--bd);border-radius:var(--rlg);padding:12px 14px;margin-bottom:8px}
+.saved-flag{font-size:24px}
+.saved-body{flex:1}
+.saved-name{font-size:14px;font-weight:600}
+.saved-sub{font-size:11px;color:var(--t1);margin-top:2px}
+.saved-score{font-size:20px;font-weight:700;color:var(--blue-g)}
+/* ── chat ── */
+.chat-messages{display:flex;flex-direction:column;gap:10px;max-height:420px;overflow-y:auto;padding-right:4px;margin-bottom:12px}
+.bubble{max-width:88%;padding:10px 14px;border-radius:var(--rlg);font-size:13px;line-height:1.6}
+.bubble.user{background:linear-gradient(135deg,var(--blue-d),var(--blue));color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.bubble.ai{background:var(--bg2);color:var(--t0);align-self:flex-start;border-bottom-left-radius:4px;border:1px solid var(--bd)}
+.bubble-cite{font-size:10px;color:var(--t2);margin-top:6px;padding-top:6px;border-top:1px solid var(--bd)}
+.chat-input-row{display:flex;gap:8px}
+.chat-in{flex:1;padding:9px 12px;font-size:13px;border:1px solid var(--bd);border-radius:var(--rmd);background:var(--bg1);color:var(--t0)}
+.chat-in:focus{outline:none;border-color:var(--blue)}
+.chat-btn{padding:9px 16px;background:linear-gradient(135deg,var(--blue),var(--purple));color:#fff;border:none;border-radius:var(--rmd);cursor:pointer;font-size:13px;font-weight:600}
+.chat-btn:disabled{opacity:.4;cursor:not-allowed}
+.sug-wrap{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.sug{font-size:11px;padding:4px 10px;border-radius:var(--rmd);border:1px solid var(--bd);background:var(--bg2);color:var(--t1);cursor:pointer;transition:all .15s}
+.sug:hover{color:var(--t0);border-color:var(--bd2)}
+/* ── flowchart ── */
+#flowchart-canvas{width:100%;border:1px solid var(--bd);border-radius:var(--rlg);background:var(--bg1);overflow:hidden}
+.fc-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.fc-country-btn{font-size:12px;padding:6px 13px;border-radius:var(--rmd);border:1px solid var(--bd);background:var(--bg2);color:var(--t1);cursor:pointer;transition:all .15s}
+.fc-country-btn.on{background:var(--blue);border-color:var(--blue);color:#fff;font-weight:500}
+.fc-legend{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--t1)}
+.fc-legend-item{display:flex;align-items:center;gap:5px}
+.fc-legend-dot{width:10px;height:10px;border-radius:50%}
+/* ── disclaimer ── */
+.disc{margin-top:20px;padding:12px 14px;background:var(--amber-l);border:1px solid var(--amber);border-radius:var(--rmd);font-size:11px;color:var(--amber-g);line-height:1.5}
+.disc strong{font-weight:600}
+/* ── spinner ── */
+.spin{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.dots span{animation:bk 1.2s infinite;opacity:0}
+.dots span:nth-child(2){animation-delay:.2s}
+.dots span:nth-child(3){animation-delay:.4s}
+@keyframes bk{0%,80%,100%{opacity:0}40%{opacity:1}}
+/* ── empty state ── */
+.empty{text-align:center;padding:40px 20px;color:var(--t2);font-size:13px}
+.empty-icon{font-size:36px;margin-bottom:10px;opacity:.4}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="logo" onclick="goTab('profile')">
+    <div class="logo-icon">🌐</div>
+    <span class="logo-name">VisaPath AI</span>
+    <span class="beta">beta</span>
+  </div>
+  <div class="nav-scroll">
+    <button class="ntab on" data-tab="profile" onclick="goTab('profile')">Profile</button>
+    <button class="ntab" data-tab="results" onclick="goTab('results')" id="ntab-results" style="display:none">Results</button>
+    <button class="ntab" data-tab="flowchart" onclick="goTab('flowchart')">Pathway map</button>
+    <button class="ntab" data-tab="compare" onclick="goTab('compare')" id="ntab-compare" style="display:none">Compare</button>
+    <button class="ntab" data-tab="govlinks" onclick="goTab('govlinks')">Official links</button>
+    <button class="ntab" data-tab="calc" onclick="goTab('calc')">Calculators</button>
+    <button class="ntab" data-tab="occupations" onclick="goTab('occupations')">Occupations</button>
+    <button class="ntab" data-tab="sim" onclick="goTab('sim')">PR simulator</button>
+    <button class="ntab" data-tab="news" onclick="goTab('news')">News</button>
+    <button class="ntab" data-tab="saved" onclick="goTab('saved')">Saved <span id="saved-count-badge"></span></button>
+    <button class="ntab" data-tab="chat" onclick="goTab('chat')">AI advisor</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════════════════ PROFILE ═══════════════════════════════ -->
+<div class="pane on" id="pane-profile">
+  <div class="ph">
+    <h1>Find your best immigration path</h1>
+    <p>Enter your profile and instantly get ranked countries, visa routes, eligibility scores, PR timelines, and interactive pathway maps across 15+ destinations.</p>
+  </div>
+  <div class="slbl">Personal</div>
+  <div class="fg2">
+    <div class="fld"><label>Age</label><input type="number" id="f-age" value="29" min="18" max="65"></div>
+    <div class="fld"><label>Nationality</label>
+      <select id="f-nat">
+        <option value="IN">🇮🇳 Indian</option><option value="PK">🇵🇰 Pakistani</option>
+        <option value="BR">🇧🇷 Brazilian</option><option value="CN">🇨🇳 Chinese</option>
+        <option value="NG">🇳🇬 Nigerian</option><option value="EG">🇪🇬 Egyptian</option>
+        <option value="ZA">🇿🇦 South African</option><option value="PH">🇵🇭 Filipino</option>
+        <option value="MX">🇲🇽 Mexican</option><option value="US">🇺🇸 American</option>
+        <option value="GB">🇬🇧 British</option><option value="AU">🇦🇺 Australian</option>
+        <option value="KE">🇰🇪 Kenyan</option><option value="BD">🇧🇩 Bangladeshi</option>
+        <option value="LK">🇱🇰 Sri Lankan</option><option value="NP">🇳🇵 Nepali</option>
+        <option value="GH">🇬🇭 Ghanaian</option><option value="ET">🇪🇹 Ethiopian</option>
+        <option value="OTHER">Other</option>
+      </select>
+    </div>
+    <div class="fld"><label>Current residence</label>
+      <select id="f-res">
+        <option value="IN">India</option><option value="FR">France</option>
+        <option value="GB">UK</option><option value="US">USA</option>
+        <option value="DE">Germany</option><option value="NL">Netherlands</option>
+        <option value="AE">UAE</option><option value="SG">Singapore</option>
+        <option value="AU">Australia</option><option value="CA">Canada</option>
+        <option value="JP">Japan</option><option value="OTHER">Other</option>
+      </select>
+    </div>
+    <div class="fld"><label>Marital status</label>
+      <select id="f-marital">
+        <option value="single">Single</option><option value="married">Married</option>
+        <option value="partner">Civil partner</option>
+      </select>
+    </div>
+    <div class="fld"><label>Dependents</label>
+      <select id="f-dep">
+        <option value="0">None</option><option value="1">1 child</option>
+        <option value="2">2 children</option><option value="3">3+ children</option>
+      </select>
+    </div>
+    <div class="fld"><label>Entrepreneurship</label>
+      <select id="f-ent">
+        <option value="no">No</option><option value="yes">Yes — active</option>
+        <option value="prev">Yes — previous</option>
+      </select>
+    </div>
+  </div>
+  <div class="slbl">Education</div>
+  <div class="fg2">
+    <div class="fld"><label>Highest qualification</label>
+      <select id="f-edu">
+        <option value="highschool">High school</option>
+        <option value="bachelor">Bachelor's degree</option>
+        <option value="master" selected>Master's degree</option>
+        <option value="phd">PhD / Doctorate</option>
+      </select>
+    </div>
+    <div class="fld"><label>Field of study</label>
+      <select id="f-field">
+        <option value="finance">Finance / Banking</option>
+        <option value="cs">Computer Science / IT</option>
+        <option value="engineering">Engineering</option>
+        <option value="medicine">Medicine / Healthcare</option>
+        <option value="business">Business / Management</option>
+        <option value="law">Law</option>
+        <option value="science">Natural Sciences</option>
+        <option value="arts">Arts / Humanities</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+  </div>
+  <div class="slbl">Work experience</div>
+  <div class="fg2">
+    <div class="fld"><label>Years of experience</label>
+      <select id="f-exp">
+        <option value="0">Less than 1 year</option><option value="1">1–2 years</option>
+        <option value="3">3–4 years</option><option value="5" selected>5–6 years</option>
+        <option value="7">7–9 years</option><option value="10">10+ years</option>
+      </select>
+    </div>
+    <div class="fld"><label>Industry</label>
+      <select id="f-ind">
+        <option value="finance">Financial services</option>
+        <option value="tech">Technology</option>
+        <option value="consulting">Consulting</option>
+        <option value="healthcare">Healthcare</option>
+        <option value="engineering">Engineering</option>
+        <option value="education">Education / Research</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+    <div class="fld"><label>Job offer in hand?</label>
+      <select id="f-offer">
+        <option value="no">No</option><option value="yes">Yes</option>
+        <option value="possible">In progress</option>
+      </select>
+    </div>
+    <div class="fld"><label>Remote work?</label>
+      <select id="f-remote">
+        <option value="no">No</option><option value="yes">Fully remote</option>
+        <option value="hybrid">Hybrid</option>
+      </select>
+    </div>
+  </div>
+  <div class="slbl">Languages</div>
+  <div class="fg2">
+    <div class="fld"><label>English proficiency</label>
+      <select id="f-en">
+        <option value="none">None / basic</option><option value="b2">B2 moderate</option>
+        <option value="ielts6">IELTS 6.0–6.5</option>
+        <option value="ielts7" selected>IELTS 7.0+</option>
+        <option value="native">Native / near-native</option>
+      </select>
+    </div>
+    <div class="fld"><label>Second language</label>
+      <select id="f-lang2">
+        <option value="none">None</option>
+        <option value="french">French A2–B1</option><option value="french-b2">French B2+</option>
+        <option value="german">German A2–B1</option><option value="german-b2">German B2+</option>
+        <option value="arabic">Arabic</option><option value="japanese">Japanese N4+</option>
+        <option value="dutch">Dutch (basic)</option><option value="spanish">Spanish B1+</option>
+        <option value="korean">Korean TOPIK 3+</option>
+      </select>
+    </div>
+  </div>
+  <div class="slbl">Finances</div>
+  <div class="fg2">
+    <div class="fld"><label>Annual salary (current, USD equiv.)</label>
+      <select id="f-sal">
+        <option value="15">Under $20k</option><option value="30">$20k–$40k</option>
+        <option value="50" selected>$40k–$65k</option><option value="80">$65k–$100k</option>
+        <option value="120">$100k–$150k</option><option value="200">$150k+</option>
+      </select>
+    </div>
+    <div class="fld"><label>Savings / assets (USD equiv.)</label>
+      <select id="f-sav">
+        <option value="5">Under $10k</option><option value="20">$10k–$30k</option>
+        <option value="50" selected>$30k–$80k</option><option value="120">$80k–$200k</option>
+        <option value="300">$200k–$500k</option><option value="750">$500k+</option>
+      </select>
+    </div>
+  </div>
+  <button class="btn-cta" onclick="runAnalysis()" id="analyze-btn">
+    <span id="btn-txt">Find my best pathways →</span>
+  </button>
+</div>
+
+<!-- ═══════════════════════════════ RESULTS ═══════════════════════════════ -->
+<div class="pane" id="pane-results">
+  <div class="ch">
+    <h2>Your ranked pathways</h2>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <select class="btn-sm" onchange="sortResults(this.value)" style="font-size:11px;padding:5px 10px;border-radius:var(--rmd);border:1px solid var(--bd);background:var(--bg2);color:var(--t0)">
+        <option value="match">Best match</option>
+        <option value="pr">PR potential</option>
+        <option value="ease">Easiest process</option>
+        <option value="cost">Lowest cost</option>
+      </select>
+      <button class="btn-sm" onclick="saveAll()">Save top 5</button>
+      <button class="btn-sm" onclick="goTab('flowchart')">View pathway map →</button>
+    </div>
+  </div>
+  <div id="results-list"></div>
+  <div class="disc"><strong>Educational purposes only — not legal advice.</strong> Immigration rules change frequently. Always verify requirements on official government websites and consult a licensed immigration lawyer before applying.</div>
+</div>
+
+<!-- ═══════════════════════════════ FLOWCHART ═══════════════════════════════ -->
+<div class="pane" id="pane-flowchart">
+  <div class="ch"><h2>Interactive pathway map</h2></div>
+  <p style="font-size:12px;color:var(--t1);margin-bottom:12px">Select a destination country to visualise the step-by-step immigration pathway with conditional routes, timelines, and decision points.</p>
+  <div class="fc-controls" id="fc-country-btns"></div>
+  <canvas id="flowchart-canvas" height="600"></canvas>
+  <div class="fc-legend">
+    <div class="fc-legend-item"><div class="fc-legend-dot" style="background:#3b82f6"></div>Entry / visa</div>
+    <div class="fc-legend-item"><div class="fc-legend-dot" style="background:#14b8a6"></div>Work permit</div>
+    <div class="fc-legend-item"><div class="fc-legend-dot" style="background:#22c55e"></div>PR / permanent</div>
+    <div class="fc-legend-item"><div class="fc-legend-dot" style="background:#f59e0b"></div>Decision point</div>
+    <div class="fc-legend-item"><div class="fc-legend-dot" style="background:#8b5cf6"></div>Citizenship</div>
+  </div>
+  <div id="fc-tooltip" style="display:none;position:fixed;background:var(--bg2);border:1px solid var(--bd);border-radius:var(--rmd);padding:10px 13px;font-size:12px;max-width:280px;box-shadow:0 8px 24px rgba(0,0,0,.5);z-index:100;pointer-events:none"></div>
+</div>
+
+<!-- ═══════════════════════════════ COMPARE ═══════════════════════════════ -->
+<div class="pane" id="pane-compare">
+  <div class="ch">
+    <h2>Side-by-side comparison</h2>
+    <div style="display:flex;gap:5px;flex-wrap:wrap" id="cmp-selects"></div>
+  </div>
+  <div id="compare-content"><div class="empty"><div class="empty-icon">📊</div>Run a profile analysis first to populate comparison.</div></div>
+</div>
+
+<!-- ═══════════════════════════════ OFFICIAL LINKS ═══════════════════════════════ -->
+<div class="pane" id="pane-govlinks">
+  <div class="ch"><h2>Official government immigration links</h2></div>
+  <p style="font-size:12px;color:var(--t1);margin-bottom:14px">Curated, verified links to official government immigration portals — organised by country and visa category. Always use these to verify requirements before applying.</p>
+  <div class="dtabs" id="govlinks-tabs">
+    <button class="dtab on" onclick="filterGov('all',this)">All countries</button>
+    <button class="dtab" onclick="filterGov('europe',this)">Europe</button>
+    <button class="dtab" onclick="filterGov('middleeast',this)">Middle East</button>
+    <button class="dtab" onclick="filterGov('asia',this)">Asia</button>
+    <button class="dtab" onclick="filterGov('americas',this)">Americas</button>
+    <button class="dtab" onclick="filterGov('oceania',this)">Oceania</button>
+  </div>
+  <div id="govlinks-list"></div>
+</div>
+
+<!-- ═══════════════════════════════ CALCULATORS ═══════════════════════════════ -->
+<div class="pane" id="pane-calc">
+  <div class="ch"><h2>Calculators</h2></div>
+  <div class="dtabs" id="calc-tabs">
+    <button class="dtab on" onclick="switchCalc('salary',this)">Salary (PPP)</button>
+    <button class="dtab" onclick="switchCalc('col',this)">Cost of living</button>
+    <button class="dtab" onclick="switchCalc('tax',this)">Tax rates</button>
+    <button class="dtab" onclick="switchCalc('visacost',this)">Visa costs</button>
+  </div>
+  <div id="calc-salary">
+    <p style="font-size:12px;color:var(--t1);margin-bottom:12px">Adjust your gross salary to see purchasing-power equivalents across destinations.</p>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+      <span style="font-size:12px;color:var(--t1);flex-shrink:0">Gross annual salary:</span>
+      <input type="range" min="20" max="250" value="70" step="5" id="sal-slider" oninput="calcSalary()" style="flex:1">
+      <span id="sal-slider-val" style="font-size:14px;font-weight:600;color:var(--blue-g);min-width:55px">$70k</span>
+    </div>
+    <div id="sal-results"></div>
+  </div>
+  <div id="calc-col" style="display:none">
+    <p style="font-size:12px;color:var(--t1);margin-bottom:12px">Estimated monthly living costs for a single professional (rent + food + transport + utilities).</p>
+    <div id="col-results"></div>
+  </div>
+  <div id="calc-tax" style="display:none">
+    <p style="font-size:12px;color:var(--t1);margin-bottom:12px">Estimated effective income tax rate at ~$80k equivalent gross annual salary.</p>
+    <div id="tax-results"></div>
+  </div>
+  <div id="calc-visacost" style="display:none">
+    <p style="font-size:12px;color:var(--t1);margin-bottom:12px">Total estimated first-year immigration costs (application fees, health surcharge, registration, credential assessment).</p>
+    <div id="visacost-results"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════ OCCUPATIONS ═══════════════════════════════ -->
+<div class="pane" id="pane-occupations">
+  <div class="ch"><h2>Occupation explorer</h2></div>
+  <input class="occ-search" id="occ-q" placeholder="Search occupation — e.g. software engineer, financial analyst, nurse, architect..." oninput="filterOcc()">
+  <div id="occ-list"></div>
+</div>
+
+<!-- ═══════════════════════════════ PR SIMULATOR ═══════════════════════════════ -->
+<div class="pane" id="pane-sim">
+  <div class="ch"><h2>PR eligibility simulator</h2></div>
+  <div class="dtabs" id="sim-tabs">
+    <button class="dtab on" onclick="switchSim('ca',this)">🇨🇦 Canada CRS</button>
+    <button class="dtab" onclick="switchSim('au',this)">🇦🇺 Australia Points</button>
+    <button class="dtab" onclick="switchSim('de',this)">🇩🇪 Germany Blue Card</button>
+    <button class="dtab" onclick="switchSim('nl',this)">🇳🇱 Netherlands HSM</button>
+    <button class="dtab" onclick="switchSim('gb',this)">🇬🇧 UK Skilled Worker</button>
+    <button class="dtab" onclick="switchSim('ae',this)">🇦🇪 UAE Golden Visa</button>
+  </div>
+  <div id="sim-content"></div>
+</div>
+
+<!-- ═══════════════════════════════ NEWS ═══════════════════════════════ -->
+<div class="pane" id="pane-news">
+  <div class="ch"><h2>Immigration news & policy updates</h2><span style="font-size:11px;color:var(--t2)">2024–2025</span></div>
+  <div class="dtabs" id="news-tabs">
+    <button class="dtab on" onclick="filterNews('all',this)">All</button>
+    <button class="dtab" onclick="filterNews('europe',this)">Europe</button>
+    <button class="dtab" onclick="filterNews('middleeast',this)">Middle East</button>
+    <button class="dtab" onclick="filterNews('asia',this)">Asia</button>
+    <button class="dtab" onclick="filterNews('americas',this)">Americas</button>
+    <button class="dtab" onclick="filterNews('oceania',this)">Oceania</button>
+  </div>
+  <div id="news-list"></div>
+</div>
+
+<!-- ═══════════════════════════════ SAVED ═══════════════════════════════ -->
+<div class="pane" id="pane-saved">
+  <div class="ch"><h2>Saved plans</h2><span id="saved-count-label" style="font-size:12px;color:var(--t2)">0 saved</span></div>
+  <div id="saved-list"><div class="empty"><div class="empty-icon">🗂️</div>Run an analysis and save countries you want to track.</div></div>
+</div>
+
+<!-- ═══════════════════════════════ CHAT ═══════════════════════════════ -->
+<div class="pane" id="pane-chat">
+  <div class="ch"><h2>AI immigration advisor</h2></div>
+  <div class="sug-wrap" id="sug-wrap">
+    <button class="sug" onclick="sugSend(this)">UAE Golden Visa options for professionals</button>
+    <button class="sug" onclick="sugSend(this)">USA O-1 vs H-1B visa comparison</button>
+    <button class="sug" onclick="sugSend(this)">Germany EU Blue Card for Indian finance professional</button>
+    <button class="sug" onclick="sugSend(this)">Japan Highly Skilled Professional visa</button>
+    <button class="sug" onclick="sugSend(this)">Singapore EP COMPASS scoring</button>
+    <button class="sug" onclick="sugSend(this)">Fastest route to EU permanent residency</button>
+    <button class="sug" onclick="sugSend(this)">Canada Express Entry CRS score tips</button>
+    <button class="sug" onclick="sugSend(this)">UK Skilled Worker 2024 salary threshold changes</button>
+  </div>
+  <div class="chat-messages" id="chat-msgs">
+    <div class="bubble ai">
+      Hello! I'm your VisaPath AI advisor. Tell me your nationality, education, work experience, and target countries — I'll explain your strongest visa pathways with exact eligibility criteria, costs, timelines, and official sources.
+      <div class="bubble-cite">Responses are educational only. Always verify on official government websites before applying.</div>
+    </div>
+  </div>
+  <div class="chat-input-row">
+    <input class="chat-in" id="chat-in" placeholder="Ask about visas, eligibility, PR timelines, salary thresholds..." onkeydown="if(event.key==='Enter')sendChat()">
+    <button class="chat-btn" onclick="sendChat()" id="chat-btn">Send</button>
+  </div>
+</div>
+
+</div><!-- /app -->
+<script>
+/* ═══════════════════════ DATA ═══════════════════════ */
+const COUNTRIES = [
+  {id:'de',name:'Germany',flag:'🇩🇪',region:'europe',tier:'Tier 1',tc:'b-green',
+   visa:'EU Blue Card / Job Seeker Visa',
+   prYrs:'21 months (Blue Card+B1) or 5 years',proc:'2–8 weeks',
+   cost:'€75–€140',minSal:'€43,800/yr (Blue Card 2024)',langReq:'None for entry; B1 German for PR',
+   salPot:'€55k–€120k',livingCost:'€1,800–€2,400/mo Berlin',taxRate:'28–42%',
+   tags:['No job offer needed','English-friendly','Dual citizenship (2024)','Strong PR path'],
+   tcBadge:'b-green',
+   paths:[
+     {t:'Job Seeker Visa',d:'Enter without a job offer. Valid 6 months. Convert once hired.',dur:'6 months',cost:'€75',type:'entry',color:'#3b82f6'},
+     {t:'EU Blue Card',d:'Salary ≥ €43,800 (€34,128 shortage). Employer-tied. Fast PR track.',dur:'4 years',cost:'€140',type:'work',color:'#14b8a6'},
+     {t:'Permanent Residence',d:'21 months Blue Card + B1 German, or 5 years any work permit.',dur:'PR granted',cost:'€113',type:'pr',color:'#22c55e'},
+     {t:'German Citizenship',d:'5 years residence (2024 reform). Dual nationality now permitted.',dur:'Citizenship',cost:'€255',type:'citizen',color:'#8b5cf6'}
+   ],
+   reqs:{edu:['Master\'s or Bachelor\'s required','Anabin credential recognition'],sal:['€43,800 Blue Card threshold','€34,128 shortage occupations'],lang:['No language req for entry','B1 German for PR'],other:['Job offer for Blue Card','No criminal record','Valid passport']},
+   base:{edu:22,age:18,exp:15,occ:13,lang:8}},
+
+  {id:'nl',name:'Netherlands',flag:'🇳🇱',region:'europe',tier:'Tier 1',tc:'b-green',
+   visa:'Highly Skilled Migrant (HSM)',
+   prYrs:'5 years',proc:'2 weeks',cost:'€300–€400',
+   minSal:'€5,008/mo (age 30+, 2024)',langReq:'None; Dutch NT2 for PR',
+   salPot:'€60k–€130k',livingCost:'€2,200–€3,200/mo Amsterdam',taxRate:'37–49% (30% ruling available)',
+   tags:['2-week IND processing','English-friendly','30% tax ruling','Amsterdam tech hub'],
+   paths:[
+     {t:'Orientation Year',d:'1-year visa for graduates to find qualifying job. No specific employer needed.',dur:'1 year',cost:'€192',type:'entry',color:'#3b82f6'},
+     {t:'Highly Skilled Migrant',d:'IND-recognised sponsor. Salary ≥ €5,008/mo (age 30+). 2-week processing.',dur:'5 years',cost:'€350',type:'work',color:'#14b8a6'},
+     {t:'Permanent Residence',d:'5 years continuous legal residence. Dutch NT2 exam required.',dur:'PR granted',cost:'€192',type:'pr',color:'#22c55e'},
+     {t:'Dutch Citizenship',d:'5 years as PR. Dutch language test. Dual nationality limited.',dur:'Citizenship',cost:'€188',type:'citizen',color:'#8b5cf6'}
+   ],
+   reqs:{edu:['Bachelor\'s minimum','Master\'s strongly preferred'],sal:['€5,008/mo (age 30+)','€3,672/mo (under 30)'],lang:['No visa requirement','Dutch NT2 for PR/citizenship'],other:['IND-recognised sponsor','BSN number on arrival']},
+   base:{edu:21,age:19,exp:16,occ:12,lang:9}},
+
+  {id:'ie',name:'Ireland',flag:'🇮🇪',region:'europe',tier:'Tier 1',tc:'b-green',
+   visa:'Critical Skills Employment Permit',
+   prYrs:'5 years (Stamp 4)',proc:'6–8 weeks',cost:'€1,000 (employer pays)',
+   minSal:'€32,000–€64,000',langReq:'English (no formal test for most roles)',
+   salPot:'€70k–€150k (Dublin)',livingCost:'€2,500–€3,500/mo Dublin',taxRate:'20–40%',
+   tags:['English only','EU single market','Tech & finance hub','No IELTS needed'],
+   paths:[
+     {t:'Critical Skills EP',d:'For CSOL occupations. Salary ≥ €64k (any occ.) or ≥ €32k (CSOL).',dur:'2 years',cost:'€1,000',type:'work',color:'#14b8a6'},
+     {t:'General Employment Permit',d:'All other occupations. Labour market test. Salary ≥ €30k.',dur:'2 years',cost:'€500',type:'work',color:'#3b82f6'},
+     {t:'Stamp 4',d:'After 5 years legal residence. Full work rights, no sponsor needed.',dur:'PR equiv.',cost:'—',type:'pr',color:'#22c55e'},
+     {t:'Irish Citizenship',d:'5 years (1,825 days). English only. Dual citizenship permitted.',dur:'Citizenship',cost:'€175',type:'citizen',color:'#8b5cf6'}
+   ],
+   reqs:{edu:['Degree required','NARIC Ireland recognition'],sal:['€32k (CSOL occupations)','€64k (unlisted)'],lang:['English required','No formal IELTS for most'],other:['Job offer mandatory','Employer registered with DBEI']},
+   base:{edu:20,age:17,exp:14,occ:14,lang:12}},
+
+  {id:'ca',name:'Canada',flag:'🇨🇦',region:'americas',tier:'Tier 1',tc:'b-green',
+   visa:'Express Entry / Federal Skilled Worker',
+   prYrs:'PR on arrival (~6 months process)',proc:'6 months',cost:'CAD $1,365 + biometrics',
+   minSal:'No minimum (CRS-based)',langReq:'IELTS CLB 7 (6.0 per band)',
+   salPot:'CAD $70k–$140k',livingCost:'CAD $3,000–$4,500/mo Toronto',taxRate:'26–33% federal+provincial',
+   tags:['PR on arrival','Family included','French = bonus pathway','Universal healthcare'],
+   paths:[
+     {t:'Express Entry Profile',d:'Submit profile with CRS score. Score based on age, education, language, experience.',dur:'Days',cost:'Free',type:'entry',color:'#3b82f6'},
+     {t:'ITA Draw',d:'Top candidates receive Invitation to Apply. Category draws (STEM, French, healthcare) added 2023.',dur:'2–4 weeks',cost:'Free',type:'entry',color:'#f59e0b'},
+     {t:'Permanent Residence',d:'Submit full PR application after ITA. 6-month processing. Family included.',dur:'6 months',cost:'CAD $1,365',type:'pr',color:'#22c55e'},
+     {t:'Canadian Citizenship',d:'3 of 5 years as PR (physically present). IELTS required. Dual citizenship permitted.',dur:'12 months',cost:'CAD $630',type:'citizen',color:'#8b5cf6'}
+   ],
+   reqs:{edu:['ECA credential assessment required','Master\'s = higher CRS points'],sal:['No minimum salary','Job offer adds 50–200 CRS points'],lang:['IELTS CLB 7 minimum','Higher = more CRS points'],other:['Under 45 for maximum age points','French = provincial pathways']},
+   base:{edu:23,age:20,exp:17,occ:11,lang:10}},
+
+  {id:'gb',name:'United Kingdom',flag:'🇬🇧',region:'europe',tier:'Tier 1',tc:'b-green',
+   visa:'Skilled Worker Visa',
+   prYrs:'5 years (ILR)',proc:'3–8 weeks',cost:'£625–£1,500 + IHS £1,035/yr',
+   minSal:'£38,700 (2024)',langReq:'B1 English (IELTS 4.0 per component)',
+   salPot:'£65k–£160k (London)',livingCost:'£3,000–£5,000/mo London',taxRate:'20–45%',
+   tags:['English only','Global finance hub','Fast ILR to citizenship','NHS access'],
+   paths:[
+     {t:'Skilled Worker Visa',d:'Job offer from licensed sponsor. Role on eligible list. Salary ≥ £38,700.',dur:'5 years',cost:'£1,000–£1,500',type:'work',color:'#14b8a6'},
+     {t:'Indefinite Leave to Remain',d:'5 years on Skilled Worker. Life in UK test. English language.',dur:'ILR granted',cost:'£2,885',type:'pr',color:'#22c55e'},
+     {t:'British Citizenship',d:'1 year as ILR holder. Life in UK test. Dual citizenship permitted.',dur:'6 months',cost:'£1,500',type:'citizen',color:'#8b5cf6'}
+   ],
+   reqs:{edu:['No formal req','Degree expected for most skilled roles'],sal:['£38,700 general','£30,960 shortage occupations (ISL)'],lang:['IELTS 4.0 per component','Higher for some roles'],other:['Licensed sponsor employer','IHS surcharge paid upfront']},
+   base:{edu:19,age:16,exp:15,occ:13,lang:11}},
+
+  {id:'ae',name:'UAE',flag:'🇦🇪',region:'middleeast',tier:'Tier 1',tc:'b-gold',
+   visa:'Golden Visa / Green Visa / Employment Visa',
+   prYrs:'10-year Golden Visa (renewable)',proc:'2–4 weeks',cost:'AED 2,800–5,000',
+   minSal:'AED 15,000/mo (Green Visa)',langReq:'English / Arabic (no formal test)',
+   salPot:'AED 15k–80k/mo (0% income tax)',livingCost:'AED 8,000–18,000/mo Dubai',taxRate:'0% income tax (VAT 5%)',
+   tags:['0% income tax','10-year Golden Visa','No PR needed','World-class infrastructure'],
+   paths:[
+     {t:'Employment Visa',d:'Employer-sponsored. Valid 2–3 years. Most common route. Easy renewal.',dur:'2–3 years',cost:'AED 2,800',type:'work',color:'#3b82f6'},
+     {t:'Green Visa (Self-Sponsored)',d:'Skilled workers earning ≥ AED 15,000/mo. No employer sponsor needed. 5 years.',dur:'5 years',cost:'AED 3,000',type:'work',color:'#14b8a6'},
+     {t:'Golden Visa',d:'10-year renewable. For investors (AED 2M+), highly skilled professionals, researchers, exceptional talent.',dur:'10 years',cost:'AED 2,800–10,000',type:'pr',color:'#eab308'},
+     {t:'Freelance / Entrepreneur Visa',d:'Available via free zones. Business licence required. Varies by emirate.',dur:'3 years',cost:'AED 7,500+',type:'work',color:'#f59e0b'}
+   ],
+   reqs:{edu:['Degree preferred for Green Visa','Professional certifications accepted'],sal:['AED 15,000+/mo for Green Visa','AED 2M investment for Golden Visa investor track'],lang:['English widely accepted','Arabic not required'],other:['Medical fitness test','Emirates ID required','No permanent residency in traditional sense']},
+   base:{edu:17,age:18,exp:14,occ:16,lang:13}},
+
+  {id:'us',name:'USA',flag:'🇺🇸',region:'americas',tier:'Tier 1',tc:'b-blue',
+   visa:'H-1B / O-1 / EB-1 / EB-2 NIW',
+   prYrs:'5–15+ years (Green Card backlog for India)',proc:'3–12 months',cost:'$1,500–$5,000+',
+   minSal:'$60,000–$150,000+ (prevailing wage)',langReq:'English (no formal test for work visas)',
+   salPot:'$90k–$300k+',livingCost:'$3,500–$7,000/mo NYC/SF',taxRate:'22–37% federal + state',
+   tags:['Highest salaries globally','EB-1/O-1 for exceptional talent','H-1B lottery (65k cap)','Green Card backlog warning: India 50–100 yrs'],
+   paths:[
+     {t:'H-1B Specialty Occupation',d:'Annual lottery (65,000 cap). Employer-sponsored. Prevailing wage mandatory. April lottery.',dur:'3+3 years',cost:'$1,500–$5,000',type:'work',color:'#3b82f6'},
+     {t:'O-1A Extraordinary Ability',d:'No lottery. For individuals with extraordinary achievement. More flexible pathway.',dur:'3 years',cost:'$1,500',type:'work',color:'#14b8a6'},
+     {t:'EB-2 NIW (National Interest Waiver)',d:'Self-petition. No employer needed. Requires advanced degree + national interest proof.',dur:'1–3 years (if no backlog)',cost:'$700',type:'pr',color:'#22c55e'},
+     {t:'EB-1A / EB-1B',d:'Extraordinary ability or outstanding researcher. No labour certification. Fastest Green Card path.',dur:'6–18 months',cost:'$700',type:'pr',color:'#22c55e'}
+   ],
+   reqs:{edu:['Bachelor\'s minimum for H-1B','Master\'s/PhD for EB-2 NIW'],sal:['Prevailing wage mandatory','$60k–$150k depending on role/location'],lang:['English required','No formal IELTS/TOEFL for most'],other:['H-1B: 65k lottery cap annually','India Green Card: 50–100 year backlog via EB-2/EB-3','EB-1/O-1 no backlog for Indians']},
+   base:{edu:22,age:15,exp:16,occ:14,lang:12}},
+
+  {id:'sg',name:'Singapore',flag:'🇸🇬',region:'asia',tier:'Tier 1',tc:'b-purple',
+   visa:'Employment Pass (EP)',
+   prYrs:'2+ years before PR eligible (competitive)',proc:'3–8 weeks',cost:'SGD $105+$225',
+   minSal:'SGD $5,000/mo (2024, Finance: $5,500)',langReq:'English',
+   salPot:'SGD $80k–$250k',livingCost:'SGD $4,000–$8,000/mo',taxRate:'0–22% (progressive)',
+   tags:['Low tax','English-speaking','Financial hub','COMPASS scoring'],
+   paths:[
+     {t:'Employment Pass (EP)',d:'Salary ≥ SGD $5,000. COMPASS scoring. Employer-tied. Renewable every 2 years.',dur:'2 years',cost:'SGD $330',type:'work',color:'#3b82f6'},
+     {t:'Personalised Employment Pass',d:'For high earners (>SGD $22,500/mo). Not employer-tied. Flexibility to switch jobs.',dur:'3 years',cost:'SGD $1,920',type:'work',color:'#14b8a6'},
+     {t:'Permanent Residence',d:'Eligible after 6 months on EP. ~30% approval rate. Highly competitive.',dur:'PR granted',cost:'SGD $100',type:'pr',color:'#22c55e'},
+     {t:'Singapore Citizenship',d:'2 years as PR minimum. Very selective. Indian citizens must renounce Indian citizenship.',dur:'Citizenship',cost:'Free',type:'citizen',color:'#8b5cf6'}
+   ],
+   reqs:{edu:['Degree required','Top-ranked institution = COMPASS bonus'],sal:['SGD $5,000+/mo EP','SGD $5,500 financial services'],lang:['English required','No formal test'],other:['COMPASS points system','Employer must apply on your behalf','Nationality diversity matters']},
+   base:{edu:20,age:17,exp:15,occ:13,lang:11}},
+
+  {id:'jp',name:'Japan',flag:'🇯🇵',region:'asia',tier:'Tier 2',tc:'b-teal',
+   visa:'Highly Skilled Professional (HSP) / Specified Skilled Worker',
+   prYrs:'1 year (HSP 80+ points) or 3 years',proc:'1–3 months',cost:'¥4,000–¥8,000',
+   minSal:'¥4.5M–¥6M/yr (HSP)',langReq:'N4+ Japanese preferred; English possible in some sectors',
+   salPot:'¥6M–¥20M',livingCost:'¥200k–¥350k/mo Tokyo',taxRate:'20–45%',
+   tags:['J-Skip 1-yr PR','World\'s safest country','Exceptional quality of life','Ramen unlimited'],
+   paths:[
+     {t:'Specified Skilled Worker (SSW1)',d:'For 14 designated industries. Language test + skills test required. 5-year cap.',dur:'5 years',cost:'¥4,000',type:'work',color:'#3b82f6'},
+     {t:'Highly Skilled Professional (HSP)',d:'Points system. 70+ points = fast PR (3yr), 80+ points = 1yr PR track.',dur:'5 years',cost:'¥4,000',type:'work',color:'#14b8a6'},
+     {t:'J-Skip Visa (2023)',d:'New fast-track for annual income ¥20M+ OR advanced degree + ¥10M income.',dur:'5 years',cost:'¥4,000',type:'work',color:'#14b8a6'},
+     {t:'Permanent Residence',d:'Standard: 10 years. HSP 70 points: 3 years. HSP 80 points: 1 year.',dur:'PR granted',cost:'¥8,000',type:'pr',color:'#22c55e'}
+   ],
+   reqs:{edu:['Master\'s/PhD for HSP points','Any degree + experience'],sal:['¥4.5M (HSP baseline)','¥20M for J-Skip (researcher category)'],lang:['JLPT N4+ preferred','Some tech companies English-friendly'],other:['HSP points calculator at MHLW','Age and academic history points','Research patent bonus']},
+   base:{edu:18,age:16,exp:13,occ:10,lang:6}},
+
+  {id:'au',name:'Australia',flag:'🇦🇺',region:'oceania',tier:'Tier 1',tc:'b-green',
+   visa:'Skilled Independent (189) / Employer Sponsored (482)',
+   prYrs:'PR on approval (189)',proc:'8–18 months (189); 3–6 months (482)',cost:'AUD $4,640 (189)',
+   minSal:'AUD $73,150 (TSMIT 2024)',langReq:'IELTS 6.0+ per band',
+   salPot:'AUD $80k–$200k',livingCost:'AUD $3,500–$5,500/mo Sydney',taxRate:'19–45%',
+   tags:['PR on arrival (189)','Points-based','High wages','Strong economy'],
+   paths:[
+     {t:'Skills Assessment',d:'Assess qualifications via relevant authority (CAANZ, ACS, Engineers Australia, AHPRA).',dur:'1–3 months',cost:'AUD $500–$800',type:'entry',color:'#f59e0b'},
+     {t:'Expression of Interest (SkillSelect)',d:'Submit EOI. Points score determines invitation. Target occupation must be on MLTSSL/STSOL.',dur:'Varies',cost:'Free',type:'entry',color:'#3b82f6'},
+     {t:'State Nomination (190/491)',d:'State can invite you, adding 5–15 points. Some states have lower point requirements.',dur:'3–6 months',cost:'AUD $500–$800',type:'entry',color:'#f59e0b'},
+     {t:'Permanent Residence (189)',d:'Granted on approval. No employer needed. Spouse and children included.',dur:'8–18 months',cost:'AUD $4,640',type:'pr',color:'#22c55e'},
+     {t:'Australian Citizenship',d:'4 years (1 as PR). Citizenship test. Dual citizenship permitted.',dur:'12 months',cost:'AUD $490',type:'citizen',color:'#8b5cf6'}
+   ],
+   reqs:{edu:['Skills assessment required','University degree typical'],sal:['AUD $73,150 sponsored','No minimum for independent 189'],lang:['IELTS 6.0 per band minimum','Higher = more points'],other:['Age under 45 for points test','Occupation on skills list']},
+   base:{edu:21,age:18,exp:16,occ:12,lang:10}},
+
+  {id:'pt',name:'Portugal',flag:'🇵🇹',region:'europe',tier:'Tier 2',tc:'b-blue',
+   visa:'D8 Digital Nomad / D7 Passive Income',
+   prYrs:'5 years',proc:'30–90 days (AIMA)',cost:'€90–€340',
+   minSal:'€3,040/mo (D8); €760/mo (D7)',langReq:'None for visa; A2 Portuguese for PR',
+   salPot:'€35k–€80k Lisbon',livingCost:'€1,500–€2,200/mo Lisbon',taxRate:'20% NHR (10 yr regime) or 28–48%',
+   tags:['Digital nomad visa','EU access','NHR tax regime','Affordable cost of living'],
+   paths:[
+     {t:'D8 Digital Nomad Visa',d:'Remote workers earning ≥ €3,040/mo (4× min wage). 1 year, renewable.',dur:'1 year',cost:'€90',type:'work',color:'#3b82f6'},
+     {t:'D7 Passive Income Visa',d:'Passive income ≥ €760/mo. Pension, freelance, remote work allowed.',dur:'2 years',cost:'€90',type:'work',color:'#14b8a6'},
+     {t:'Permanent Residence',d:'5 years legal residence. A2 Portuguese exam required.',dur:'PR granted',cost:'€280',type:'pr',color:'#22c55e'},
+     {t:'Portuguese Citizenship',d:'5 years legal residence. Portuguese A2 test. Dual citizenship permitted.',dur:'Citizenship',cost:'€250',type:'citizen',color:'#8b5cf6'}
+   ],
+   reqs:{edu:['No formal req for D7/D8'],sal:['€3,040/mo D8 remote','€760/mo D7 passive'],lang:['None for entry','A2 Portuguese for PR/citizenship'],other:['Proof of remote work contract','NHR tax regime (10-year)',]},
+   base:{edu:14,age:16,exp:12,occ:10,lang:12}},
+
+  {id:'de2',name:'Germany (Student→Work)',flag:'🇩🇪',region:'europe',tier:'Tier 1',tc:'b-green',
+   visa:'Student Visa → 18-month Job Seeker',
+   prYrs:'6–8 years via student route',proc:'4–8 weeks',cost:'€75–€150',
+   minSal:'None (student); €43,800 (Blue Card)',langReq:'C1 German or English-taught programme',
+   salPot:'€45k–€110k',livingCost:'€900–€1,400/mo (student cities)',taxRate:'0% student; 28–42% working',
+   tags:['Affordable tuition (~€350/sem)','18-month job search after study','Strong PR path','Top universities'],
+   paths:[
+     {t:'German Student Visa',d:'Enrol in German university (many English-taught). Tuition ~€350/semester. Work 120 days/yr.',dur:'1–3 years',cost:'€75',type:'entry',color:'#3b82f6'},
+     {t:'18-Month Job Seeker Visa',d:'After graduation: 18-month visa to find qualifying job in Germany. Very popular.',dur:'18 months',cost:'€75',type:'entry',color:'#f59e0b'},
+     {t:'EU Blue Card / Work Permit',d:'Once hired with salary ≥ €43,800. Employer-sponsored permit.',dur:'4 years',cost:'€140',type:'work',color:'#14b8a6'},
+     {t:'Permanent Residence',d:'21 months Blue Card + B1, or 5 years work permit + B1 German.',dur:'PR granted',cost:'€113',type:'pr',color:'#22c55e'}
+   ],
+   reqs:{edu:['Admission to recognised German university'],sal:['€43,800 post-graduation for Blue Card'],lang:['C1 German OR English-taught programme'],other:['APS certificate for Indian students','Blocked account ~€11,208/yr required']},
+   base:{edu:20,age:20,exp:10,occ:12,lang:7}},
+
+  {id:'kr',name:'South Korea',flag:'🇰🇷',region:'asia',tier:'Tier 2',tc:'b-teal',
+   visa:'E-7 Specially Designated Activities / D-10 Job Seeker',
+   prYrs:'5 years (F-5 Permanent Resident)',proc:'2–4 weeks',cost:'₩130,000',
+   minSal:'₩37M/yr minimum (E-7)',langReq:'TOPIK Level 2–4 preferred',
+   salPot:'₩50M–₩150M',livingCost:'₩2.5M–₩4M/mo Seoul',taxRate:'6–45%',
+   tags:['K-ETA visa-free entry','Tech manufacturing hub','D-10 job seeker visa','Point-based PR'],
+   paths:[
+     {t:'D-10 Job Seeker Visa',d:'Graduates and skilled professionals to job hunt in Korea. Valid 6 months, extendable.',dur:'6 months',cost:'₩130,000',type:'entry',color:'#3b82f6'},
+     {t:'E-7 Specially Designated Activities',d:'For 83 specific occupations. Salary ≥ ₩37M/yr. Employer-sponsored.',dur:'3 years',cost:'₩130,000',type:'work',color:'#14b8a6'},
+     {t:'F-2 Residence (Point-Based)',d:'Score 80+/120 points based on income, education, Korean proficiency, age.',dur:'1 year, renewable',cost:'₩130,000',type:'work',color:'#f59e0b'},
+     {t:'F-5 Permanent Residence',d:'Standard 5 years. F-2 holders: 3 years. Highly skilled: 1–3 years.',dur:'PR granted',cost:'₩400,000',type:'pr',color:'#22c55e'}
+   ],
+   reqs:{edu:['Bachelor\'s for E-7','TOPIK 2+ helpful'],sal:['₩37M+ for E-7','Higher for F-2 points'],lang:['English fine in tech','Korean TOPIK helps PR points'],other:['Criminal background check','Medical check required']},
+   base:{edu:16,age:15,exp:12,occ:10,lang:7}},
+
+  {id:'be',name:'Belgium',flag:'🇧🇪',region:'europe',tier:'Tier 2',tc:'b-blue',
+   visa:'Single Permit / EU Blue Card',
+   prYrs:'5 years',proc:'4–8 weeks',cost:'€200–€400',
+   minSal:'€42,556 (Blue Card 2024)',langReq:'None; FR/NL for PR (region-dependent)',
+   salPot:'€50k–€120k Brussels',livingCost:'€1,800–€2,500/mo Brussels',taxRate:'25–50% (high)',
+   tags:['EU institutions hub','NATO/EU HQ','Expat community','Lower than NL property prices'],
+   paths:[
+     {t:'Single Permit (Highly Qualified)',d:'Combined work + residence. Employer-sponsored. Salary ≥ €42,556.',dur:'3 years',cost:'€200–€400',type:'work',color:'#14b8a6'},
+     {t:'EU Blue Card Belgium',d:'Same threshold as Single Permit. Regional application (Flanders/Wallonia).',dur:'4 years',cost:'€200',type:'work',color:'#3b82f6'},
+     {t:'Unlimited Stay',d:'5 years legal residence. Regional language exam required.',dur:'Permanent',cost:'€200',type:'pr',color:'#22c55e'},
+     {t:'Belgian Citizenship',d:'5 years + language + civic integration. Dual citizenship permitted.',dur:'Citizenship',cost:'€150',type:'citizen',color:'#8b5cf6'}
+   ],
+   reqs:{edu:['Bachelor\'s or 3yrs equivalent experience'],sal:['€42,556 Blue Card','€33,487 shortage occupations'],lang:['No entry req','FR or NL (region) for PR'],other:['Regional rules vary significantly','Flanders most English-friendly']},
+   base:{edu:17,age:15,exp:13,occ:11,lang:10}},
+
+  {id:'lu',name:'Luxembourg',flag:'🇱🇺',region:'europe',tier:'Tier 2',tc:'b-blue',
+   visa:'EU Blue Card / Salaried Worker Permit',
+   prYrs:'5 years',proc:'3–6 weeks',cost:'€80–€200',
+   minSal:'€52,000/yr (Blue Card 2024)',langReq:'French or German preferred; English in finance',
+   salPot:'€70k–€200k',livingCost:'€3,000–€4,500/mo Luxembourg City',taxRate:'14–42%',
+   tags:['Highest EU GDP per capita','Finance & fintech hub','Tri-lingual advantage','EU passport pathway'],
+   paths:[
+     {t:'EU Blue Card',d:'Salary ≥ €52,000. 2-year permit, renewable. Finance and consulting dominant.',dur:'2 years',cost:'€80',type:'work',color:'#14b8a6'},
+     {t:'Long-Term Resident',d:'5 years continuous residence. One of FR/DE/Lux required.',dur:'PR granted',cost:'€80',type:'pr',color:'#22c55e'},
+     {t:'Luxembourg Citizenship',d:'5 years. Tri-lingual test (FR/DE/Lux). Dual citizenship permitted.',dur:'Citizenship',cost:'Free',type:'citizen',color:'#8b5cf6'}
+   ],
+   reqs:{edu:['Master\'s preferred for Finance'],sal:['€52,000 Blue Card','~€43,000 standard permit'],lang:['English common in finance','FR or DE for PR'],other:['Short commute option from France/Belgium','Competitive finance job market']},
+   base:{edu:18,age:16,exp:14,occ:14,lang:9}}
+];
+
+/* ── GOV LINKS DATA ── */
+const GOV_LINKS = [
+  {region:'europe',country:'Germany 🇩🇪',categories:[
+    {cat:'Job Seeker / Entry Visas',links:[
+      {name:'Job Seeker Visa (Germany)',desc:'Official portal for German job seeker visa information',url:'https://www.bamf.de/EN/Themen/MigrationAufenthalt/ZuwandererDrittstaaten/Migrathek/Arbeitssuche/arbeitssuche-node.html',icon:'🔍'},
+      {name:'Make it in Germany',desc:'Federal government portal for skilled workers',url:'https://www.make-it-in-germany.com/en/',icon:'🇩🇪'},
+      {name:'Visum für Jobsuche — AuslandsInfo',desc:'Detailed visa entry requirements',url:'https://www.auswaertiges-amt.de/en/visa-service',icon:'📋'},
+    ]},
+    {cat:'Self-Sponsored / Blue Card',links:[
+      {name:'EU Blue Card Germany (BAMF)',desc:'Official Blue Card requirements and application guide',url:'https://www.bamf.de/EN/Themen/MigrationAufenthalt/ZuwandererDrittstaaten/Migrathek/BlaueKarte/blaue-karte-node.html',icon:'💳'},
+      {name:'Credential Recognition (Anabin)',desc:'Database for recognising foreign qualifications in Germany',url:'https://anabin.kmk.org',icon:'🎓'},
+    ]},
+    {cat:'Permanent Residence & Citizenship',links:[
+      {name:'Settlement Permit (Niederlassungserlaubnis)',desc:'Permanent residence rules in Germany',url:'https://www.bamf.de/EN/Themen/MigrationAufenthalt/ZuwandererDrittstaaten/Migrathek/Niederlassungserlaubnis/niederlassungserlaubnis-node.html',icon:'🏠'},
+      {name:'German Citizenship (BAMF)',desc:'Naturalisation requirements — 5 year reform 2024',url:'https://www.bamf.de/EN/Themen/Staatsangehoerigkeitsbuergerschaft/staatsangehoerigkeitsbuergerschaft-node.html',icon:'🇩🇪'},
+    ]}
+  ]},
+  {region:'europe',country:'Netherlands 🇳🇱',categories:[
+    {cat:'Job Seeker / Orientation Visas',links:[
+      {name:'Orientation Year (IND)',desc:'1-year visa for graduates and researchers to find work',url:'https://ind.nl/en/residence-permits/work/orientation-year-highly-educated-persons',icon:'🔍'},
+    ]},
+    {cat:'Self-Sponsored / Highly Skilled',links:[
+      {name:'Highly Skilled Migrant (IND)',desc:'Main HSM visa portal — requirements and salary thresholds',url:'https://ind.nl/en/residence-permits/work/highly-skilled-migrant',icon:'⭐'},
+      {name:'IND Salary Requirements',desc:'Current salary thresholds updated annually',url:'https://ind.nl/en/salary-requirements-highly-skilled-migrants',icon:'💰'},
+      {name:'30% Tax Ruling (Belastingdienst)',desc:'Dutch tax ruling for expat professionals',url:'https://www.belastingdienst.nl/wps/wcm/connect/en/individuals/content/coming-to-work-in-the-netherlands-30percent-facility',icon:'💳'},
+    ]},
+    {cat:'Permanent Residence & Citizenship',links:[
+      {name:'Permanent Residence (IND)',desc:'5-year PR requirements for Netherlands',url:'https://ind.nl/en/residence-permits/permanent-residence',icon:'🏠'},
+      {name:'Dutch Citizenship (IND)',desc:'Naturalisation requirements and NT2 Dutch test',url:'https://ind.nl/en/dutch-citizenship',icon:'🇳🇱'},
+    ]}
+  ]},
+  {region:'europe',country:'Ireland 🇮🇪',categories:[
+    {cat:'Work Visa Pathways',links:[
+      {name:'Critical Skills Employment Permit',desc:'CSEP — main skilled worker permit',url:'https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/critical-skills-employment-permit/',icon:'⭐'},
+      {name:'General Employment Permit',desc:'For all other occupations',url:'https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/permit-types/general-employment-permit/',icon:'💼'},
+      {name:'Critical Skills Occupations List',desc:'Current list of qualifying occupations',url:'https://enterprise.gov.ie/en/what-we-do/workplace-and-skills/employment-permits/employment-permit-eligibility/highly-skilled-eligible-occupations-list/',icon:'📋'},
+    ]},
+    {cat:'Permanent Residence & Citizenship',links:[
+      {name:'Irish Naturalisation (INIS)',desc:'Citizenship application via naturalisation',url:'https://www.irishimmigration.ie/citizenship/',icon:'🇮🇪'},
+      {name:'NARIC Ireland',desc:'Recognition of foreign qualifications',url:'https://qsearch.qqi.ie/WebPart/Search',icon:'🎓'},
+    ]}
+  ]},
+  {region:'americas',country:'Canada 🇨🇦',categories:[
+    {cat:'Express Entry & Skilled Workers',links:[
+      {name:'Express Entry (IRCC)',desc:'Main portal for Canada skilled worker immigration',url:'https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry.html',icon:'🚀'},
+      {name:'Federal Skilled Worker Program',desc:'FSW requirements and CRS scoring',url:'https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/eligibility/federal-skilled-workers.html',icon:'👔'},
+      {name:'CRS Score Tool (IRCC)',desc:'Calculate your Comprehensive Ranking System score',url:'https://ircc.canada.ca/english/immigrate/skilled/crs-tool.asp',icon:'🔢'},
+    ]},
+    {cat:'Provincial Nominee Programs',links:[
+      {name:'Ontario Immigrant Nominee Program',desc:'OINP — largest provincial program',url:'https://www.ontario.ca/page/ontario-immigrant-nominee-program-oinp',icon:'🍁'},
+      {name:'BC Provincial Nominee Program',desc:'BCPNP for tech and skilled workers',url:'https://www.welcomebc.ca/Immigrate-to-B-C/BC-PNP',icon:'🌲'},
+    ]},
+    {cat:'Permanent Residence & Citizenship',links:[
+      {name:'Permanent Residence (IRCC)',desc:'PR application and requirements',url:'https://www.canada.ca/en/immigration-refugees-citizenship/services/new-immigrants/pr-card.html',icon:'🏠'},
+      {name:'Canadian Citizenship (IRCC)',desc:'Naturalisation requirements and test',url:'https://www.canada.ca/en/immigration-refugees-citizenship/services/canadian-citizenship/become-canadian-citizen.html',icon:'🇨🇦'},
+    ]}
+  ]},
+  {region:'europe',country:'United Kingdom 🇬🇧',categories:[
+    {cat:'Work Visa Pathways',links:[
+      {name:'Skilled Worker Visa (UK Gov)',desc:'Main Skilled Worker visa requirements and sponsorship',url:'https://www.gov.uk/skilled-worker-visa',icon:'💼'},
+      {name:'Immigration Salary List (ISL)',desc:'Shortage occupation salary discount list 2024',url:'https://www.gov.uk/government/publications/skilled-worker-visa-immigration-salary-list',icon:'📋'},
+      {name:'Licensed Sponsor List',desc:'Check if an employer is a licensed sponsor',url:'https://www.gov.uk/government/publications/register-of-licensed-sponsors-workers',icon:'🔍'},
+      {name:'Global Talent Visa',desc:'No job offer needed for exceptional talent',url:'https://www.gov.uk/global-talent',icon:'⭐'},
+      {name:'India Young Professionals Scheme',desc:'Special UK visa for Indian nationals aged 18–30',url:'https://www.gov.uk/india-young-professionals-scheme-visa',icon:'🇮🇳'},
+    ]},
+    {cat:'Permanent Residence & Citizenship',links:[
+      {name:'Indefinite Leave to Remain',desc:'ILR after 5 years Skilled Worker',url:'https://www.gov.uk/indefinite-leave-to-remain',icon:'🏠'},
+      {name:'British Citizenship',desc:'Naturalisation as British citizen',url:'https://www.gov.uk/becoming-a-british-citizen',icon:'🇬🇧'},
+    ]}
+  ]},
+  {region:'middleeast',country:'UAE 🇦🇪',categories:[
+    {cat:'Job Seeker Visas',links:[
+      {name:'UAE Job Seeker Visa',desc:'60/90-day job search visa for UAE',url:'https://u.ae/en/information-and-services/visa-and-emirates-id/types-of-visa/job-seeker-visa',icon:'🔍'},
+    ]},
+    {cat:'Self-Sponsored Visas',links:[
+      {name:'Green Visa (ICP UAE)',desc:'5-year self-sponsored skilled worker visa',url:'https://icp.gov.ae/en/residency/green-visa/',icon:'🌿'},
+      {name:'Freelance Visa',desc:'Independent professional visa options',url:'https://u.ae/en/information-and-services/visa-and-emirates-id/types-of-visa/freelance-visa',icon:'💻'},
+    ]},
+    {cat:'Golden Visa',links:[
+      {name:'Golden Visa (ICP UAE)',desc:'10-year renewable Golden Visa categories',url:'https://icp.gov.ae/en/residency/golden-visa/',icon:'🏆'},
+      {name:'Investor Golden Visa',desc:'AED 2M investment route to Golden Visa',url:'https://www.dubaifdi.gov.ae/en/goldenVisa',icon:'💰'},
+    ]},
+    {cat:'Work Visa',links:[
+      {name:'UAE Work Visa (MOHRE)',desc:'Employment visa and labour card process',url:'https://www.mohre.gov.ae/en/laws-policies/work-permits.aspx',icon:'💼'},
+      {name:'Emirates ID (ICA)',desc:'Identity card mandatory for all residents',url:'https://icp.gov.ae/en',icon:'🪪'},
+    ]}
+  ]},
+  {region:'americas',country:'USA 🇺🇸',categories:[
+    {cat:'Work Visa Pathways',links:[
+      {name:'H-1B Specialty Occupation (USCIS)',desc:'Main skilled worker visa — annual lottery in April',url:'https://www.uscis.gov/working-in-the-united-states/h-1b-specialty-occupations',icon:'💼'},
+      {name:'O-1A Extraordinary Ability',desc:'No lottery — for exceptional achievement in field',url:'https://www.uscis.gov/working-in-the-united-states/temporary-workers/o-1-visa-individuals-with-extraordinary-ability-or-achievement',icon:'⭐'},
+      {name:'L-1 Intracompany Transfer',desc:'Transfer to US office of same multinational company',url:'https://www.uscis.gov/working-in-the-united-states/temporary-workers/l-1a-intracompany-transferee-executive-or-manager',icon:'🏢'},
+    ]},
+    {cat:'Green Card (Permanent Residence)',links:[
+      {name:'EB-1A Extraordinary Ability',desc:'No employer needed. Fastest for exceptional individuals.',url:'https://www.uscis.gov/green-card/green-card-eligibility/green-card-through-employment-first-preference',icon:'🌟'},
+      {name:'EB-2 NIW (National Interest Waiver)',desc:'Self-petition for advanced degree + national interest',url:'https://www.uscis.gov/green-card/green-card-eligibility/green-card-through-employment-second-preference',icon:'🇺🇸'},
+      {name:'Green Card Bulletin (Visa Priority Dates)',desc:'Monthly update on India EB-2/EB-3 backlog wait times',url:'https://travel.state.gov/content/travel/en/legal/visa-law0/visa-bulletin.html',icon:'📊'},
+    ]}
+  ]},
+  {region:'asia',country:'Singapore 🇸🇬',categories:[
+    {cat:'Work Visa Pathways',links:[
+      {name:'Employment Pass (MOM)',desc:'Main EP portal — COMPASS scoring system',url:'https://www.mom.gov.sg/passes-and-permits/employment-pass',icon:'💼'},
+      {name:'COMPASS Self-Assessment',desc:'Check your COMPASS points score online',url:'https://www.mom.gov.sg/employment-practices/passes-and-permits/employment-pass/compass',icon:'🧭'},
+      {name:'Personalised Employment Pass',desc:'High earner non-employer-tied visa',url:'https://www.mom.gov.sg/passes-and-permits/personalised-employment-pass',icon:'⭐'},
+    ]},
+    {cat:'Self-Sponsored / Entrepreneur',links:[
+      {name:'EntrePass (MOM)',desc:'For entrepreneurs founding innovative Singapore company',url:'https://www.mom.gov.sg/passes-and-permits/entrepass',icon:'🚀'},
+      {name:'Tech.Pass',desc:'For established tech leaders and experts',url:'https://www.edb.gov.sg/en/business-insights/insights/tech-pass.html',icon:'💻'},
+    ]},
+    {cat:'Permanent Residence',links:[
+      {name:'PR Application (ICA)',desc:'Singapore PR application via ICA portal',url:'https://www.ica.gov.sg/reside/PR',icon:'🏠'},
+    ]}
+  ]},
+  {region:'asia',country:'Japan 🇯🇵',categories:[
+    {cat:'Job Seeker Visas',links:[
+      {name:'Job Searching Designated Activities Visa',desc:'After graduation from Japanese university',url:'https://www.mofa.go.jp/j_info/visit/visa/long/activities.html',icon:'🔍'},
+    ]},
+    {cat:'Work Visa Pathways',links:[
+      {name:'Highly Skilled Professional (HSP)',desc:'Points-based fast-track to PR in Japan',url:'https://www.moj.go.jp/isa/applications/procedures/zairyu_haitoku.html',icon:'⭐'},
+      {name:'J-Skip Visa (MOFA)',desc:'New 2023 fast-track for top earners',url:'https://www.mofa.go.jp/ca/fna/page22e_000955.html',icon:'🚀'},
+      {name:'Specified Skilled Worker (SSW)',desc:'14 designated industry sectors',url:'https://www.moj.go.jp/isa/applications/procedures/nyuukokukanri07_00218.html',icon:'🏭'},
+    ]},
+    {cat:'Permanent Residence',links:[
+      {name:'Permanent Resident Visa (MOJ)',desc:'Standard and HSP accelerated PR routes',url:'https://www.moj.go.jp/isa/applications/procedures/zairyu_eijuu.html',icon:'🏠'},
+    ]}
+  ]},
+  {region:'oceania',country:'Australia 🇦🇺',categories:[
+    {cat:'Job Seeker Visas',links:[
+      {name:'Working Holiday Visa (Subclass 417/462)',desc:'Work and travel visa — gateway to longer stay',url:'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/work-holiday-417',icon:'🔍'},
+    ]},
+    {cat:'Self-Sponsored / Skilled Independent',links:[
+      {name:'Skilled Independent Visa 189 (Home Affairs)',desc:'No employer or state needed — points-based PR',url:'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189',icon:'⭐'},
+      {name:'SkillSelect EOI Portal',desc:'Submit Expression of Interest for skilled migration',url:'https://skillselect.gov.au',icon:'🎯'},
+      {name:'Skills Assessment Authorities',desc:'List of assessing bodies by occupation',url:'https://immi.homeaffairs.gov.au/visas/working-in-australia/skill-occupation-list',icon:'📋'},
+    ]},
+    {cat:'Work Visa Pathways',links:[
+      {name:'Employer Sponsored (Subclass 482)',desc:'Temporary Skilled Shortage visa — employer sponsored',url:'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/temporary-skill-shortage-482',icon:'💼'},
+      {name:'State Nomination (Subclass 190)',desc:'Points test + state nomination for PR',url:'https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-nominated-190',icon:'🗺️'},
+    ]},
+    {cat:'Permanent Residence & Citizenship',links:[
+      {name:'Australian Citizenship (Home Affairs)',desc:'Citizenship requirements and test',url:'https://immi.homeaffairs.gov.au/citizenship',icon:'🇦🇺'},
+    ]}
+  ]},
+  {region:'asia',country:'South Korea 🇰🇷',categories:[
+    {cat:'Job Seeker Visas',links:[
+      {name:'D-10 Job Seeker Visa (HiKorea)',desc:'Visa to job hunt in South Korea',url:'https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=2&PARENT_ID=0&catSeq=2',icon:'🔍'},
+    ]},
+    {cat:'Work Visa Pathways',links:[
+      {name:'E-7 Specially Designated Activities',desc:'For 83 qualified occupations — skilled worker route',url:'https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=2&PARENT_ID=0&catSeq=2',icon:'💼'},
+      {name:'Korea Immigration Portal (HiKorea)',desc:'Main Korean immigration portal in English',url:'https://www.hikorea.go.kr',icon:'🏛️'},
+    ]},
+    {cat:'Permanent Residence',links:[
+      {name:'F-5 Permanent Resident Visa',desc:'Korean permanent residence requirements',url:'https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=2&PARENT_ID=0&catSeq=2',icon:'🏠'},
+    ]}
+  ]}
+];
+
+/* ── OCCUPATIONS DATA ── */
+const OCCUPATIONS = [
+  {n:'Software Engineer',d:'high',fields:['cs'],countries:['🇩🇪','🇳🇱','🇮🇪','🇨🇦','🇬🇧','🇦🇺','🇸🇬','🇺🇸','🇯🇵'],note:'Shortage in almost all destinations. Blue Card eligible (DE). Critical Skills (IE). MLTSSL (AU).'},
+  {n:'Data Scientist / ML Engineer',d:'very high',fields:['cs'],countries:['🇩🇪','🇳🇱','🇮🇪','🇨🇦','🇬🇧','🇸🇬','🇺🇸'],note:'Highest demand globally 2024. O-1A possible in US. Category-based Canada draw.'},
+  {n:'Cybersecurity Analyst',d:'very high',fields:['cs'],countries:['🇬🇧','🇩🇪','🇸🇬','🇦🇺','🇨🇦','🇺🇸'],note:'Critical shortage everywhere. Fast-tracked on shortage lists.'},
+  {n:'Financial Analyst',d:'high',fields:['finance'],countries:['🇬🇧','🇸🇬','🇱🇺','🇮🇪','🇦🇪','🇺🇸'],note:'London and Singapore dominant hubs. CSEP Ireland. UAE 0% tax.'},
+  {n:'Investment Banker',d:'high',fields:['finance'],countries:['🇬🇧','🇸🇬','🇱🇺','🇦🇪','🇺🇸','🇭🇰'],note:'London, Singapore, NYC, Dubai — top 4 global IB hubs.'},
+  {n:'Management Consultant',d:'high',fields:['business','finance'],countries:['🇬🇧','🇩🇪','🇳🇱','🇮🇪','🇨🇦','🇦🇺'],note:'Skilled Worker (UK). Blue Card (DE). CSEP (IE).'},
+  {n:'Civil / Structural Engineer',d:'high',fields:['engineering'],countries:['🇩🇪','🇦🇺','🇨🇦','🇬🇧','🇳🇱','🇦🇪'],note:'MLTSSL (AU). Shortage in Canada. Blue Card eligible (DE).'},
+  {n:'Mechanical Engineer',d:'high',fields:['engineering'],countries:['🇩🇪','🇦🇺','🇨🇦','🇳🇱','🇬🇧'],note:'Strong demand in Germany (automotive, industrial). MLTSSL (AU).'},
+  {n:'Electrical Engineer',d:'high',fields:['engineering'],countries:['🇩🇪','🇦🇺','🇨🇦','🇳🇱','🇦🇪'],note:'Shortage occupation in Australia and Canada. Blue Card eligible.'},
+  {n:'Registered Nurse',d:'very high',fields:['medicine'],countries:['🇬🇧','🇮🇪','🇨🇦','🇦🇺','🇩🇪','🇸🇬'],note:'Critical shortage everywhere. NHS fast-tracked. APC required.'},
+  {n:'Physician / Doctor',d:'very high',fields:['medicine'],countries:['🇬🇧','🇩🇪','🇦🇺','🇨🇦','🇮🇪','🇸🇬'],note:'GMC/AMC/LMCC licensing required. Fastest sponsored route in all destinations.'},
+  {n:'Physiotherapist',d:'high',fields:['medicine'],countries:['🇦🇺','🇨🇦','🇬🇧','🇮🇪','🇩🇪'],note:'MLTSSL (AU). Shortage in Canada. HCPC registration (UK).'},
+  {n:'Product Manager',d:'high',fields:['business','cs'],countries:['🇬🇧','🇩🇪','🇳🇱','🇨🇦','🇸🇬','🇺🇸'],note:'Tech PM roles qualify for Skilled Worker/Blue Card/EP widely.'},
+  {n:'UX/UI Designer',d:'medium',fields:['arts','cs'],countries:['🇩🇪','🇳🇱','🇬🇧','🇨🇦','🇸🇬'],note:'Digital/creative worker categories. Fits Blue Card in DE.'},
+  {n:'Economist',d:'medium',fields:['finance','science'],countries:['🇨🇦','🇦🇺','🇬🇧','🇩🇪'],note:'FSW eligible Canada. Research track preferred.'},
+  {n:'Accountant / CPA',d:'high',fields:['finance'],countries:['🇦🇺','🇨🇦','🇬🇧','🇮🇪','🇩🇪'],note:'CAANZ/CPA (AU). ACCA widely recognised globally.'},
+  {n:'Architect',d:'medium',fields:['engineering','arts'],countries:['🇩🇪','🇦🇺','🇨🇦','🇬🇧','🇦🇪'],note:'Licensing required in most countries. ARB (UK), ARCHITECTS board (AU).'},
+  {n:'Lawyer / Solicitor',d:'medium',fields:['law'],countries:['🇬🇧','🇦🇺','🇺🇸','🇨🇦','🇸🇬'],note:'Bar membership required in each jurisdiction. Qualified in one country helps.'},
+  {n:'AI / LLM Engineer',d:'very high',fields:['cs'],countries:['🇺🇸','🇬🇧','🇨🇦','🇸🇬','🇩🇪','🇳🇱'],note:'Fastest growing demand 2024–2025. Category draws in Canada. O-1A possible US.'},
+  {n:'Cloud / DevOps Engineer',d:'very high',fields:['cs'],countries:['🇩🇪','🇳🇱','🇮🇪','🇨🇦','🇬🇧','🇸🇬'],note:'AWS/Azure certifications valued. Shortage everywhere.'},
+  {n:'Pharmacist',d:'high',fields:['medicine'],countries:['🇦🇺','🇨🇦','🇬🇧','🇩🇪'],note:'APHRA (AU), GPhC (UK) registration needed. Shortage.'},
+  {n:'Research Scientist',d:'high',fields:['science'],countries:['🇩🇪','🇯🇵','🇨🇦','🇦🇺','🇺🇸'],note:'HSP bonus in Japan. EB-1B in USA. Blue Card (DE).'},
+];
+
+/* ── NEWS DATA ── */
+const NEWS = [
+  {region:'europe',country:'🇩🇪 Germany',color:'#3b82f6',date:'Jun 2024',title:'Germany cuts citizenship timeline to 5 years and legalises dual nationality',body:'New Staatsangehörigkeitsgesetz (StAG) reform in force June 2024. Residency for citizenship reduced from 8 to 5 years. Dual/multiple nationality now fully permitted for all nationalities. Exceptional cases can naturalise in 3 years.'},
+  {region:'europe',country:'🇬🇧 UK',color:'#ef4444',date:'Apr 2024',title:'UK Skilled Worker salary threshold raised to £38,700',body:'Major increase from £26,200. The shortage occupation list was abolished and replaced with the Immigration Salary List (ISL) offering 20% discount for listed roles. Healthcare workers and some other categories receive exemptions. Student dependant restrictions tightened.'},
+  {region:'europe',country:'🇳🇱 Netherlands',color:'#14b8a6',date:'Jan 2024',title:'Netherlands HSM salary thresholds updated for 2024',body:'IND updated salary requirements annually in January. Age 30+: €5,008/month. Under 30: €3,672/month. Orientation Year visa remains unchanged at 1 year for graduates and researchers.'},
+  {region:'americas',country:'🇨🇦 Canada',color:'#22c55e',date:'Nov 2023',title:'Canada targets 485,000 new PRs in 2024–2026 levels plan',body:'IRCC\'s 3-year Immigration Levels Plan maintains high targets. Category-based Express Entry draws introduced — healthcare, STEM, French speakers, trades, agriculture. Category draws have lower CRS cutoffs than all-programs rounds.'},
+  {region:'europe',country:'🇮🇪 Ireland',color:'#14b8a6',date:'Mar 2024',title:'Ireland revises Critical Skills Occupations List',body:'Updated Critical Skills Occupations List adds several tech and healthcare roles. Salary thresholds remain at €32k (listed occupations) and €64k (unlisted). Labour market test exemption continues for CSEP applicants.'},
+  {region:'middleeast',country:'🇦🇪 UAE',color:'#eab308',date:'Sep 2023',title:'UAE expands Golden Visa eligibility to more skilled professionals',body:'UAE Golden Visa now available to skilled employees earning AED 30,000+/month with a university degree. Doctors, engineers, scientists, artists, athletes, and exceptional students included. No real estate investment required for skilled worker track.'},
+  {region:'middleeast',country:'🇦🇪 UAE',color:'#eab308',date:'Mar 2024',title:'UAE Green Visa: 5-year self-sponsored residency for skilled workers',body:'Green Visa available for skilled workers earning ≥ AED 15,000/month with a degree. Freelancers and self-employed also eligible via this route. No employer sponsorship required — major shift for the UAE.'},
+  {region:'americas',country:'🇺🇸 USA',color:'#8b5cf6',date:'Jan 2024',title:'EB-2 NIW strategy gaining popularity among Indian professionals',body:'With EB-2/EB-3 Green Card backlog for India now estimated at 50–100+ years, many Indian professionals are pursuing O-1A visas or EB-1A/EB-2 NIW self-petition routes which have no per-country backlog.'},
+  {region:'asia',country:'🇸🇬 Singapore',color:'#8b5cf6',date:'Sep 2023',title:'Singapore EP COMPASS system fully implemented',body:'COMPASS (Complementarity Assessment Framework) now mandatory for all new Employment Pass applications. Scores based on salary, qualifications, nationality diversity, and firm\'s local workforce ratio. Financial services threshold: SGD $5,500/month.'},
+  {region:'asia',country:'🇯🇵 Japan',color:'#14b8a6',date:'Apr 2023',title:'Japan launches J-Skip: PR in 1 year for top professionals',body:'New J-Skip visa targets highly skilled workers. Annual income ≥ ¥20M (researcher/engineer) OR advanced degree + ¥10M income. PR eligibility after just 1 year on J-Skip — fastest track in Japan. Applications via MOFA.'},
+  {region:'oceania',country:'🇦🇺 Australia',color:'#22c55e',date:'Jul 2023',title:'Australia raises Temporary Skilled Migration Income Threshold to AUD $73,150',body:'TSMIT raised from $53,900 to $73,150 — a major 35% increase. Affects all subclass 482 (TSS) sponsored workers. Significantly raises the bar for employer-sponsored immigration. Independent skilled 189 unaffected.'},
+  {region:'americas',country:'🇨🇦 Canada',color:'#22c55e',date:'May 2023',title:'Canada introduces occupation-based Express Entry category draws',body:'IRCC now draws candidates by occupation category in addition to all-programs rounds. Healthcare workers, STEM professionals, tradespeople, French speakers, and more can qualify in targeted draws often with lower CRS score requirements than general rounds.'},
+  {region:'europe',country:'🇵🇹 Portugal',color:'#3b82f6',date:'Oct 2023',title:'Portugal ARI (Golden Visa) ends real estate route',body:'Real estate investment no longer qualifies for the Golden Visa programme. Fund investments (€500k+) and job creation (10 employees) remain valid. The D8 digital nomad visa continues to grow in popularity as an alternative entry route.'},
+  {region:'asia',country:'🇰🇷 South Korea',color:'#14b8a6',date:'Mar 2024',title:'South Korea introduces new fast-track PR for top-point skilled workers',body:'Workers achieving 80+ points on the F-2 Points-Based Residence system can qualify for F-5 Permanent Residence after just 3 years instead of the standard 5. Korean language proficiency (TOPIK) remains a significant point contributor.'},
+];
+
+/* ═══════════════════════════════ SCORING ═══════════════════════════════ */
+let results = [];
+let savedPlans = JSON.parse(localStorage.getItem('vp-saved-v2') || '[]');
+let chatHistory = [];
+let currentSim = 'ca';
+
+function getProfile() {
+  return {
+    age: +document.getElementById('f-age').value,
+    nat: document.getElementById('f-nat').value,
+    res: document.getElementById('f-res').value,
+    edu: document.getElementById('f-edu').value,
+    field: document.getElementById('f-field').value,
+    exp: +document.getElementById('f-exp').value,
+    ind: document.getElementById('f-ind').value,
+    offer: document.getElementById('f-offer').value,
+    remote: document.getElementById('f-remote').value,
+    en: document.getElementById('f-en').value,
+    lang2: document.getElementById('f-lang2').value,
+    sal: +document.getElementById('f-sal').value,
+    sav: +document.getElementById('f-sav').value,
+    marital: document.getElementById('f-marital').value,
+    ent: document.getElementById('f-ent').value,
+    dep: +document.getElementById('f-dep').value,
+  };
+}
+
+function scoreCountries(p) {
+  return COUNTRIES.map(c => {
+    let {edu,age,exp,occ,lang} = {...c.base};
+    if(p.edu==='phd') edu+=6; else if(p.edu==='master') edu+=3; else if(p.edu==='highschool') edu-=7;
+    const a=p.age;
+    if(a<=27) age+=10; else if(a<=31) age+=7; else if(a<=35) age+=4; else if(a<=40) age+=1; else if(a>45) age-=6;
+    const e=p.exp;
+    if(e>=10) exp+=9; else if(e>=7) exp+=6; else if(e>=5) exp+=3; else if(e>=3) exp+=1;
+    if(p.en==='ielts7'||p.en==='native') lang+=6; else if(p.en==='ielts6') lang+=3; else if(p.en==='none') lang-=4;
+    // language bonuses
+    if(c.id==='de'&&p.lang2.startsWith('german')) lang+=(p.lang2==='german-b2'?6:3);
+    if((c.id==='de2')&&p.lang2.startsWith('german')) lang+=(p.lang2==='german-b2'?6:3);
+    if(c.id==='ca'&&p.lang2.startsWith('french')) lang+=(p.lang2==='french-b2'?7:3);
+    if(c.id==='be'&&(p.lang2.startsWith('french')||p.lang2.startsWith('german'))) lang+=3;
+    if(c.id==='lu'&&(p.lang2.startsWith('french')||p.lang2.startsWith('german'))) lang+=4;
+    if((c.id==='jp')&&p.lang2==='japanese') lang+=7;
+    if((c.id==='kr')&&p.lang2==='korean') lang+=6;
+    // field bonuses
+    if(c.id==='gb'&&p.field==='finance') occ+=5;
+    if(c.id==='ie'&&(p.field==='finance'||p.field==='cs')) occ+=4;
+    if(c.id==='sg'&&p.field==='finance') occ+=5;
+    if(c.id==='lu'&&p.field==='finance') occ+=6;
+    if(c.id==='ae'&&(p.field==='finance'||p.field==='engineering')) occ+=4;
+    if(c.id==='us'&&(p.field==='cs'||p.field==='engineering'||p.field==='medicine')) occ+=3;
+    if((c.id==='de'||c.id==='nl')&&(p.field==='cs'||p.field==='engineering')) occ+=4;
+    if(c.id==='au'&&(p.field==='engineering'||p.field==='cs'||p.field==='medicine')) occ+=3;
+    if(c.id==='jp'&&(p.field==='engineering'||p.field==='cs')) occ+=3;
+    // job offer
+    if(p.offer==='yes') {
+      if(c.id!=='ca'&&c.id!=='pt'&&c.id!=='ae') occ+=6;
+      else if(c.id==='ca') occ+=11;
+      else if(c.id==='ae') occ+=4;
+    }
+    // remote bonus
+    if(p.remote==='yes') { if(c.id==='pt') occ+=10; if(c.id==='ae') occ+=3; }
+    // salary feasibility
+    if(c.id==='nl'&&p.sal<50) occ-=6; if(c.id==='sg'&&p.sal<50) occ-=5;
+    if(c.id==='gb'&&p.sal<50) occ-=4; if(c.id==='lu'&&p.sal<80) occ-=5;
+    if(c.id==='us'&&p.sal<80) occ-=5;
+    // savings bonus for AE/US golden/investor
+    if(c.id==='ae'&&p.sav>=300) occ+=5;
+    // entrepreneur
+    if(p.ent==='yes'&&['de','nl','ie','ae','sg'].includes(c.id)) occ+=2;
+    // US penalty for Indian nationals due to backlog
+    if(c.id==='us'&&p.nat==='IN') occ-=8;
+    const total = Math.min(97,Math.max(35,edu+age+exp+occ+lang));
+    const prMap={ca:93,au:90,de:87,ie:83,nl:80,pt:76,gb:74,sg:57,ae:70,us:62,jp:65,kr:68,be:75,lu:76,de2:84};
+    const easeMap={nl:87,de:82,pt:80,ca:72,ie:74,ae:79,be:71,lu:73,gb:67,sg:72,au:68,us:45,jp:55,kr:58,de2:78};
+    const costMap={pt:92,ae:80,de:87,nl:74,be:75,lu:73,ie:62,ca:67,sg:77,au:57,gb:52,us:48,jp:70,kr:72,de2:88};
+    const taxMap={ae:98,sg:82,lu:72,ca:68,au:66,ie:63,us:58,de:55,nl:52,gb:50,jp:55,kr:60,pt:68,be:40,de2:55};
+    return {...c, match:total, prScore:prMap[c.id]||65, easeScore:easeMap[c.id]||62, costScore:costMap[c.id]||62, taxScore:taxMap[c.id]||60, breakdown:{edu,age,exp,occ,lang}};
+  });
+}
+
+/* ═══════════════════════════════ RUN ANALYSIS ═══════════════════════════════ */
+function runAnalysis() {
+  const btn = document.getElementById('analyze-btn');
+  const txt = document.getElementById('btn-txt');
+  btn.disabled = true;
+  txt.innerHTML = '<span class="spin"></span> Analysing your profile…';
+  setTimeout(() => {
+    const p = getProfile();
+    results = scoreCountries(p).sort((a,b) => b.match - a.match);
+    renderResults(results);
+    populateCmpSelects();
+    renderCompare();
+    initFlowchart();
+    document.getElementById('ntab-results').style.display='';
+    document.getElementById('ntab-compare').style.display='';
+    goTab('results');
+    btn.disabled = false;
+    txt.textContent = 'Find my best pathways →';
+  }, 900);
+}
+
+/* ═══════════════════════════════ RESULTS ═══════════════════════════════ */
+let openCard = null;
+let detailTab = {};
+
+function renderResults(list) {
+  const el = document.getElementById('results-list');
+  el.innerHTML = list.map((c,i) => `
+<div class="cc${openCard===c.id?' open':''}" id="cc-${c.id}" onclick="toggleCard('${c.id}')">
+  <div class="cc-top">
+    <div class="cc-flag">${c.flag}</div>
+    <div class="cc-mid">
+      <div class="cc-nameline">
+        <span class="cc-name">${c.name}</span>
+        <span class="badge ${c.tcBadge||c.tc}">${c.tier}</span>
+        ${i===0?'<span class="badge b-teal">top pick</span>':''}
+        ${i===1?'<span class="badge b-blue">#2</span>':''}
+        ${i===2?'<span class="badge b-purple">#3</span>':''}
+      </div>
+      <div class="cc-visa">${c.visa}</div>
+      <div class="tag-row">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+    </div>
+    <div class="cc-right">
+      <div class="cc-score"><div class="cc-score-n">${c.match}</div><div class="cc-score-l">/ 100</div></div>
+      <button class="btn-sm" onclick="event.stopPropagation();savePlan('${c.id}')" title="Save plan" style="font-size:14px;padding:4px 8px">⊕</button>
+    </div>
+    <div class="chev">⌄</div>
+  </div>
+  <div style="margin-top:10px">
+    ${[['Overall match',c.match,'#3b82f6'],['PR potential',c.prScore,'#14b8a6'],['Process ease',c.easeScore,'#22c55e'],['Cost score',c.costScore,'#f59e0b'],['Tax advantage',c.taxScore,'#8b5cf6']].map(([l,v,col])=>`
+    <div class="bar-row"><span class="bar-lbl">${l}</span><div class="bar-track"><div class="bar-fill" style="width:${v}%;background:${col}"></div></div><span class="bar-num">${v}%</span></div>`).join('')}
+  </div>
+  <div class="cc-detail" id="ccd-${c.id}" style="display:${openCard===c.id?'block':'none'}">
+    <div class="dtabs">
+      ${['overview','pathway','requirements','govlinks','score'].map(t=>`
+      <button class="dtab${(detailTab[c.id]||'overview')===t?' on':''}" id="dt-${t}-${c.id}"
+        onclick="event.stopPropagation();setDTab('${c.id}','${t}')">${{overview:'Overview',pathway:'Pathway',requirements:'Requirements',govlinks:'Official links',score:'Score'}[t]}</button>`).join('')}
+    </div>
+    <!-- OVERVIEW -->
+    <div id="dp-overview-${c.id}" style="display:${(detailTab[c.id]||'overview')==='overview'?'block':'none'}">
+      <div class="dg3">
+        <div class="di"><div class="di-l">PR timeline</div><div class="di-v">${c.prYrs}</div></div>
+        <div class="di"><div class="di-l">Processing time</div><div class="di-v">${c.proc}</div></div>
+        <div class="di"><div class="di-l">Visa cost</div><div class="di-v">${c.cost}</div></div>
+        <div class="di"><div class="di-l">Min. salary</div><div class="di-v">${c.minSal}</div></div>
+        <div class="di"><div class="di-l">Language req.</div><div class="di-v">${c.langReq}</div></div>
+        <div class="di"><div class="di-l">Salary potential</div><div class="di-v">${c.salPot}</div></div>
+        <div class="di"><div class="di-l">Monthly living cost</div><div class="di-v">${c.livingCost}</div></div>
+        <div class="di"><div class="di-l">Income tax</div><div class="di-v">${c.taxRate}</div></div>
+        <div class="di"><div class="di-l">Visa route type</div><div class="di-v">${c.visa}</div></div>
+      </div>
+    </div>
+    <!-- PATHWAY -->
+    <div id="dp-pathway-${c.id}" style="display:${detailTab[c.id]==='pathway'?'block':'none'}">
+      ${c.paths.map((p,pi)=>`
+      <div class="pstep">
+        <div class="pstep-l"><div class="pdot" style="background:${p.color}"></div>${pi<c.paths.length-1?'<div class="pline"></div>':''}</div>
+        <div>
+          <div class="pstep-title">Step ${pi+1}: ${p.t}</div>
+          <div class="pstep-desc">${p.d}</div>
+          <div class="pstep-meta">Duration: ${p.dur} · Cost: ${p.cost}</div>
+        </div>
+      </div>`).join('')}
+      <p style="margin-top:10px;font-size:11px;color:var(--t2)">Click "Pathway map" tab above for interactive flowchart visualisation.</p>
+    </div>
+    <!-- REQUIREMENTS -->
+    <div id="dp-requirements-${c.id}" style="display:${detailTab[c.id]==='requirements'?'block':'none'}">
+      ${Object.entries(c.reqs).map(([k,vs])=>`
+      <div class="req-group"><div class="req-title">${k}</div>${vs.map(v=>`<span class="req-item req-neu">${v}</span>`).join('')}</div>`).join('')}
+    </div>
+    <!-- GOV LINKS (per country) -->
+    <div id="dp-govlinks-${c.id}" style="display:${detailTab[c.id]==='govlinks'?'block':'none'}">
+      ${renderCountryGovLinks(c.id)}
+    </div>
+    <!-- SCORE BREAKDOWN -->
+    <div id="dp-score-${c.id}" style="display:${detailTab[c.id]==='score'?'block':'none'}">
+      <div style="display:flex;flex-wrap:wrap;gap:14px;margin-bottom:12px;padding:14px;background:var(--bg2);border-radius:var(--rmd)">
+        ${[['Education',c.breakdown.edu,'#60a5fa'],['Age factor',c.breakdown.age,'#5eead4'],['Experience',c.breakdown.exp,'#86efac'],['Occupation fit',c.breakdown.occ,'#fcd34d'],['Language',c.breakdown.lang,'#c4b5fd']].map(([l,v,col])=>`
+        <div style="text-align:center"><div style="font-size:24px;font-weight:700;color:${col}">${v}</div><div style="font-size:10px;color:var(--t2)">${l}</div></div>`).join('')}
+        <div style="text-align:center;border-left:1px solid var(--bd);padding-left:14px"><div style="font-size:24px;font-weight:700;color:var(--t0)">${c.match}</div><div style="font-size:10px;color:var(--t2)">Total / 100</div></div>
+      </div>
+      <p style="font-size:11px;color:var(--t2)">Scores are calculated based on your profile against this country's typical requirements. Not a guarantee of eligibility.</p>
+    </div>
+  </div>
+</div>`).join('');
+}
+
+function renderCountryGovLinks(cid) {
+  const cname = COUNTRIES.find(c=>c.id===cid)?.name?.split(' ')[0] || '';
+  const match = GOV_LINKS.find(g => g.country.toLowerCase().includes(cname.toLowerCase()));
+  if(!match) return `<p style="font-size:12px;color:var(--t2)">See the <a href="#" onclick="goTab('govlinks')">Official links tab</a> for comprehensive government resources.</p>`;
+  return match.categories.map(cat=>`
+    <div class="gov-section">
+      <div class="gov-cat">${cat.cat}</div>
+      ${cat.links.map(l=>`
+      <a class="gov-link" href="${l.url}" target="_blank" rel="noopener">
+        <span class="gov-link-icon">${l.icon}</span>
+        <div class="gov-link-body"><div class="gov-link-name">${l.name}</div><div class="gov-link-desc">${l.desc}</div></div>
+        <span style="color:var(--t2);font-size:12px">↗</span>
+      </a>`).join('')}
+    </div>`).join('');
+}
+
+function toggleCard(id) {
+  const d = document.getElementById(`ccd-${id}`);
+  const c = document.getElementById(`cc-${id}`);
+  const wasOpen = c.classList.contains('open');
+  document.querySelectorAll('.cc.open').forEach(e=>e.classList.remove('open'));
+  document.querySelectorAll('.cc-detail').forEach(e=>e.style.display='none');
+  if(!wasOpen) { c.classList.add('open'); d.style.display='block'; openCard=id; }
+  else openCard=null;
+}
+
+function setDTab(cid, tab) {
+  detailTab[cid] = tab;
+  ['overview','pathway','requirements','govlinks','score'].forEach(t => {
+    const dp = document.getElementById(`dp-${t}-${cid}`);
+    const dt = document.getElementById(`dt-${t}-${cid}`);
+    if(dp) dp.style.display = t===tab?'block':'none';
+    if(dt) dt.classList.toggle('on', t===tab);
+  });
+}
+
+function sortResults(by) {
+  const s = {match:results,pr:[...results].sort((a,b)=>b.prScore-a.prScore),ease:[...results].sort((a,b)=>b.easeScore-a.easeScore),cost:[...results].sort((a,b)=>b.costScore-a.costScore)};
+  renderResults(s[by]||results);
+}
+
+/* ═══════════════════════════════ SAVE PLANS ═══════════════════════════════ */
+function savePlan(id) {
+  const c = results.find(x=>x.id===id);
+  if(!c||savedPlans.find(s=>s.id===id)) return;
+  savedPlans.push({id:c.id,name:c.name,flag:c.flag,visa:c.visa,match:c.match,prYrs:c.prYrs,savedAt:new Date().toLocaleDateString()});
+  localStorage.setItem('vp-saved-v2',JSON.stringify(savedPlans));
+  updateSavedBadge();
+  renderSaved();
+}
+function saveAll() { results.slice(0,5).forEach(c=>savePlan(c.id)); }
+function removeSaved(id) { savedPlans=savedPlans.filter(s=>s.id!==id); localStorage.setItem('vp-saved-v2',JSON.stringify(savedPlans)); updateSavedBadge(); renderSaved(); }
+function updateSavedBadge() {
+  const n = savedPlans.length;
+  document.getElementById('saved-count-badge').textContent = n>0?`(${n})`:'';
+  document.getElementById('saved-count-label').textContent = `${n} saved`;
+}
+function renderSaved() {
+  const el = document.getElementById('saved-list');
+  if(!savedPlans.length) { el.innerHTML='<div class="empty"><div class="empty-icon">🗂️</div>Run an analysis and save countries you want to track.</div>'; return; }
+  el.innerHTML = savedPlans.map(s=>`
+  <div class="saved-card">
+    <div class="saved-flag">${s.flag}</div>
+    <div class="saved-body"><div class="saved-name">${s.name}</div><div class="saved-sub">${s.visa} · PR: ${s.prYrs}</div><div style="font-size:10px;color:var(--t2)">Saved ${s.savedAt}</div></div>
+    <div style="text-align:right"><div class="saved-score">${s.match}</div><div style="font-size:9px;color:var(--t2)">match</div></div>
+    <button class="btn-sm" onclick="removeSaved('${s.id}')" style="margin-left:8px">✕</button>
+  </div>`).join('');
+}
+renderSaved(); updateSavedBadge();
+
+/* ═══════════════════════════════ FLOWCHART ═══════════════════════════════ */
+const FC_PATHWAYS = {
+  de:{name:'Germany',nodes:[
+    {id:'start',x:0.5,y:0.05,label:'Your Home Country',color:'#475569',type:'start',detail:'Starting point — apply from home country via German embassy/consulate.'},
+    {id:'decision1',x:0.5,y:0.17,label:'Have a job offer?',color:'#f59e0b',type:'decision',detail:'Key decision: whether you have a German employer willing to sponsor you.'},
+    {id:'jsv',x:0.2,y:0.28,label:'Job Seeker Visa\n6 months, €75',color:'#3b82f6',type:'visa',detail:'Enter Germany without a job offer. Valid 6 months. Official: bamf.de | make-it-in-germany.com'},
+    {id:'bluecard',x:0.8,y:0.28,label:'EU Blue Card\n€43,800+ salary',color:'#14b8a6',type:'work',detail:'Employer-sponsored. Salary ≥ €43,800 (€34,128 shortage occupations). Official: bamf.de/bluecard'},
+    {id:'jobhunt',x:0.2,y:0.42,label:'Find qualifying job\nin Germany',color:'#64748b',type:'process',detail:'Network, LinkedIn, Make-it-in-Germany job board. Average 3–4 months.'},
+    {id:'bc2',x:0.5,y:0.55,label:'EU Blue Card\nor Work Permit',color:'#14b8a6',type:'work',detail:'Once you have a qualifying job offer with required salary.'},
+    {id:'german_b1',x:0.5,y:0.67,label:'Learn B1 German\n(optional but fast-track)',color:'#64748b',type:'process',detail:'Goethe-Institut courses. B1 = unlock 21-month PR track instead of 5 years.'},
+    {id:'pr',x:0.5,y:0.79,label:'Permanent Residence\n21 mo (B1) or 5 years',color:'#22c55e',type:'pr',detail:'Niederlassungserlaubnis. Official: bamf.de/niederlassungserlaubnis'},
+    {id:'citizen',x:0.5,y:0.91,label:'German Citizenship\n5 years (dual OK)',color:'#8b5cf6',type:'citizen',detail:'Since June 2024: 5 years, dual nationality permitted. Official: bamf.de/citizenship'},
+  ],edges:[
+    {f:'start',t:'decision1'},
+    {f:'decision1',t:'jsv',label:'No'},
+    {f:'decision1',t:'bluecard',label:'Yes'},
+    {f:'jsv',t:'jobhunt'},
+    {f:'jobhunt',t:'bc2'},
+    {f:'bluecard',t:'bc2',label:'or'},
+    {f:'bc2',t:'german_b1'},
+    {f:'german_b1',t:'pr'},
+    {f:'pr',t:'citizen'},
+  ]},
+  nl:{name:'Netherlands',nodes:[
+    {id:'start',x:0.5,y:0.05,label:'Your Home Country',color:'#475569',type:'start',detail:'Apply from home or via Dutch employer.'},
+    {id:'d1',x:0.5,y:0.16,label:'Graduate / Researcher?',color:'#f59e0b',type:'decision',detail:'Do you have a recent degree (within 3 years) from a recognised institution?'},
+    {id:'oy',x:0.2,y:0.27,label:'Orientation Year Visa\n1 year, €192',color:'#3b82f6',type:'visa',detail:'Find work in NL without prior employer. Official: ind.nl/orientation-year'},
+    {id:'hsm',x:0.8,y:0.27,label:'Highly Skilled Migrant\n€5,008/mo+',color:'#14b8a6',type:'work',detail:'IND-recognised sponsor employer. 2-week processing. Official: ind.nl/hsm'},
+    {id:'jobnl',x:0.2,y:0.40,label:'Find IND-recognised\nsponsor employer',color:'#64748b',type:'process',detail:'LinkedIn NL, Expat job boards. Check IND recognised sponsor list.'},
+    {id:'hsm2',x:0.5,y:0.52,label:'HSM Permit\n+ 30% Tax Ruling',color:'#14b8a6',type:'work',detail:'Apply for 30% tax ruling within 4 months of start date. Official: belastingdienst.nl'},
+    {id:'pr',x:0.5,y:0.67,label:'Permanent Residence\n5 years + Dutch NT2',color:'#22c55e',type:'pr',detail:'5 years continuous residence + Dutch NT2 exam. Official: ind.nl/permanent'},
+    {id:'citizen',x:0.5,y:0.82,label:'Dutch Citizenship\n(limited dual)',color:'#8b5cf6',type:'citizen',detail:'After 5 years PR. Dutch exam required. Limited dual nationality. Official: ind.nl/citizenship'},
+  ],edges:[
+    {f:'start',t:'d1'},
+    {f:'d1',t:'oy',label:'Yes — recent grad'},
+    {f:'d1',t:'hsm',label:'Already hired'},
+    {f:'oy',t:'jobnl'},
+    {f:'jobnl',t:'hsm2'},
+    {f:'hsm',t:'hsm2',label:'or'},
+    {f:'hsm2',t:'pr'},
+    {f:'pr',t:'citizen'},
+  ]},
+  ae:{name:'UAE',nodes:[
+    {id:'start',x:0.5,y:0.05,label:'Your Home Country',color:'#475569',type:'start',detail:'UAE is employer or investment driven. No traditional permanent residency.'},
+    {id:'d1',x:0.5,y:0.16,label:'High earner / investor?',color:'#f59e0b',type:'decision',detail:'AED 30k+/month or AED 2M+ investment?'},
+    {id:'empvisa',x:0.2,y:0.27,label:'Employment Visa\n2–3 years',color:'#3b82f6',type:'visa',detail:'Standard employer-sponsored work visa. Most common UAE route. Official: mohre.gov.ae'},
+    {id:'jsvae',x:0.5,y:0.27,label:'Job Seeker Visa\n60/90 days',color:'#3b82f6',type:'visa',detail:'60-90 day entry to search for jobs in UAE. Official: u.ae/jobseeker'},
+    {id:'greenvisa',x:0.8,y:0.27,label:'Green Visa\n5 years, self-sponsored',color:'#14b8a6',type:'work',detail:'AED 15,000+/mo, degree required. No employer sponsor. Official: icp.gov.ae/green'},
+    {id:'golden',x:0.5,y:0.50,label:'Golden Visa\n10-year renewable',color:'#eab308',type:'pr',detail:'For investors (AED 2M+), skilled professionals (AED 30k+/mo + degree), researchers, outstanding students. Official: icp.gov.ae/golden'},
+    {id:'freelance',x:0.2,y:0.67,label:'Freelance / Free Zone\nBusiness Setup',color:'#f59e0b',type:'process',detail:'Set up business in DMCC, DIFC, or other free zone. 3-year renewable visa. Annual licence ~AED 7,500+'},
+    {id:'renew',x:0.5,y:0.82,label:'Long-term residence\n(renew indefinitely)',color:'#22c55e',type:'pr',detail:'UAE has no traditional PR/citizenship for most nationalities. Golden/Green Visa renewable. Tax-free income.'},
+  ],edges:[
+    {f:'start',t:'d1'},
+    {f:'d1',t:'empvisa',label:'Employed'},
+    {f:'d1',t:'jsvae',label:'Job hunting'},
+    {f:'d1',t:'greenvisa',label:'High earner'},
+    {f:'greenvisa',t:'golden',label:'Qualifies'},
+    {f:'empvisa',t:'golden',label:'Qualifies (AED 30k+)'},
+    {f:'jsvae',t:'empvisa',label:'Find job'},
+    {f:'empvisa',t:'freelance',label:'Go independent'},
+    {f:'golden',t:'renew'},
+    {f:'freelance',t:'renew'},
+  ]},
+  ca:{name:'Canada',nodes:[
+    {id:'start',x:0.5,y:0.05,label:'Your Home Country',color:'#475569',type:'start',detail:'Canada Express Entry — fully online. No embassy visit until final stages.'},
+    {id:'eligcheck',x:0.5,y:0.15,label:'Eligibility Check\n(FSW / CEC / FSTC)',color:'#f59e0b',type:'decision',detail:'Check FSW eligibility: 67+ points on selection factors. FSW requires 1yr skilled work, IELTS CLB7+, degree.'},
+    {id:'eca',x:0.2,y:0.27,label:'ECA Assessment\n+ IELTS',color:'#3b82f6',type:'process',detail:'Credential Assessment Authority (WES preferred). IELTS CLB 7 minimum. Takes 4–8 weeks. Official: canada.ca/ECA'},
+    {id:'eepro',x:0.8,y:0.27,label:'Express Entry Profile\n(CRS scored)',color:'#3b82f6',type:'visa',detail:'Enter the EE pool. Score based on age, education, language, experience, job offer. Pool draws every 2–4 weeks.'},
+    {id:'ita',x:0.5,y:0.42,label:'ITA Draw\n(Invitation to Apply)',color:'#14b8a6',type:'work',detail:'When score clears cutoff — or via category draw (STEM, healthcare, French, trades). Official: ircc.canada.ca'},
+    {id:'pr',x:0.5,y:0.58,label:'PR Application\n~6 months processing',color:'#22c55e',type:'pr',detail:'Submit full PR application. Includes biometrics, medical, police clearance. Family included. Official: canada.ca/PR'},
+    {id:'pnp',x:0.2,y:0.58,label:'Provincial Nomination\n+600 CRS points',color:'#14b8a6',type:'work',detail:'Ontario, BC, Alberta, etc. PNP programs. Adds 600 CRS points — near-guaranteed ITA. Official: ontario.ca/OINP'},
+    {id:'land',x:0.5,y:0.72,label:'Land in Canada\nas PR',color:'#22c55e',type:'pr',detail:'Receive PR card. SIN number. Health card (province-dependent). Full work/study rights.'},
+    {id:'citizen',x:0.5,y:0.87,label:'Canadian Citizenship\n3 of 5 years as PR',color:'#8b5cf6',type:'citizen',detail:'3 years physical presence in 5-year window. IELTS required. Citizenship test. Official: canada.ca/citizenship'},
+  ],edges:[
+    {f:'start',t:'eligcheck'},
+    {f:'eligcheck',t:'eca',label:'Get docs ready'},
+    {f:'eligcheck',t:'eepro',label:'Already eligible'},
+    {f:'eca',t:'eepro'},
+    {f:'eepro',t:'ita'},
+    {f:'eepro',t:'pnp',label:'Low CRS'},
+    {f:'pnp',t:'ita',label:'+600 pts'},
+    {f:'ita',t:'pr'},
+    {f:'pr',t:'land'},
+    {f:'land',t:'citizen'},
+  ]},
+  us:{name:'USA',nodes:[
+    {id:'start',x:0.5,y:0.05,label:'Your Home Country',color:'#475569',type:'start',detail:'USA immigration is complex — multiple parallel pathways. H-1B is most common but has annual lottery.'},
+    {id:'d1',x:0.5,y:0.15,label:'Extraordinary ability\nor standard?',color:'#f59e0b',type:'decision',detail:'Key decision: O-1A (no lottery, for exceptional) vs H-1B (lottery, standard).'},
+    {id:'o1',x:0.2,y:0.27,label:'O-1A Visa\nNo lottery',color:'#3b82f6',type:'visa',detail:'For extraordinary achievement in science, business, education, athletics. No annual cap. Official: uscis.gov/o1'},
+    {id:'h1b',x:0.8,y:0.27,label:'H-1B Lottery\n65k cap, April draw',color:'#3b82f6',type:'visa',detail:'Annual lottery in April. Register March. 65,000 cap (20,000 for US Master\'s). 3+3 year visa. Official: uscis.gov/h1b'},
+    {id:'l1',x:0.5,y:0.27,label:'L-1 Transfer\n(MNC employees)',color:'#3b82f6',type:'visa',detail:'For intracompany transfers. L-1A (manager) directly leads to EB-1C Green Card. Official: uscis.gov/l1'},
+    {id:'gc_track',x:0.5,y:0.45,label:'Green Card track\n(choose category)',color:'#f59e0b',type:'decision',detail:'Select best Green Card path based on profile. Backlog warning: India EB-2 = 50–100+ years wait.'},
+    {id:'eb1a',x:0.15,y:0.60,label:'EB-1A\nNo backlog',color:'#22c55e',type:'pr',detail:'Extraordinary ability self-petition. No sponsor, no labor cert. No India backlog. Official: uscis.gov/eb1a'},
+    {id:'niw',x:0.42,y:0.60,label:'EB-2 NIW\nIndia ~50yr wait',color:'#ef4444',type:'pr',detail:'Self-petition, advanced degree + national interest waiver. India backlog is 50–100+ years. Check visa bulletin monthly.'},
+    {id:'eb3',x:0.70,y:0.60,label:'EB-3 Sponsored\nIndia ~50yr wait',color:'#ef4444',type:'pr',detail:'Employer-sponsored. PERM labor cert required. India backlog same as EB-2. Visa Bulletin: travel.state.gov'},
+    {id:'citizen',x:0.5,y:0.82,label:'US Citizenship\n5 years as Green Card',color:'#8b5cf6',type:'citizen',detail:'5 years as permanent resident (3 if married to US citizen). N-400 form. Official: uscis.gov/citizenship'},
+  ],edges:[
+    {f:'start',t:'d1'},
+    {f:'d1',t:'o1',label:'Exceptional'},
+    {f:'d1',t:'h1b',label:'Standard'},
+    {f:'d1',t:'l1',label:'MNC transfer'},
+    {f:'o1',t:'gc_track'},
+    {f:'h1b',t:'gc_track'},
+    {f:'l1',t:'gc_track'},
+    {f:'gc_track',t:'eb1a',label:'Best for Indians'},
+    {f:'gc_track',t:'niw',label:'Self-petition'},
+    {f:'gc_track',t:'eb3',label:'Sponsored'},
+    {f:'eb1a',t:'citizen'},
+    {f:'niw',t:'citizen'},
+    {f:'eb3',t:'citizen'},
+  ]},
+  au:{name:'Australia',nodes:[
+    {id:'start',x:0.5,y:0.05,label:'Your Home Country',color:'#475569',type:'start',detail:'Australia uses a points-based system. 65+ points required for most independent pathways.'},
+    {id:'skassess',x:0.5,y:0.16,label:'Skills Assessment\n(1–3 months)',color:'#f59e0b',type:'process',detail:'Get qualifications assessed by relevant authority: ACS (IT), CAANZ (accounting), Engineers Australia, AHPRA (health). Official: immi.homeaffairs.gov.au'},
+    {id:'d1',x:0.5,y:0.28,label:'65+ points?',color:'#f59e0b',type:'decision',detail:'Check your points: age (max 30), English (max 20), experience (max 20), education (20), other. Points test calculator on Home Affairs website.'},
+    {id:'eoi',x:0.5,y:0.40,label:'EOI in SkillSelect',color:'#3b82f6',type:'visa',detail:'Submit Expression of Interest at skillselect.gov.au. Wait for state/territory or federal invitation.'},
+    {id:'sn',x:0.2,y:0.53,label:'State Nomination\n190 or 491',color:'#14b8a6',type:'work',detail:'Apply to a specific state for nomination (+5 or +15 points). Different states have different occupation needs.'},
+    {id:'inv189',x:0.8,y:0.53,label:'Federal Invitation\n(189 — independent)',color:'#14b8a6',type:'work',detail:'Invited directly from federal pool. Competitive. Higher points score needed for most occupations.'},
+    {id:'pr',x:0.5,y:0.67,label:'Permanent Residence\n(189/190/491)',color:'#22c55e',type:'pr',detail:'Apply after invitation. Medical, biometrics, police clearance. Family included. Official: immi.homeaffairs.gov.au'},
+    {id:'citizen',x:0.5,y:0.82,label:'Australian Citizenship\n4 years (1 as PR)',color:'#8b5cf6',type:'citizen',detail:'4 years total residence, 1 year as PR. Citizenship test. Dual citizenship permitted. Official: immi.homeaffairs.gov.au/citizenship'},
+  ],edges:[
+    {f:'start',t:'skassess'},
+    {f:'skassess',t:'d1'},
+    {f:'d1',t:'eoi',label:'65+ pts'},
+    {f:'d1',t:'skassess',label:'Improve score'},
+    {f:'eoi',t:'sn',label:'State pathway'},
+    {f:'eoi',t:'inv189',label:'Federal pathway'},
+    {f:'sn',t:'pr'},
+    {f:'inv189',t:'pr'},
+    {f:'pr',t:'citizen'},
+  ]},
+  gb:{name:'UK',nodes:[
+    {id:'start',x:0.5,y:0.05,label:'Your Home Country',color:'#475569',type:'start',detail:'UK requires a licensed sponsor employer for Skilled Worker visa. Find sponsor first.'},
+    {id:'d1',x:0.5,y:0.16,label:'Exceptional talent\nor standard skilled?',color:'#f59e0b',type:'decision',detail:'Global Talent Visa requires endorsement from recognised body (UKRI, Tech Nation, etc.) — no employer needed.'},
+    {id:'gt',x:0.2,y:0.28,label:'Global Talent Visa\nNo sponsor needed',color:'#3b82f6',type:'visa',detail:'Endorsed by UKRI (research), Tech Nation (digital tech), British Academy, etc. Fast ILR after 3 years. Official: gov.uk/global-talent'},
+    {id:'iyps',x:0.5,y:0.28,label:'India YPS Visa\n(Indian nationals 18–30)',color:'#3b82f6',type:'visa',detail:'UK-India scheme. 2-year visa to live and work in UK. Annual ballot. Official: gov.uk/india-young-professionals'},
+    {id:'sw',x:0.8,y:0.28,label:'Skilled Worker Visa\n£38,700+ salary',color:'#14b8a6',type:'work',detail:'Licensed sponsor + eligible occupation + £38,700 salary (£30,960 for ISL roles). Official: gov.uk/skilled-worker-visa'},
+    {id:'5yr',x:0.7,y:0.52,label:'5 years on Skilled\nWorker / GT',color:'#14b8a6',type:'work',detail:'Maintain visa, same sponsor or change via CoS. ILR requires continuous lawful residence.'},
+    {id:'ilr',x:0.5,y:0.68,label:'Indefinite Leave to Remain\n(Life in UK test)',color:'#22c55e',type:'pr',detail:'Apply after 5 years (3 for Global Talent). Life in UK test. English language. Official: gov.uk/indefinite-leave-to-remain'},
+    {id:'citizen',x:0.5,y:0.84,label:'British Citizenship\n1 year after ILR',color:'#8b5cf6',type:'citizen',detail:'Life in UK test again. Dual citizenship permitted. Official: gov.uk/becoming-a-british-citizen'},
+  ],edges:[
+    {f:'start',t:'d1'},
+    {f:'d1',t:'gt',label:'Exceptional'},
+    {f:'d1',t:'iyps',label:'Indian 18–30'},
+    {f:'d1',t:'sw',label:'Standard'},
+    {f:'sw',t:'5yr'},
+    {f:'gt',t:'5yr'},
+    {f:'iyps',t:'sw',label:'Convert'},
+    {f:'5yr',t:'ilr'},
+    {f:'ilr',t:'citizen'},
+  ]}
+};
+
+let currentFC = 'de';
+let fcTooltip = null;
+let fcNodeMap = {};
+
+function initFlowchart() {
+  const btns = document.getElementById('fc-country-btns');
+  btns.innerHTML = Object.entries(FC_PATHWAYS).map(([id,fc])=>`
+    <button class="fc-country-btn${id===currentFC?' on':''}" onclick="selectFC('${id}',this)">${COUNTRIES.find(c=>c.id===id)?.flag||'🌍'} ${fc.name}</button>`).join('');
+  drawFC(currentFC);
+}
+
+function selectFC(id, btn) {
+  currentFC = id;
+  document.querySelectorAll('.fc-country-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  drawFC(id);
+}
+
+function drawFC(id) {
+  const canvas = document.getElementById('flowchart-canvas');
+  const fc = FC_PATHWAYS[id];
+  if(!fc) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.offsetWidth;
+  canvas.width = W;
+  canvas.height = 620;
+  const H = canvas.height;
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = '#161b27';
+  ctx.fillRect(0,0,W,H);
+  fcNodeMap = {};
+  // Draw edges first
+  fc.edges.forEach(e => {
+    const from = fc.nodes.find(n=>n.id===e.f);
+    const to = fc.nodes.find(n=>n.id===e.t);
+    if(!from||!to) return;
+    const fx = from.x*W, fy = from.y*H;
+    const tx = to.x*W, ty = to.y*H;
+    ctx.beginPath();
+    ctx.strokeStyle = '#334155';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([]);
+    const mx = (fx+tx)/2, my = (fy+ty)/2;
+    ctx.moveTo(fx, fy+14);
+    ctx.bezierCurveTo(fx, my, tx, my, tx, ty-14);
+    ctx.stroke();
+    // Arrow
+    ctx.beginPath();
+    ctx.fillStyle = '#334155';
+    const angle = Math.atan2(ty-14-my, tx-mx);
+    ctx.translate(tx, ty-14);
+    ctx.rotate(angle);
+    ctx.moveTo(0,0);ctx.lineTo(-8,-4);ctx.lineTo(-8,4);
+    ctx.fill();
+    ctx.setTransform(1,0,0,1,0,0);
+    // Edge label
+    if(e.label) {
+      ctx.fillStyle = '#64748b';
+      ctx.font = '10px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText(e.label, mx, my-4);
+    }
+  });
+  // Draw nodes
+  fc.nodes.forEach(n => {
+    const x = n.x*W, y = n.y*H;
+    const r = 14, w = Math.min(150, W*0.22), h = 28;
+    fcNodeMap[n.id] = {x,y,w,h,detail:n.detail,label:n.label};
+    ctx.save();
+    // Shadow glow
+    ctx.shadowColor = n.color;
+    ctx.shadowBlur = n.type==='decision'?16:8;
+    // Shape
+    if(n.type==='decision') {
+      ctx.beginPath();
+      ctx.moveTo(x, y-h/1.3);ctx.lineTo(x+w/2,y);ctx.lineTo(x,y+h/1.3);ctx.lineTo(x-w/2,y);
+      ctx.closePath();
+      ctx.fillStyle = n.color+'33';
+      ctx.fill();
+      ctx.strokeStyle = n.color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    } else {
+      ctx.beginPath();
+      ctx.roundRect(x-w/2, y-h/2, w, h, 6);
+      ctx.fillStyle = n.color+'22';
+      ctx.fill();
+      ctx.strokeStyle = n.color;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    }
+    ctx.restore();
+    // Label
+    const lines = n.label.split('\n');
+    ctx.fillStyle = '#e2e8f0';
+    ctx.font = `${n.type==='decision'?'10px':'11px'} system-ui`;
+    ctx.textAlign = 'center';
+    lines.forEach((line,i) => {
+      ctx.fillText(line, x, y + (i-(lines.length-1)/2)*13 + (n.type==='decision'?1:0));
+    });
+  });
+  // Tooltip handler
+  canvas.onmousemove = function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mx = (e.clientX-rect.left)*(W/rect.width);
+    const my = (e.clientY-rect.top)*(H/rect.height);
+    let hit = null;
+    Object.values(fcNodeMap).forEach(n => {
+      if(mx>=n.x-n.w/2-5&&mx<=n.x+n.w/2+5&&my>=n.y-n.h-5&&my<=n.y+n.h+5) hit=n;
+    });
+    const tt = document.getElementById('fc-tooltip');
+    if(hit) {
+      tt.style.display='block';
+      tt.style.left=(e.clientX+14)+'px';
+      tt.style.top=(e.clientY-10)+'px';
+      tt.innerHTML=`<strong>${hit.label.replace('\n',' ')}</strong><br><span style="color:#94a3b8;font-size:11px">${hit.detail}</span>`;
+    } else {
+      tt.style.display='none';
+    }
+  };
+  canvas.onmouseleave=()=>document.getElementById('fc-tooltip').style.display='none';
+}
+
+/* ═══════════════════════════════ COMPARE ═══════════════════════════════ */
+function populateCmpSelects() {
+  const wrap = document.getElementById('cmp-selects');
+  wrap.innerHTML = ['cmp-s1','cmp-s2','cmp-s3'].map((id,i)=>`
+    <select id="${id}" class="btn-sm" style="font-size:11px" onchange="renderCompare()">
+      ${results.map((c,j)=>`<option value="${c.id}" ${j===i?'selected':''}>${c.flag} ${c.name}</option>`).join('')}
+    </select>`).join('') + `<button class="btn-sm" onclick="renderCompare()">Update</button>`;
+}
+
+function renderCompare() {
+  const ids = ['cmp-s1','cmp-s2','cmp-s3'].map(s=>document.getElementById(s)?.value).filter(Boolean);
+  const list = ids.map(id=>results.find(c=>c.id===id)).filter(Boolean);
+  if(!list.length){document.getElementById('compare-content').innerHTML='<div class="empty"><div class="empty-icon">📊</div>Run a profile analysis first.</div>';return;}
+  const METRICS=[
+    ['PR timeline',c=>c.prYrs],['Processing',c=>c.proc],['Visa cost',c=>c.cost],
+    ['Min. salary',c=>c.minSal],['Language req.',c=>c.langReq],['Salary potential',c=>c.salPot],
+    ['Living cost/mo',c=>c.livingCost],['Income tax',c=>c.taxRate],
+    ['Match score',c=>c.match+'%'],['PR potential',c=>c.prScore+'%'],
+    ['Process ease',c=>c.easeScore+'%'],['Cost score',c=>c.costScore+'%'],['Tax advantage',c=>c.taxScore+'%'],
+  ];
+  const top = list[0];
+  document.getElementById('compare-content').innerHTML=`
+  <div class="cmp-wrap">
+    ${list.map((c,i)=>`
+    <div class="cmp-card${i===0?' top':''}">
+      <div class="cmp-head">
+        <div class="cmp-flag">${c.flag}</div>
+        <div class="cmp-cname">${c.name}${i===0?'<br><span style="font-size:10px;color:#5eead4">top match</span>':''}</div>
+        <span class="badge ${c.tcBadge||c.tc}" style="margin-top:4px">${c.tier}</span>
+      </div>
+      ${METRICS.map(([l,fn])=>`<div class="cmp-row"><div class="cmp-row-l">${l}</div><div class="cmp-row-v">${fn(c)}</div></div>`).join('')}
+    </div>`).join('')}
+  </div>
+  <div class="disc" style="margin-top:12px">Comparison based on your profile. Estimates only — verify on official government websites.</div>`;
+}
+
+/* ═══════════════════════════════ GOV LINKS ═══════════════════════════════ */
+function filterGov(region, btn) {
+  document.querySelectorAll('#govlinks-tabs .dtab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const filtered = region==='all' ? GOV_LINKS : GOV_LINKS.filter(g=>g.region===region);
+  document.getElementById('govlinks-list').innerHTML = filtered.map(g=>`
+  <div style="margin-bottom:20px">
+    <div style="font-size:14px;font-weight:600;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--bd)">${g.country}</div>
+    ${g.categories.map(cat=>`
+    <div class="gov-section">
+      <div class="gov-cat">${cat.cat}</div>
+      ${cat.links.map(l=>`
+      <a class="gov-link" href="${l.url}" target="_blank" rel="noopener">
+        <span class="gov-link-icon">${l.icon}</span>
+        <div class="gov-link-body">
+          <div class="gov-link-name">${l.name}</div>
+          <div class="gov-link-desc">${l.desc}</div>
+          <div class="gov-link-url">${l.url}</div>
+        </div>
+        <span style="color:var(--t2);font-size:12px;flex-shrink:0">↗</span>
+      </a>`).join('')}
+    </div>`).join('')}
+  </div>`).join('');
+}
+filterGov('all', document.querySelector('#govlinks-tabs .dtab'));
+
+/* ═══════════════════════════════ CALCULATORS ═══════════════════════════════ */
+const PPP = {de:1.08,nl:0.99,ie:0.91,ca:0.86,gb:0.87,ae:1.20,us:1.0,sg:1.18,jp:1.30,au:0.88,pt:1.42,be:1.07,lu:0.88,kr:1.25};
+const COL = [{c:'🇦🇪 Dubai',v:2200,col:'#eab308'},{c:'🇩🇪 Berlin',v:1950,col:'#3b82f6'},{c:'🇨🇦 Toronto',v:2800,col:'#22c55e'},{c:'🇳🇱 Amsterdam',v:2650,col:'#14b8a6'},{c:'🇮🇪 Dublin',v:3100,col:'#22c55e'},{c:'🇬🇧 London',v:3400,col:'#8b5cf6'},{c:'🇺🇸 New York',v:4200,col:'#ef4444'},{c:'🇸🇬 Singapore',v:3200,col:'#8b5cf6'},{c:'🇯🇵 Tokyo',v:1800,col:'#14b8a6'},{c:'🇦🇺 Sydney',v:2900,col:'#22c55e'},{c:'🇵🇹 Lisbon',v:1550,col:'#3b82f6'},{c:'🇧🇪 Brussels',v:1900,col:'#3b82f6'},{c:'🇱🇺 Luxembourg',v:2800,col:'#8b5cf6'},{c:'🇰🇷 Seoul',v:1700,col:'#14b8a6'}];
+const TAX = [{c:'🇦🇪 UAE',v:0,col:'#eab308'},{c:'🇸🇬 Singapore',v:12,col:'#8b5cf6'},{c:'🇱🇺 Luxembourg',v:24,col:'#8b5cf6'},{c:'🇵🇹 Portugal (NHR)',v:20,col:'#3b82f6'},{c:'🇨🇦 Canada',v:28,col:'#22c55e'},{c:'🇩🇪 Germany',v:30,col:'#3b82f6'},{c:'🇦🇺 Australia',v:28,col:'#22c55e'},{c:'🇺🇸 USA (NY state)',v:35,col:'#ef4444'},{c:'🇮🇪 Ireland',v:32,col:'#22c55e'},{c:'🇬🇧 UK',v:31,col:'#8b5cf6'},{c:'🇳🇱 Netherlands',v:36,col:'#14b8a6'},{c:'🇯🇵 Japan',v:30,col:'#14b8a6'},{c:'🇰🇷 South Korea',v:28,col:'#14b8a6'},{c:'🇧🇪 Belgium',v:42,col:'#ef4444'}];
+const VCOST = [{c:'🇦🇪 UAE (Employment)',v:800,col:'#eab308'},{c:'🇩🇪 Germany (Blue Card)',v:850,col:'#3b82f6'},{c:'🇯🇵 Japan (HSP)',v:400,col:'#14b8a6'},{c:'🇳🇱 Netherlands (HSM)',v:1200,col:'#14b8a6'},{c:'🇮🇪 Ireland (CSEP)',v:2500,col:'#22c55e'},{c:'🇨🇦 Canada (Express Entry)',v:2800,col:'#22c55e'},{c:'🇧🇪 Belgium (Single Permit)',v:900,col:'#3b82f6'},{c:'🇱🇺 Luxembourg (Blue Card)',v:600,col:'#8b5cf6'},{c:'🇸🇬 Singapore (EP)',v:500,col:'#8b5cf6'},{c:'🇰🇷 South Korea (E-7)',v:300,col:'#14b8a6'},{c:'🇵🇹 Portugal (D8)',v:700,col:'#3b82f6'},{c:'🇦🇺 Australia (482)',v:3200,col:'#22c55e'},{c:'🇺🇸 USA (H-1B legal+fees)',v:5000,col:'#ef4444'},{c:'🇬🇧 UK (Skilled Worker 3yr+IHS)',v:6800,col:'#8b5cf6'}];
+
+function switchCalc(id, btn) {
+  ['salary','col','tax','visacost'].forEach(t=>{document.getElementById(`calc-${t}`).style.display=t===id?'block':'none';});
+  document.querySelectorAll('#calc-tabs .dtab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  if(id==='col') renderCalcBars('col-results',COL,'$','/mo','v',2,'var(--teal-g)');
+  if(id==='tax') renderCalcBars('tax-results',TAX,'','%','v',0.8,'var(--coral-g)');
+  if(id==='visacost') renderCalcBars('visacost-results',VCOST,'$','','v',0.5,'var(--amber-g)');
+}
+
+function renderCalcBars(elId, data, prefix, suffix, field, scale, defaultColor) {
+  const sorted=[...data].sort((a,b)=>a[field]-b[field]);
+  const max=Math.max(...sorted.map(x=>x[field]));
+  document.getElementById(elId).innerHTML = sorted.map(r=>`
+  <div class="calc-result-row">
+    <div class="calc-c">${r.c}</div>
+    <div class="calc-bar"><div class="calc-fill" style="width:${Math.round(r[field]/max*100)}%;background:${r.col||defaultColor}"></div></div>
+    <div class="calc-val">${prefix}${r[field].toLocaleString()}${suffix}</div>
+  </div>`).join('');
+}
+
+function calcSalary() {
+  const v = +document.getElementById('sal-slider').value;
+  document.getElementById('sal-slider-val').textContent = `$${v}k`;
+  const sorted = Object.entries(PPP).map(([id,ppp])=>({
+    c:({de:'🇩🇪 Germany',nl:'🇳🇱 Netherlands',ie:'🇮🇪 Ireland',ca:'🇨🇦 Canada',gb:'🇬🇧 UK',ae:'🇦🇪 UAE',us:'🇺🇸 USA',sg:'🇸🇬 Singapore',jp:'🇯🇵 Japan',au:'🇦🇺 Australia',pt:'🇵🇹 Portugal',be:'🇧🇪 Belgium',lu:'🇱🇺 Luxembourg',kr:'🇰🇷 S. Korea'})[id],
+    v:Math.round(v*ppp),
+    col:({de:'#3b82f6',nl:'#14b8a6',ie:'#22c55e',ca:'#22c55e',gb:'#8b5cf6',ae:'#eab308',us:'#ef4444',sg:'#8b5cf6',jp:'#14b8a6',au:'#22c55e',pt:'#3b82f6',be:'#3b82f6',lu:'#8b5cf6',kr:'#14b8a6'})[id]
+  })).sort((a,b)=>b.v-a.v);
+  const max = sorted[0].v;
+  document.getElementById('sal-results').innerHTML = sorted.map(r=>`
+  <div class="calc-result-row">
+    <div class="calc-c">${r.c}</div>
+    <div class="calc-bar"><div class="calc-fill" style="width:${Math.round(r.v/max*100)}%;background:${r.col}"></div></div>
+    <div class="calc-val">$${r.v}k</div>
+  </div>`).join('');
+}
+setTimeout(calcSalary, 100);
+
+/* ═══════════════════════════════ OCCUPATIONS ═══════════════════════════════ */
+function filterOcc() {
+  const q = document.getElementById('occ-q').value.toLowerCase();
+  const filtered = OCCUPATIONS.filter(o=>o.n.toLowerCase().includes(q)||o.note.toLowerCase().includes(q));
+  const dc = {high:'b-blue','very high':'b-green',medium:'b-amber'};
+  document.getElementById('occ-list').innerHTML = `
+  <table class="occ-table">
+    <thead><tr><th>Occupation</th><th>Demand</th><th>Top destinations</th><th>Notes</th></tr></thead>
+    <tbody>${filtered.map(o=>`
+    <tr>
+      <td style="font-weight:500">${o.n}</td>
+      <td><span class="badge ${dc[o.d]||'b-amber'}">${o.d}</span></td>
+      <td style="letter-spacing:2px">${o.countries.join(' ')}</td>
+      <td style="color:var(--t1);font-size:11px">${o.note}</td>
+    </tr>`).join('')}
+    </tbody>
+  </table>`;
+}
+filterOcc();
+
+/* ═══════════════════════════════ PR SIMULATOR ═══════════════════════════════ */
+const SIMS = {
+  ca:{name:'Canada CRS',flag:'🇨🇦',max:1200,target:480,fields:[
+    {id:'ca-age',l:'Age',opts:[['<18','Under 18',0],['18','18',99],['19','19',105],['20-29','20–29',110],['30','30',105],['31','31',99],['32','32',94],['33','33',88],['34','34',83],['35','35',77],['36','36',72],['37','37',66],['38','38',61],['39','39',55],['40','40',50],['41','41',39],['42','42',28],['43','43',17],['44','44',6],['45+','45+',0]]},
+    {id:'ca-edu',l:'Education',opts:[['hs','High school',28],['bach','Bachelor\'s',120],['two','Two+ bachelor\'s',128],['mast','Master\'s',135],['phd','PhD',150]]},
+    {id:'ca-lang',l:'English (CLB)',opts:[['7','CLB 7 (IELTS 6.0)',68],['9','CLB 9 (IELTS 7.0)',116],['10+','CLB 10+ (IELTS 8.0)',136]]},
+    {id:'ca-exp',l:'Canadian experience',opts:[['0','None',0],['1','1 year',40],['2','2 years',53],['3','3 years',64],['4','4 years',72],['5+','5+ years',80]]},
+    {id:'ca-foreign',l:'Foreign experience',opts:[['0','None',0],['1-2','1–2 years',13],['3+','3+ years',25]]},
+    {id:'ca-offer',l:'Job offer',opts:[['no','No job offer',0],['noc0','Yes — NOC 0 senior',200],['noca','Yes — NOC A/B',50]]},
+    {id:'ca-sibling',l:'Sibling in Canada',opts:[['no','No',0],['yes','Yes — PR/citizen',15]]},
+    {id:'ca-french',l:'French language',opts:[['no','None',0],['b2','NCLC 7 (B2)',25],['b2en','French + English both',50]]}
+  ]},
+  au:{name:'Australia Points',flag:'🇦🇺',max:100,target:65,fields:[
+    {id:'au-age',l:'Age',opts:[['25-32','25–32',30],['33-39','33–39',25],['40-44','40–44',15],['45+','45+',0]]},
+    {id:'au-eng',l:'English',opts:[['comp','Competent (IELTS 6)',0],['prof','Proficient (IELTS 7)',10],['sup','Superior (IELTS 8)',20]]},
+    {id:'au-exp',l:'Overseas skilled experience',opts:[['0','None',0],['3','3–4 years',5],['5','5–7 years',10],['8+','8+ years',15]]},
+    {id:'au-auexp',l:'Australian skilled experience',opts:[['0','None',0],['1','1–2 years',5],['3','3–4 years',10],['5','5–7 years',15],['8+','8+ years',20]]},
+    {id:'au-edu',l:'Education',opts:[['phd','PhD',20],['bach','Bachelor\'s',15],['dip','Diploma',10]]},
+    {id:'au-partner',l:'Partner skills assessed',opts:[['no','No / N/A',0],['yes','Yes',10]]},
+    {id:'au-regional',l:'Regional nomination / study',opts:[['no','No',0],['nom','State nomination',5],['study','Regional study',5]]}
+  ]},
+  de:{name:'Germany Blue Card',flag:'🇩🇪',max:100,target:70,fields:[
+    {id:'de-deg',l:'Recognised degree',opts:[['yes','Yes — fully recognised',30],['prog','Recognition in progress',15],['no','Not yet recognised',0]]},
+    {id:'de-sal',l:'Salary vs threshold',opts:[['gen','Above €43,800 (general)',40],['short','Shortage: above €34,128',35],['below','Below threshold',0]]},
+    {id:'de-field',l:'Occupation type',opts:[['it','IT / Engineering',15],['med','Medicine / Healthcare',15],['fin','Finance / Business',10],['other','Other',5]]},
+    {id:'de-german',l:'German language',opts:[['none','None',0],['a2','A1–A2',3],['b1','B1',8],['b2+','B2+',12]]},
+    {id:'de-offer',l:'Job offer',opts:[['yes','Yes — from German employer',15],['no','No — will job seek',0]]}
+  ]},
+  nl:{name:'Netherlands HSM',flag:'🇳🇱',max:100,target:75,fields:[
+    {id:'nl-edu',l:'Degree level',opts:[['phd','PhD',25],['mast','Master\'s',22],['bach','Bachelor\'s',15],['none','No degree',0]]},
+    {id:'nl-sal',l:'Salary vs IND threshold',opts:[['30+','Age 30+: above €5,008/mo',40],['30-','Age 30+: below €5,008/mo',0],['u30+','Under 30: above €3,672/mo',35],['u30-','Under 30: below threshold',0]]},
+    {id:'nl-sponsor',l:'IND-recognised sponsor',opts:[['yes','Yes — confirmed employer',20],['poss','Finding employer',10],['no','No employer yet',0]]},
+    {id:'nl-sector',l:'Sector',opts:[['tech','Tech / Digital',15],['fin','Finance',12],['cons','Consulting',10],['other','Other',8]]}
+  ]},
+  gb:{name:'UK Skilled Worker',flag:'🇬🇧',max:100,target:70,fields:[
+    {id:'gb-offer',l:'Job offer from licensed sponsor',opts:[['yes','Yes — confirmed',30],['no','No',0]]},
+    {id:'gb-sal',l:'Salary vs threshold',opts:[['high','Above £38,700',30],['isl','ISL role: above £30,960',25],['below','Below threshold',0]]},
+    {id:'gb-skill',l:'Skill level',opts:[['rqf6','RQF6+ (degree level)',20],['rqf3','RQF3–5',10]]},
+    {id:'gb-eng',l:'English language',opts:[['b1','B1 (IELTS 4.0)',10],['b2','B2 (IELTS 5.5)',15],['native','Native English speaker',20]]},
+    {id:'gb-sector',l:'Sector',opts:[['health','Healthcare / NHS',15],['tech','Technology',10],['fin','Finance',10],['other','Other',5]]}
+  ]},
+  ae:{name:'UAE Golden Visa',flag:'🇦🇪',max:100,target:60,fields:[
+    {id:'ae-cat',l:'Category',opts:[['inv','Investor (AED 2M+)',50],['skilled','Skilled professional (AED 30k+/mo)',40],['research','Researcher / scientist',40],['ent','Entrepreneur (approved project)',35],['student','Outstanding student (GPA 95%+)',30],['none','None of the above',0]]},
+    {id:'ae-edu',l:'Education',opts:[['phd','PhD',20],['mast','Master\'s',15],['bach','Bachelor\'s',10],['other','Other',0]]},
+    {id:'ae-field',l:'Field',opts:[['stem','STEM / Engineering',20],['med','Medicine',20],['fin','Finance',15],['other','Other',5]]},
+    {id:'ae-exp',l:'Years of experience',opts:[['10+','10+ years',15],['5','5–9 years',10],['3','3–4 years',5],['0','Under 3 years',0]]}
+  ]}
+};
+
+function switchSim(id, btn) {
+  currentSim = id;
+  document.querySelectorAll('#sim-tabs .dtab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderSim();
+}
+
+function renderSim() {
+  const s = SIMS[currentSim];
+  document.getElementById('sim-content').innerHTML = `
+  <p style="font-size:12px;color:var(--t1);margin-bottom:12px">Target score: <strong>${s.target}</strong> / ${s.max}. Adjust the fields to estimate your eligibility.</p>
+  <div class="fg2">
+    ${s.fields.map(f=>`<div class="fld"><label>${f.l}</label><select id="${f.id}" onchange="calcSim()" style="font-size:12px">${f.opts.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select></div>`).join('')}
+  </div>
+  <div style="text-align:center;margin:16px 0 6px">
+    <div id="sim-score" class="sim-score-big">—</div>
+    <div style="font-size:12px;color:var(--t2)">estimated score / ${s.max}</div>
+  </div>
+  <div class="sim-bar"><div id="sim-fill" class="sim-fill"></div></div>
+  <div id="sim-verdict" style="text-align:center;font-size:13px;font-weight:500;margin-bottom:10px"></div>
+  <div id="sim-tips" style="font-size:12px;color:var(--t1);line-height:1.7"></div>`;
+  setTimeout(calcSim,50);
+}
+
+function calcSim() {
+  const s = SIMS[currentSim];
+  let total = 0;
+  s.fields.forEach(f=>{
+    const el=document.getElementById(f.id);
+    if(!el) return;
+    const opt = f.opts.find(o=>o[0]===el.value);
+    if(opt) total += opt[2];
+  });
+  const pct = Math.min(100,Math.round(total/s.max*100));
+  const meets = total >= s.target;
+  const scoreEl = document.getElementById('sim-score');
+  scoreEl.textContent = total;
+  scoreEl.style.color = meets ? '#22c55e' : '#ef4444';
+  document.getElementById('sim-fill').style.width = pct+'%';
+  document.getElementById('sim-fill').style.background = meets ? 'var(--teal)' : 'var(--coral)';
+  document.getElementById('sim-verdict').innerHTML = meets
+    ? `<span style="color:#22c55e">✓ Likely eligible</span> — score meets approximate cutoff`
+    : `<span style="color:#ef4444">✗ Below cutoff</span> — need ${s.target-total} more points`;
+  const tips = {
+    ca:['Improve IELTS to CLB 10+ (+70 points)','Gain Canadian work experience on a work permit','Add French proficiency via Alliance Française (+25–50)','Job offer from Canadian employer (+50–200)','Provincial Nominee Program adds 600 CRS points'],
+    au:['Improve IELTS to 8.0 for Superior English (+20)','Gain Australian work experience on 482 visa','Partner skills assessment adds 10 points','State nomination (190) adds 5 points','Regional area visa (491) relaxes point requirements'],
+    de:['Get Anabin credential recognition for your degree','Learn German to B1 for faster PR (21 months vs 5 years)','Find a German employer with salary ≥ €43,800 for Blue Card','B2 German adds significant integration points'],
+    nl:['Secure an IND-recognised sponsor employer','Ensure salary meets age bracket threshold','30% tax ruling application within 4 months of start'],
+    gb:['Secure sponsorship from a licensed UK employer','Check Immigration Salary List for 20% salary discount roles','NHS roles often have lower salary requirements'],
+    ae:['UAE Golden Visa available for AED 30k+/mo skilled professionals','Alternatively invest AED 2M in UAE real estate','Outstanding researchers and scientists have separate track','5-year Green Visa available for AED 15k+/mo — lower bar than Golden']
+  }[currentSim]||[];
+  document.getElementById('sim-tips').innerHTML = tips.length ? `<strong style="color:var(--t0)">Ways to improve your score:</strong><ul style="padding-left:16px;margin-top:6px">${tips.map(t=>`<li>${t}</li>`).join('')}</ul>` : '';
+}
+renderSim();
+
+/* ═══════════════════════════════ NEWS ═══════════════════════════════ */
+function filterNews(region, btn) {
+  document.querySelectorAll('#news-tabs .dtab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const filtered = region==='all' ? NEWS : NEWS.filter(n=>n.region===region);
+  document.getElementById('news-list').innerHTML = filtered.map(n=>`
+  <div class="news-item">
+    <div class="news-dot" style="background:${n.color}"></div>
+    <div>
+      <div class="news-date">${n.country} · ${n.date}</div>
+      <div class="news-title">${n.title}</div>
+      <div class="news-body">${n.body}</div>
+    </div>
+  </div>`).join('');
+}
+filterNews('all', document.querySelector('#news-tabs .dtab'));
+
+/* ═══════════════════════════════ CHAT ═══════════════════════════════ */
+async function sendChat() {
+  const inp = document.getElementById('chat-in');
+  const msg = inp.value.trim();
+  if(!msg) return;
+  inp.value = '';
+  document.getElementById('sug-wrap').style.display='none';
+  addBubble('user', msg);
+  chatHistory.push({role:'user',content:msg});
+  const btn = document.getElementById('chat-btn');
+  btn.disabled=true; btn.textContent='…';
+  const lid = 'load-'+Date.now();
+  addBubble('ai', '<span class="dots">Thinking<span>.</span><span>.</span><span>.</span></span>', lid);
+  let p;
+  try { p = getProfile(); } catch(e) { p = {}; }
+  const sys = `You are VisaPath AI, an expert immigration advisor covering work visas, skilled worker permits, PR pathways, and citizenship across Germany, Netherlands, UAE, USA, UK, Canada, Australia, Singapore, Japan, South Korea, Ireland, Portugal, Belgium, Luxembourg, and other countries. Always be specific with salary thresholds, processing times, costs, and eligibility criteria. Cite official agencies (BAMF, IND, IRCC, Home Affairs, USCIS, UKVI, MOM Singapore, ICP UAE, MOHRE UAE, MOFA Japan, MOJ Japan). Note when rules may have changed recently. Add a brief disclaimer at the end.
+
+User profile: Age ${p.age||'?'}, nationality ${p.nat||'?'}, education ${p.edu||'?'} in ${p.field||'?'}, ${p.exp||'?'} years in ${p.ind||'?'}, job offer: ${p.offer||'?'}, remote: ${p.remote||'?'}, English: ${p.en||'?'}, salary ~$${p.sal||'?'}k, savings ~$${p.sav||'?'}k.
+
+Key 2024 facts:
+- Germany Blue Card: €43,800 (general) / €34,128 (shortage). Citizenship now 5 years + dual OK since Jun 2024.
+- Netherlands HSM: €5,008/mo (30+) / €3,672 (under 30). 2-week IND processing.
+- UAE Green Visa: AED 15,000/mo + degree, 5-year self-sponsored. Golden Visa: AED 30k+/mo or AED 2M investment, 10 years.
+- UAE: 0% income tax. No traditional PR/citizenship for most nationalities.
+- UK Skilled Worker: £38,700 (2024). ISL shortage: £30,960. IHS surcharge £1,035/yr.
+- Canada Express Entry: Category draws (STEM, healthcare, French). CRS scores vary by draw.
+- Australia TSMIT: AUD $73,150 (2024). 189 visa PR on arrival.
+- Singapore EP: SGD $5,000+/mo COMPASS system. SGD $5,500 for financial services.
+- Japan J-Skip: ¥20M+ income = PR in 1 year. HSP: 80 points = 1yr PR.
+- USA: H-1B lottery 65k annual cap. India EB-2 backlog: 50–100+ years. O-1A/EB-1A: no backlog.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,system:sys,messages:chatHistory.slice(-10)})
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Could not generate response. Please try again.';
+    chatHistory.push({role:'assistant',content:reply});
+    document.getElementById(lid)?.remove();
+    addBubble('ai', reply.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>'), null, '⚠ Educational only. Verify requirements on official government websites before applying.');
+  } catch(e) {
+    document.getElementById(lid)?.remove();
+    addBubble('ai', 'Connection error. Please try again.');
+  }
+  btn.disabled=false; btn.textContent='Send';
+}
+
+function addBubble(role, html, id, cite) {
+  const wrap = document.getElementById('chat-msgs');
+  const d = document.createElement('div');
+  d.className='bubble '+role;
+  if(id) d.id=id;
+  d.innerHTML=html;
+  if(cite){const c=document.createElement('div');c.className='bubble-cite';c.textContent=cite;d.appendChild(c);}
+  wrap.appendChild(d);
+  d.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function sugSend(btn){document.getElementById('chat-in').value=btn.textContent;sendChat();}
+
+/* ═══════════════════════════════ NAVIGATION ═══════════════════════════════ */
+function goTab(id) {
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.getElementById('pane-'+id)?.classList.add('on');
+  document.querySelectorAll('.ntab[data-tab]').forEach(b=>b.classList.toggle('on',b.getAttribute('data-tab')===id));
+  if(id==='flowchart' && !Object.keys(fcNodeMap).length) initFlowchart();
+}
+
+/* resize flowchart canvas */
+window.addEventListener('resize', ()=>{if(document.getElementById('pane-flowchart').classList.contains('on')) drawFC(currentFC);});
+</script>
+</body>
+</html>
