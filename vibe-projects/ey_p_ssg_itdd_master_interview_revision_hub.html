@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EY-P SSG ITDD Master Revision Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        ey: {
+                            yellow: '#FFE600',
+                            dark: '#1E1E24',
+                            accent: '#6366F1',
+                            card: '#1E293B',
+                            border: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #0f172a; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans bg-slate-950 text-slate-100 antialiased selection:bg-amber-400 selection:text-slate-950 custom-scrollbar">
+
+    <header class="sticky top-0 z-50 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo / Title -->
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-amber-400 rounded-lg flex items-center justify-center font-bold text-slate-950 text-xl tracking-tighter shadow-lg shadow-amber-400/20">
+                        EY
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-lg tracking-tight text-white">Parthenon SSG</span>
+                            <span class="bg-amber-400/10 text-amber-400 border border-amber-400/30 text-xs px-2 py-0.5 rounded font-mono font-medium">ITDD Master Hub</span>
+                        </div>
+                        <p class="text-xs text-slate-400 hidden sm:block">Technology Due Diligence & M&A Advisory Revision</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Tabs -->
+                <nav class="hidden md:flex items-center space-x-1" id="navContainer">
+                    <button onclick="switchTab('flashcards')" id="tab-flashcards" class="nav-btn active flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all text-amber-400 bg-slate-800 border border-slate-700">
+                        <i data-lucide="layers" class="w-4 h-4"></i> Flashcards
+                    </button>
+                    <button onclick="switchTab('glossary')" id="tab-glossary" class="nav-btn flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+                        <i data-lucide="book-open" class="w-4 h-4"></i> Master Glossary
+                    </button>
+                    <button onclick="switchTab('calculators')" id="tab-calculators" class="nav-btn flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+                        <i data-lucide="calculator" class="w-4 h-4"></i> SaaS Metrics Hub
+                    </button>
+                    <button onclick="switchTab('frameworks')" id="tab-frameworks" class="nav-btn flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+                        <i data-lucide="grid" class="w-4 h-4"></i> Framework Explorer
+                    </button>
+                    <button onclick="switchTab('saf')" id="tab-saf" class="nav-btn flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+                        <i data-lucide="briefcase" class="w-4 h-4"></i> SAF Case Prep
+                    </button>
+                    <button onclick="switchTab('quiz')" id="tab-quiz" class="nav-btn flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+                        <i data-lucide="award" class="w-4 h-4"></i> Mock Quiz
+                    </button>
+                </nav>
+
+                <!-- Overall Progress Metric -->
+                <div class="flex items-center gap-3">
+                    <div class="hidden xl:flex flex-col items-end">
+                        <span class="text-xs text-slate-400 font-medium">Overall Mastery</span>
+                        <span class="text-xs font-bold font-mono text-amber-400" id="topProgressText">0 / 0 (0%)</span>
+                    </div>
+                    <div class="w-16 sm:w-24 bg-slate-800 h-2 rounded-full overflow-hidden border border-slate-700">
+                        <div id="topProgressBar" class="bg-gradient-to-r from-amber-500 to-yellow-400 h-full w-0 transition-all duration-500"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Bar -->
+        <div class="md:hidden flex overflow-x-auto gap-2 px-4 py-2 bg-slate-900 border-t border-slate-800 custom-scrollbar text-xs">
+            <button onclick="switchTab('flashcards')" id="mob-tab-flashcards" class="mob-nav-btn whitespace-nowrap px-3 py-1.5 rounded-md bg-amber-400/10 text-amber-400 border border-amber-400/30 font-medium">Flashcards</button>
+            <button onclick="switchTab('glossary')" id="mob-tab-glossary" class="mob-nav-btn whitespace-nowrap px-3 py-1.5 rounded-md text-slate-400 bg-slate-800">Master Glossary</button>
+            <button onclick="switchTab('calculators')" id="mob-tab-calculators" class="mob-nav-btn whitespace-nowrap px-3 py-1.5 rounded-md text-slate-400 bg-slate-800">SaaS Metrics</button>
+            <button onclick="switchTab('frameworks')" id="mob-tab-frameworks" class="mob-nav-btn whitespace-nowrap px-3 py-1.5 rounded-md text-slate-400 bg-slate-800">Frameworks</button>
+            <button onclick="switchTab('saf')" id="mob-tab-saf" class="mob-nav-btn whitespace-nowrap px-3 py-1.5 rounded-md text-slate-400 bg-slate-800">SAF Case Prep</button>
+            <button onclick="switchTab('quiz')" id="mob-tab-quiz" class="mob-nav-btn whitespace-nowrap px-3 py-1.5 rounded-md text-slate-400 bg-slate-800">Mock Quiz</button>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Workspace -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ================= SECTION 1: FLASHCARDS MODE ================= -->
+        <section id="view-flashcards" class="tab-view space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800">
+                <div class="flex flex-wrap items-center gap-3">
+                    <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Category:</label>
+                    <select id="flashcardCatSelect" onchange="filterFlashcards()" class="bg-slate-800 text-slate-200 text-sm border border-slate-700 rounded-lg px-3 py-1.5 focus:outline-none focus:border-amber-400 custom-scrollbar">
+                        <option value="ALL">All Categories (12/12)</option>
+                    </select>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span id="flashcardCount" class="text-xs font-mono text-slate-400 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
+                        Card 1 of 120
+                    </span>
+                    <button onclick="shuffleFlashcards()" class="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-lg border border-slate-700 transition">
+                        <i data-lucide="shuffle" class="w-3.5 h-3.5"></i> Shuffle
+                    </button>
+                    <button onclick="resetCardStats()" class="flex items-center gap-1.5 px-3 py-1.5 bg-red-900/30 hover:bg-red-900/50 text-red-300 text-xs font-medium rounded-lg border border-red-800/40 transition">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i> Reset Stats
+                    </button>
+                </div>
+            </div>
+
+            <!-- Flashcard Display Box -->
+            <div class="max-w-3xl mx-auto">
+                <div id="flashcardContainer" class="perspective-1000 min-h-[380px] sm:min-h-[420px] cursor-pointer group" onclick="toggleCardFlip()">
+                    <div id="flashcard" class="relative w-full h-full min-h-[380px] sm:min-h-[420px] rounded-2xl border border-slate-700 bg-gradient-to-b from-slate-900 to-slate-900/90 shadow-2xl transition-transform duration-500 transform-style-3d p-6 sm:p-8 flex flex-col justify-between">
+                        
+                        <!-- CARD FRONT -->
+                        <div class="absolute inset-0 backface-hidden p-6 sm:p-8 flex flex-col justify-between rounded-2xl bg-slate-900 border border-slate-800">
+                            <div>
+                                <div class="flex items-center justify-between gap-2 mb-4">
+                                    <span id="cardCatTag" class="text-xs font-mono px-2.5 py-1 rounded bg-amber-400/10 text-amber-400 border border-amber-400/20 uppercase tracking-wider">
+                                        Category Name
+                                    </span>
+                                    <span id="cardStatusBadge" class="text-xs px-2.5 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 font-medium">
+                                        Unreviewed
+                                    </span>
+                                </div>
+                                <h3 id="cardTerm" class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-6 sm:mt-8">
+                                    Term Name
+                                </h3>
+                                <p id="cardFormulaHint" class="hidden mt-3 text-xs font-mono text-cyan-400 bg-cyan-950/40 p-2.5 rounded-lg border border-cyan-800/50">
+                                    Formula/Key Spec available
+                                </p>
+                            </div>
+                            
+                            <div class="flex items-center justify-between text-slate-500 text-xs pt-4 border-t border-slate-800">
+                                <span class="flex items-center gap-1"><i data-lucide="mouse-pointer-click" class="w-4 h-4 text-amber-400"></i> Click card to reveal definition</span>
+                                <span class="font-mono">Space key to flip</span>
+                            </div>
+                        </div>
+
+                        <!-- CARD BACK -->
+                        <div class="absolute inset-0 backface-hidden rotate-y-180 p-6 sm:p-8 flex flex-col justify-between rounded-2xl bg-slate-900 border border-slate-700">
+                            <div class="space-y-4 overflow-y-auto custom-scrollbar pr-1 max-h-[310px]">
+                                <div class="flex items-center justify-between">
+                                    <span id="cardBackTerm" class="text-lg font-bold text-amber-400">Term Name</span>
+                                    <span class="text-xs font-mono text-slate-500">Definition & Context</span>
+                                </div>
+
+                                <p id="cardDefinition" class="text-slate-200 text-sm sm:text-base leading-relaxed font-normal">
+                                    Detailed explanation of the software engineering, PE due diligence, or architectural concept.
+                                </p>
+
+                                <div id="cardExtraDetails" class="hidden p-3 rounded-xl bg-slate-950/60 border border-slate-800 text-xs text-slate-300 space-y-1">
+                                    <!-- Dynamic extra specs, formulas, or benchmarks -->
+                                </div>
+                            </div>
+
+                            <div class="pt-4 border-t border-slate-800 text-xs text-slate-400 flex justify-between items-center">
+                                <span>Self Assessment</span>
+                                <span class="text-slate-500">Arrow keys Left/Right for prev/next</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Self Rating & Controls -->
+                <div class="mt-6 flex flex-wrap items-center justify-between gap-3 bg-slate-900 p-4 rounded-xl border border-slate-800">
+                    <button onclick="prevCard()" class="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-sm font-medium border border-slate-700 transition">
+                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Prev
+                    </button>
+
+                    <div class="flex items-center gap-2 flex-1 justify-center max-w-xs">
+                        <button onclick="rateCard('needs-work')" class="flex-1 py-2 px-3 bg-red-950/50 hover:bg-red-900/60 text-red-300 border border-red-800/60 rounded-lg text-xs font-semibold transition flex flex-col items-center">
+                            <span>Hard</span>
+                            <span class="text-[10px] text-red-400/80 font-normal">Review soon</span>
+                        </button>
+                        <button onclick="rateCard('reviewing')" class="flex-1 py-2 px-3 bg-amber-950/50 hover:bg-amber-900/60 text-amber-300 border border-amber-800/60 rounded-lg text-xs font-semibold transition flex flex-col items-center">
+                            <span>Good</span>
+                            <span class="text-[10px] text-amber-400/80 font-normal">Learning</span>
+                        </button>
+                        <button onclick="rateCard('mastered')" class="flex-1 py-2 px-3 bg-emerald-950/50 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-800/60 rounded-lg text-xs font-semibold transition flex flex-col items-center">
+                            <span>Mastered</span>
+                            <span class="text-[10px] text-emerald-400/80 font-normal">Got it solid</span>
+                        </button>
+                    </div>
+
+                    <button onclick="nextCard()" class="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-sm font-medium border border-slate-700 transition">
+                        Next <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= SECTION 2: MASTER GLOSSARY & SEARCH ================= -->
+        <section id="view-glossary" class="tab-view hidden space-y-6">
+            <!-- Search & Filters -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-900 p-4 rounded-xl border border-slate-800">
+                <div class="md:col-span-2 relative">
+                    <i data-lucide="search" class="absolute left-3.5 top-3 w-4 h-4 text-slate-400"></i>
+                    <input type="text" id="glossarySearch" oninput="renderGlossary()" placeholder="Search terms, concepts, metrics, GPL, Kubernetes, NRR..." class="w-full bg-slate-950 text-slate-100 text-sm pl-10 pr-4 py-2.5 rounded-lg border border-slate-700 focus:outline-none focus:border-amber-400">
+                </div>
+                <div>
+                    <select id="glossaryCatSelect" onchange="renderGlossary()" class="w-full bg-slate-950 text-slate-100 text-sm px-3 py-2.5 rounded-lg border border-slate-700 focus:outline-none focus:border-amber-400">
+                        <option value="ALL">All 12 Categories</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between text-xs text-slate-400">
+                <span>Showing <strong id="glossaryCount" class="text-amber-400 font-mono">0</strong> glossary items</span>
+                <span class="italic">Click any term card to copy definition to clipboard</span>
+            </div>
+
+            <!-- Glossary Grid -->
+            <div id="glossaryGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Dynamic cards populated by JavaScript -->
+            </div>
+        </section>
+
+
+        <!-- ================= SECTION 3: SAAS METRICS & CALCULATORS HUB ================= -->
+        <section id="view-calculators" class="tab-view hidden space-y-6">
+            <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-indigo-950 p-6 rounded-xl border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i data-lucide="calculator" class="w-5 h-5 text-amber-400"></i> SaaS Financial & Engineering Metrics Hub
+                    </h2>
+                    <p class="text-sm text-slate-400 mt-1">Interactive benchmark verification tools for PE Due Diligence valuations</p>
+                </div>
+                <div class="flex items-center gap-2 text-xs font-mono bg-slate-950/80 px-3 py-2 rounded-lg border border-slate-800">
+                    <span class="text-slate-400">Key Targets:</span>
+                    <span class="text-emerald-400">NRR &gt; 110%</span> |
+                    <span class="text-amber-400">Rule of 40 &ge; 40%</span> |
+                    <span class="text-cyan-400">LTV/CAC &ge; 3.0x</span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                <!-- 1. Net Revenue Retention (NRR) -->
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <h3 class="font-bold text-white flex items-center gap-2">
+                            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i> Net Revenue Retention (NRR)
+                        </h3>
+                        <span class="text-xs font-mono bg-emerald-950/60 text-emerald-400 border border-emerald-800/50 px-2.5 py-1 rounded">Target: &gt; 110%</span>
+                    </div>
+                    
+                    <p class="text-xs text-slate-400">Measures existing customer ARR expansion after accounting for contraction & churn.</p>
+
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <label class="text-slate-400 block mb-1">Starting ARR ($)</label>
+                            <input type="number" id="nrrStart" value="10000000" oninput="calcNRR()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Expansion ARR ($)</label>
+                            <input type="number" id="nrrExpansion" value="2000000" oninput="calcNRR()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Contraction ARR ($)</label>
+                            <input type="number" id="nrrContraction" value="300000" oninput="calcNRR()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Churned ARR ($)</label>
+                            <input type="number" id="nrrChurn" value="500000" oninput="calcNRR()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded focus:border-amber-400">
+                        </div>
+                    </div>
+
+                    <div id="nrrResultBox" class="p-4 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between">
+                        <div>
+                            <div class="text-xs text-slate-400">Calculated NRR</div>
+                            <div id="nrrVal" class="text-2xl font-bold font-mono text-emerald-400">112.0%</div>
+                        </div>
+                        <div id="nrrBadge" class="text-xs font-semibold px-3 py-1.5 rounded bg-emerald-900/40 text-emerald-300 border border-emerald-700/50">
+                            Healthy (&gt;110%)
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. Rule of 40 -->
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <h3 class="font-bold text-white flex items-center gap-2">
+                            <i data-lucide="gauge" class="w-4 h-4 text-amber-400"></i> Rule of 40 Metric
+                        </h3>
+                        <span class="text-xs font-mono bg-amber-950/60 text-amber-400 border border-amber-800/50 px-2.5 py-1 rounded">Target: &ge; 40%</span>
+                    </div>
+                    
+                    <p class="text-xs text-slate-400">Balances top-line growth rate against cash profitability (EBITDA margin %).</p>
+
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <label class="text-slate-400 block mb-1">YoY Revenue Growth (%)</label>
+                            <input type="number" id="r40Growth" value="30" oninput="calcR40()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">EBITDA Margin (%)</label>
+                            <input type="number" id="r40Ebitda" value="15" oninput="calcR40()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded focus:border-amber-400">
+                        </div>
+                    </div>
+
+                    <div id="r40ResultBox" class="p-4 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between mt-6">
+                        <div>
+                            <div class="text-xs text-slate-400">Rule of 40 Score</div>
+                            <div id="r40Val" class="text-2xl font-bold font-mono text-amber-400">45.0%</div>
+                        </div>
+                        <div id="r40Badge" class="text-xs font-semibold px-3 py-1.5 rounded bg-amber-900/40 text-amber-300 border border-amber-700/50">
+                            Passes Rule of 40
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. LTV / CAC & CAC Payback -->
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <h3 class="font-bold text-white flex items-center gap-2">
+                            <i data-lucide="pie-chart" class="w-4 h-4 text-cyan-400"></i> LTV / CAC & Payback Calculator
+                        </h3>
+                        <span class="text-xs font-mono bg-cyan-950/60 text-cyan-400 border border-cyan-800/50 px-2.5 py-1 rounded">LTV/CAC &ge; 3.0x</span>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3 text-xs">
+                        <div>
+                            <label class="text-slate-400 block mb-1">CAC ($)</label>
+                            <input type="number" id="ltvCac" value="15000" oninput="calcLTV()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">LTV ($)</label>
+                            <input type="number" id="ltvLtv" value="60000" oninput="calcLTV()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded focus:border-amber-400">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">ARPU / Mo ($)</label>
+                            <input type="number" id="ltvArpu" value="1500" oninput="calcLTV()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded focus:border-amber-400">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <div class="p-3 rounded-lg bg-slate-950 border border-slate-800">
+                            <div class="text-xs text-slate-400">LTV / CAC Ratio</div>
+                            <div id="ltvVal" class="text-xl font-bold font-mono text-cyan-400">4.0x</div>
+                            <div id="ltvBadge" class="text-[10px] text-emerald-400 mt-0.5">Strong Unit Econ (&gt;3x)</div>
+                        </div>
+                        <div class="p-3 rounded-lg bg-slate-950 border border-slate-800">
+                            <div class="text-xs text-slate-400">CAC Payback Period</div>
+                            <div id="paybackVal" class="text-xl font-bold font-mono text-purple-400">10.0 Mos</div>
+                            <div id="paybackBadge" class="text-[10px] text-emerald-400 mt-0.5">Optimal (&lt;12 Months)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. RICE Score Calculator -->
+                <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <h3 class="font-bold text-white flex items-center gap-2">
+                            <i data-lucide="layers-3" class="w-4 h-4 text-purple-400"></i> RICE Feature Prioritization
+                        </h3>
+                        <span class="text-xs font-mono bg-purple-950/60 text-purple-400 border border-purple-800/50 px-2.5 py-1 rounded">(R x I x C) / E</span>
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-2 text-xs">
+                        <div>
+                            <label class="text-slate-400 block mb-1">Reach (users)</label>
+                            <input type="number" id="riceR" value="5000" oninput="calcRICE()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Impact (0.5 - 3)</label>
+                            <input type="number" id="riceI" step="0.5" value="2" oninput="calcRICE()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Confidence (%)</label>
+                            <input type="number" id="riceC" value="80" oninput="calcRICE()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded">
+                        </div>
+                        <div>
+                            <label class="text-slate-400 block mb-1">Effort (p-mo)</label>
+                            <input type="number" id="riceE" value="4" oninput="calcRICE()" class="w-full bg-slate-950 border border-slate-700 text-slate-100 p-2 rounded">
+                        </div>
+                    </div>
+
+                    <div class="p-4 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-between mt-4">
+                        <div>
+                            <div class="text-xs text-slate-400">RICE Prioritization Score</div>
+                            <div id="riceVal" class="text-2xl font-bold font-mono text-purple-400">2,000</div>
+                        </div>
+                        <div class="text-xs text-slate-400 max-w-[180px] text-right">
+                            Higher score = Top R&D priority for roadmap
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ================= SECTION 4: FRAMEWORK EXPLORER ================= -->
+        <section id="view-frameworks" class="tab-view hidden space-y-6">
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800">
+                <h2 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                    <i data-lucide="grid" class="w-5 h-5 text-amber-400"></i> Core Consulting & Architectural Frameworks
+                </h2>
+                <p class="text-sm text-slate-400">Explore standard EY-Parthenon evaluation matrices used in diligence and advisory.</p>
+            </div>
+
+            <!-- Framework Tabs -->
+            <div class="flex flex-wrap gap-2 border-b border-slate-800 pb-3">
+                <button onclick="showFwTab('10pillar')" id="fw-tab-10pillar" class="px-4 py-2 rounded-lg text-xs font-semibold bg-amber-400/10 text-amber-400 border border-amber-400/30">10-Pillar ITDD Framework</button>
+                <button onclick="showFwTab('time')" id="fw-tab-time" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700">TIME Portfolio Rationalization</button>
+                <button onclick="showFwTab('dora')" id="fw-tab-dora" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700">DORA Metrics</button>
+                <button onclick="showFwTab('acid')" id="fw-tab-acid" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700">ACID Relational Properties</button>
+                <button onclick="showFwTab('datamat')" id="fw-tab-datamat" class="px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700">Data Maturity Model</button>
+            </div>
+
+            <!-- FW 1: 10-Pillar ITDD -->
+            <div id="fw-content-10pillar" class="fw-content space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3">
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 transition">
+                        <div class="text-amber-400 font-mono text-xs font-bold mb-1">PILLAR 01</div>
+                        <h4 class="font-bold text-white text-sm mb-2">Business Context & Thesis</h4>
+                        <p class="text-xs text-slate-400">Aligning tech assessment directly with buyer rationale & transaction model.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 transition">
+                        <div class="text-amber-400 font-mono text-xs font-bold mb-1">PILLAR 02</div>
+                        <h4 class="font-bold text-white text-sm mb-2">Product Assessment</h4>
+                        <p class="text-xs text-slate-400">Feature roadmap, PMF, competitive differentiation & user retention.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 transition">
+                        <div class="text-amber-400 font-mono text-xs font-bold mb-1">PILLAR 03</div>
+                        <h4 class="font-bold text-white text-sm mb-2">Tech Architecture</h4>
+                        <p class="text-xs text-slate-400">Scalability, microservices vs monolith, single points of failure (SPOF).</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 transition">
+                        <div class="text-amber-400 font-mono text-xs font-bold mb-1">PILLAR 04</div>
+                        <h4 class="font-bold text-white text-sm mb-2">Tech Stack & Lifecycle</h4>
+                        <p class="text-xs text-slate-400">Modernity of frameworks, technical debt, legacy component risks.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 transition">
+                        <div class="text-amber-400 font-mono text-xs font-bold mb-1">PILLAR 05</div>
+                        <h4 class="font-bold text-white text-sm mb-2">Engineering Org & Velocity</h4>
+                        <p class="text-xs text-slate-400">SDLC process, team structure, KTLO ratio, key-person risk.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 transition">
+                        <div class="text-amber-400 font-mono text-xs font-bold mb-1">PILLAR 06</div>
+                        <h4 class="font-bold text-white text-sm mb-2">Cloud Infrastructure & FinOps</h4>
+                        <p class="text-xs text-slate-400">Hosting costs, auto-scaling, reserve instances, multi-tenant design.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 transition">
+                        <div class="text-amber-400 font-mono text-xs font-bold mb-1">PILLAR 07</div>
+                        <h4 class="font-bold text-white text-sm mb-2">Cybersecurity & Compliance</h4>
+                        <p class="text-xs text-slate-400">SOC 2 Type II, OWASP, GDPR, GPL copyleft contamination audit.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 transition">
+                        <div class="text-amber-400 font-mono text-xs font-bold mb-1">PILLAR 08</div>
+                        <h4 class="font-bold text-white text-sm mb-2">Data & AI Readiness</h4>
+                        <p class="text-xs text-slate-400">Data lakehouses, pipeline resilience, LLM/RAG vector infra & governance.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 transition">
+                        <div class="text-amber-400 font-mono text-xs font-bold mb-1">PILLAR 09</div>
+                        <h4 class="font-bold text-white text-sm mb-2">Financials & Vendor Contracts</h4>
+                        <p class="text-xs text-slate-400">IT CapEx/OpEx split, third-party licensing dependencies & renewals.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400/50 transition">
+                        <div class="text-amber-400 font-mono text-xs font-bold mb-1">PILLAR 10</div>
+                        <h4 class="font-bold text-white text-sm mb-2">Value Creation & 100-Day Plan</h4>
+                        <p class="text-xs text-slate-400">Post-close EBITDA optimization levers, remediation roadmap & CapEx schedule.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FW 2: TIME Framework -->
+            <div id="fw-content-time" class="fw-content hidden space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-5 rounded-xl bg-emerald-950/30 border border-emerald-800/50">
+                        <h4 class="font-bold text-emerald-400 text-base mb-1">INVEST (High Value / High Tech Quality)</h4>
+                        <p class="text-xs text-slate-300">Strategic long-term core platforms. Allocation of R&D capital for expansion.</p>
+                    </div>
+                    <div class="p-5 rounded-xl bg-amber-950/30 border border-amber-800/50">
+                        <h4 class="font-bold text-amber-400 text-base mb-1">TOLERATE (High Value / Low Tech Quality)</h4>
+                        <p class="text-xs text-slate-300">Keep short-term to avoid business disruption; schedule technical debt refactoring.</p>
+                    </div>
+                    <div class="p-5 rounded-xl bg-cyan-950/30 border border-cyan-800/50">
+                        <h4 class="font-bold text-cyan-400 text-base mb-1">MIGRATE (Low Value / High Tech Quality)</h4>
+                        <p class="text-xs text-slate-300">Merge functionality into primary systems or re-allocate underlying infrastructure.</p>
+                    </div>
+                    <div class="p-5 rounded-xl bg-red-950/30 border border-red-800/50">
+                        <h4 class="font-bold text-red-400 text-base mb-1">ELIMINATE (Low Value / Low Tech Quality)</h4>
+                        <p class="text-xs text-slate-300">Decommission immediately to reduce license overhead, hosting, and security attack surface.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FW 3: DORA Metrics -->
+            <div id="fw-content-dora" class="fw-content hidden space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                        <div class="text-xs text-slate-400 font-mono">METRIC 1</div>
+                        <h4 class="font-bold text-white text-sm mt-1">Deployment Frequency</h4>
+                        <p class="text-xs text-slate-400 mt-2">How often code is successfully deployed to production (e.g. daily vs monthly).</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                        <div class="text-xs text-slate-400 font-mono">METRIC 2</div>
+                        <h4 class="font-bold text-white text-sm mt-1">Lead Time for Changes</h4>
+                        <p class="text-xs text-slate-400 mt-2">Time required for committed code to reach live production users.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                        <div class="text-xs text-slate-400 font-mono">METRIC 3</div>
+                        <h4 class="font-bold text-white text-sm mt-1">Change Failure Rate</h4>
+                        <p class="text-xs text-slate-400 mt-2">Percentage of production deployments that result in degradation or outages.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                        <div class="text-xs text-slate-400 font-mono">METRIC 4</div>
+                        <h4 class="font-bold text-white text-sm mt-1">Mean Time to Restore (MTTR)</h4>
+                        <p class="text-xs text-slate-400 mt-2">Average duration required to recover from a production outage.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FW 4: ACID Properties -->
+            <div id="fw-content-acid" class="fw-content hidden space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                        <h4 class="font-bold text-amber-400 text-sm">Atomicity</h4>
+                        <p class="text-xs text-slate-300 mt-1">All operations in a transaction execute successfully, or the entire transaction rolls back completely ("all or nothing").</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                        <h4 class="font-bold text-amber-400 text-sm">Consistency</h4>
+                        <p class="text-xs text-slate-300 mt-1">Data transitions from one valid state to another, enforcing all integrity constraints and foreign key rules.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                        <h4 class="font-bold text-amber-400 text-sm">Isolation</h4>
+                        <p class="text-xs text-slate-300 mt-1">Concurrent transactions execute independently without interfering with one another's intermediate state.</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-900 border border-slate-800">
+                        <h4 class="font-bold text-amber-400 text-sm">Durability</h4>
+                        <p class="text-xs text-slate-300 mt-1">Once a transaction commits, data updates persist permanently even in the event of system power loss or failure.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FW 5: Data Maturity -->
+            <div id="fw-content-datamat" class="fw-content hidden space-y-3">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800">
+                    <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 font-mono font-bold flex items-center justify-center text-xs">01</span>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Basic Stage</h4>
+                        <p class="text-xs text-slate-400">Siloed spreadsheets, manual CSV exports, no single source of truth.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800">
+                    <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 font-mono font-bold flex items-center justify-center text-xs">02</span>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Managed Stage</h4>
+                        <p class="text-xs text-slate-400">Centralized SQL database, basic BI reporting, scheduled operational syncs.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800">
+                    <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 font-mono font-bold flex items-center justify-center text-xs">03</span>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Integrated Stage</h4>
+                        <p class="text-xs text-slate-400">Enterprise Data Warehouse / Lakehouse (Snowflake/Databricks), ETL automation.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800">
+                    <span class="w-8 h-8 rounded-full bg-slate-800 text-slate-400 font-mono font-bold flex items-center justify-center text-xs">04</span>
+                    <div>
+                        <h4 class="font-bold text-white text-sm">Optimized Stage</h4>
+                        <p class="text-xs text-slate-400">Real-time streaming (Kafka), predictive operational analytics, self-service BI.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-900 border border-slate-800">
+                    <span class="w-8 h-8 rounded-full bg-amber-400 text-slate-950 font-mono font-bold flex items-center justify-center text-xs">05</span>
+                    <div>
+                        <h4 class="font-bold text-white text-sm text-amber-400">Intelligent Stage</h4>
+                        <p class="text-xs text-slate-400">Autonomous AI Agents, RAG pipelines with Vector DBs, machine learning driving core decisions.</p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- ================= SECTION 5: SAF CASE PREP SIMULATOR ================= -->
+        <section id="view-saf" class="tab-view hidden space-y-6">
+            <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-amber-950/40 p-6 rounded-xl border border-slate-800">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i data-lucide="briefcase" class="w-5 h-5 text-amber-400"></i> SAF Framework Case Interview Simulator
+                </h2>
+                <p class="text-sm text-slate-400 mt-1">Structure your responses using **Situation, Assessment, Findings, Recommendation, and Business Impact**.</p>
+            </div>
+
+            <!-- Case Scenario Picker -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <button onclick="loadSafScenario('gpl')" id="saf-btn-gpl" class="saf-scen-btn p-3 text-left rounded-xl bg-slate-900 border border-slate-700 hover:border-amber-400 transition">
+                    <div class="text-[10px] text-red-400 font-mono uppercase">Red Flag Risk</div>
+                    <div class="font-bold text-white text-xs mt-1">GPL Copyleft Contamination</div>
+                </button>
+                <button onclick="loadSafScenario('tsa')" id="saf-btn-tsa" class="saf-scen-btn p-3 text-left rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400 transition">
+                    <div class="text-[10px] text-amber-400 font-mono uppercase">Carve-Out M&A</div>
+                    <div class="font-bold text-white text-xs mt-1">Uncapped TSA Penalty Risk</div>
+                </button>
+                <button onclick="loadSafScenario('ktlo')" id="saf-btn-ktlo" class="saf-scen-btn p-3 text-left rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400 transition">
+                    <div class="text-[10px] text-cyan-400 font-mono uppercase">Tech Debt</div>
+                    <div class="font-bold text-white text-xs mt-1">80% KTLO R&D Spend</div>
+                </button>
+                <button onclick="loadSafScenario('multitenant')" id="saf-btn-multitenant" class="saf-scen-btn p-3 text-left rounded-xl bg-slate-900 border border-slate-800 hover:border-amber-400 transition">
+                    <div class="text-[10px] text-purple-400 font-mono uppercase">Architecture</div>
+                    <div class="font-bold text-white text-xs mt-1">Fake Multi-Tenancy & Churn</div>
+                </button>
+            </div>
+
+            <!-- SAF Structure Breakdown Card -->
+            <div class="bg-slate-900 p-6 rounded-xl border border-slate-800 space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h3 id="safScenarioTitle" class="font-bold text-lg text-white">Scenario: GPL License Contamination in Core SaaS Engine</h3>
+                    <span id="safScenarioTag" class="text-xs px-2.5 py-1 rounded bg-red-950 text-red-300 border border-red-800">Critical IP Red Flag</span>
+                </div>
+
+                <div class="space-y-4 text-xs sm:text-sm">
+                    <!-- S: Situation -->
+                    <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                        <div class="font-mono text-amber-400 font-bold uppercase text-xs flex items-center gap-2">
+                            <span>S</span> — Situation (Context & Thesis)
+                        </div>
+                        <p id="safS" class="text-slate-300">Target is a $20M ARR SaaS platform providing logistics routing software being acquired by a Private Equity sponsor for a bolt-on expansion.</p>
+                    </div>
+
+                    <!-- A: Assessment -->
+                    <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                        <div class="font-mono text-cyan-400 font-bold uppercase text-xs flex items-center gap-2">
+                            <span>A</span> — Assessment (Methodology & Tools)
+                        </div>
+                        <p id="safA" class="text-slate-300">Performed automated Black Duck open-source code composition analysis (SCA) across the core routing engine repository and audited developer git logs.</p>
+                    </div>
+
+                    <!-- F: Findings -->
+                    <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                        <div class="font-mono text-red-400 font-bold uppercase text-xs flex items-center gap-2">
+                            <span>F</span> — Findings (Discovered Risks)
+                        </div>
+                        <p id="safF" class="text-slate-300">Identified GPL v3.0 copyleft library directly linked inside proprietary algorithm code, creating catastrophic risk of IP contamination requiring source code disclosure.</p>
+                    </div>
+
+                    <!-- R: Recommendation -->
+                    <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                        <div class="font-mono text-emerald-400 font-bold uppercase text-xs flex items-center gap-2">
+                            <span>R</span> — Recommendation (100-Day Plan Action)
+                        </div>
+                        <p id="safR" class="text-slate-300">Mandate seller re-write of infected algorithm prior to close, escrow $1.5M of purchase price, and isolate code module into an independent service API during 100-Day Plan.</p>
+                    </div>
+
+                    <!-- B: Business Impact -->
+                    <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-1">
+                        <div class="font-mono text-purple-400 font-bold uppercase text-xs flex items-center gap-2">
+                            <span>B</span> — Business Impact (EBITDA & Valuation)
+                        </div>
+                        <p id="safB" class="text-slate-300">Protects proprietary moat, defends target's 12x EBITDA valuation multiple, and eliminates post-acquisition litigation liability.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ================= SECTION 6: MOCK INTERVIEW QUIZ ================= -->
+        <section id="view-quiz" class="tab-view hidden space-y-6">
+            <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-950/40 p-6 rounded-xl border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i data-lucide="award" class="w-5 h-5 text-amber-400"></i> ITDD Mock Interview Drill Engine
+                    </h2>
+                    <p class="text-sm text-slate-400 mt-1">Test your recall on PE due diligence concepts, technical definitions, and SaaS metrics.</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button onclick="startQuiz()" class="px-4 py-2 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-lg text-xs tracking-tight transition shadow-lg shadow-amber-400/20">
+                        Start New 10-Question Drill
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Display Area -->
+            <div id="quizContainer" class="bg-slate-900 p-6 rounded-xl border border-slate-800 min-h-[300px] flex flex-col justify-between">
+                <div class="text-center py-12 space-y-3">
+                    <i data-lucide="play-circle" class="w-12 h-12 text-amber-400 mx-auto opacity-80"></i>
+                    <h3 class="text-lg font-bold text-white">Ready for your Mock Interview Drill?</h3>
+                    <p class="text-xs text-slate-400 max-w-md mx-auto">Questions are randomly sampled across all 12 ITDD categories including formulas, open-source risk, and cloud infrastructure.</p>
+                    <button onclick="startQuiz()" class="mt-4 px-6 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold rounded-lg text-sm transition shadow-lg">
+                        Begin Drill Now
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+        EY-Parthenon Software Strategy Group (SSG) • Interview Preparation & ITDD Framework • 2026 Edition
+    </footer>
+
+    <script>
+        // MASTER ITDD DATASET (Categorized cleanly)
+        const ALL_CATEGORIES = [
+            { id: "CAT1", name: "Enterprise Software & Systems" },
+            { id: "CAT2", name: "SDLC & Agile Frameworks" },
+            { id: "CAT3", name: "Software Architecture & APIs" },
+            { id: "CAT4", name: "Cloud Infrastructure & DevOps" },
+            { id: "CAT5", name: "Databases & Data Platforms" },
+            { id: "CAT6", name: "Cybersecurity & Compliance" },
+            { id: "CAT7", name: "Enterprise Architecture & TOM" },
+            { id: "CAT8", name: "Product Management & SaaS Metrics" },
+            { id: "CAT9", name: "ITDD Methodology & Frameworks" },
+            { id: "CAT10", name: "PE Concepts, M&A & Carve-Outs" },
+            { id: "CAT11", name: "AI, Data Maturity & Emerging Tech" },
+            { id: "CAT12", name: "Consulting Frameworks & Delivery" }
+        ];
+
+        const TERMS_DATA = [
+            // CATEGORY 1
+            { id: 1, catId: "CAT1", term: "Software", def: "A collection of programs, instructions, and data that tells computer hardware what to do (e.g., operating systems, ERPs, CRMs).", spec: "Type: Core Tech Component" },
+            { id: 2, catId: "CAT1", term: "Hardware", def: "Physical electronic components of a computer system (CPU, RAM, SSD, servers, network switches).", spec: "Type: Infrastructure Asset" },
+            { id: 3, catId: "CAT1", term: "System Software", def: "Software that controls and manages fundamental hardware operations (e.g., Windows, Linux, macOS, Android, device drivers).", spec: "Type: Low-level Runtime" },
+            { id: 4, catId: "CAT1", term: "Application Software", def: "Software built to solve specific business or end-user problems (e.g., SAP, Salesforce, Microsoft Excel).", spec: "Type: End-User Application" },
+            { id: 5, catId: "CAT1", term: "Middleware", def: "Software that connects separate applications to enable data exchange and integration (e.g., MuleSoft, IBM Integration Bus, Apache Kafka, Dell Boomi).", spec: "Type: Integration Glue" },
+            { id: 6, catId: "CAT1", term: "Enterprise Software", def: "High-security, scalable, multi-user software designed for organizations rather than individual consumers (e.g., Workday, ServiceNow).", spec: "Type: B2B Platform" },
+            { id: 7, catId: "CAT1", term: "Consumer Software", def: "Applications built for individual consumers prioritizing user experience and low complexity (e.g., Netflix, WhatsApp, Spotify).", spec: "Type: B2C App" },
+            { id: 8, catId: "CAT1", term: "On-Premise Deployment", def: "Software hosted and run on a company’s own physical servers inside its own facilities. High control and customization, but high CapEx and maintenance burden.", spec: "Tradeoff: High CapEx / Low Agility" },
+            { id: 9, catId: "CAT1", term: "Cloud Deployment", def: "Software running on remote cloud infrastructure accessed over the internet. Low upfront cost, automatic updates, and high elasticity.", spec: "Tradeoff: Low OpEx / High Scalability" },
+            { id: 10, catId: "CAT1", term: "Hybrid Cloud", def: "An enterprise environment combining on-premise infrastructure with private/public cloud services (e.g., payroll on-premise, CRM on Salesforce, analytics on Azure).", spec: "Pattern: Combined Topology" },
+            { id: 11, catId: "CAT1", term: "IaaS (Infrastructure as Service)", def: "Cloud model providing raw compute, storage, and networking; customer manages OS, runtime, and apps (e.g., AWS EC2, Azure VMs).", spec: "Scope: Provider manages Hardware" },
+            { id: 12, catId: "CAT1", term: "PaaS (Platform as Service)", def: "Cloud model where provider manages infrastructure, OS, and runtime; customer focuses solely on code (e.g., Azure App Service, Google App Engine).", spec: "Scope: Provider manages OS/Runtime" },
+            { id: 13, catId: "CAT1", term: "SaaS (Software as Service)", def: "Fully managed turnkey application hosted in the cloud and accessed via browser/API; provider manages everything (e.g., Salesforce, Workday, Microsoft 365).", spec: "Scope: Provider manages All" },
+            { id: 14, catId: "CAT1", term: "ERP (Enterprise Resource Planning)", def: "Core system managing integrated business operations including general ledger, procurement, inventory, and supply chain (e.g., SAP S/4HANA, Oracle ERP Cloud).", spec: "Category: Core Business Back-office" },
+            { id: 15, catId: "CAT1", term: "CRM (Customer Relationship Management)", def: "Platform managing customer interactions, sales pipelines, lead scoring, and customer service history (e.g., Salesforce, Microsoft Dynamics 365).", spec: "Category: Front-office Revenue" },
+            { id: 16, catId: "CAT1", term: "HRMS (Human Resource Management System)", def: "Software managing employee lifecycle, payroll, recruitment, performance, and benefits (e.g., Workday, SAP SuccessFactors).", spec: "Category: Workforce Mgmt" },
+            { id: 17, catId: "CAT1", term: "SCM (Supply Chain Management)", def: "Platform optimizing demand planning, vendor procurement, logistics, and material movement (e.g., SAP SCM, Oracle SCM Cloud).", spec: "Category: Logistics Operations" },
+            { id: 18, catId: "CAT1", term: "WMS (Warehouse Management System)", def: "Software controlling warehouse operations including picking, packing, shipping, and barcode tracking (e.g., Manhattan Associates WMS, Blue Yonder).", spec: "Category: Fulfillment" },
+            { id: 19, catId: "CAT1", term: "MES (Manufacturing Execution System)", def: "Shop-floor control system tracking real-time production, machine status, and quality control (e.g., Siemens Opcenter, Rockwell FactoryTalk).", spec: "Category: Industrial Ops" },
+            { id: 20, catId: "CAT1", term: "CMS (Content Management System)", def: "Platform for creating and managing digital web content without manual coding (e.g., WordPress, Drupal, Adobe Experience Manager).", spec: "Category: Digital Experience" },
+            { id: 21, catId: "CAT1", term: "PLM (Product Lifecycle Management)", def: "Software managing a physical product’s data from initial CAD design through manufacturing, servicing, and disposal (e.g., Siemens Teamcenter, PTC Windchill).", spec: "Category: Engineering Design" },
+
+            // CATEGORY 2
+            { id: 22, catId: "CAT2", term: "SDLC (Software Development Lifecycle)", def: "Structured step-by-step process for planning, designing, building, testing, deploying, and maintaining software.", spec: "Phases: Plan → Design → Code → Test → Deploy" },
+            { id: 23, catId: "CAT2", term: "Functional Requirement", def: "Definition of specific capabilities or functions a system must perform (e.g., 'Allow user to reset password', 'Process credit card payment').", spec: "Focus: What the system does" },
+            { id: 24, catId: "CAT2", term: "Non-Functional Requirement (NFR)", def: "Quality attributes specifying how well the system performs (e.g., response time < 200ms, 99.99% availability, SOC 2 compliance).", spec: "Focus: How well system performs" },
+            { id: 25, catId: "CAT2", term: "HLD (High-Level Design)", def: "System architecture blueprint showing high-level components, database choice, network boundaries, and API integrations.", spec: "View: Architectural Macro" },
+            { id: 26, catId: "CAT2", term: "LLD (Low-Level Design)", def: "Detailed technical specifications including class diagrams, database schema definitions, algorithm logic, and error-handling paths.", spec: "View: Code-level Micro" },
+            { id: 27, catId: "CAT2", term: "Unit Testing", def: "Automated testing of individual functions or methods in isolation by developers.", spec: "Scope: Single Function" },
+            { id: 28, catId: "CAT2", term: "Integration Testing", def: "Testing interactions between combined modules or external microservices to verify seamless communication.", spec: "Scope: Module Boundaries" },
+            { id: 29, catId: "CAT2", term: "System Testing", def: "End-to-end testing of the complete integrated application to verify compliance with functional requirements.", spec: "Scope: End-to-End App" },
+            { id: 30, catId: "CAT2", term: "UAT (User Acceptance Testing)", def: "Final testing phase performed by business end-users to validate that the product meets real-world business needs before production launch.", spec: "Scope: Business Sign-off" },
+            { id: 31, catId: "CAT2", term: "Performance / Load Testing", def: "Evaluating system speed, responsiveness, and stability under peak traffic loads.", spec: "Target: Benchmark RPS/Throughput" },
+            { id: 32, catId: "CAT2", term: "Security / Penetration Testing", def: "Simulated cyberattacks designed to identify software vulnerabilities, unauthorized access risks, and logic flaws.", spec: "Target: OWASP Vulnerabilities" },
+            { id: 33, catId: "CAT2", term: "Waterfall Methodology", def: "Sequential, rigid SDLC model where each phase must be 100% completed before the next starts.", spec: "Risk: High inertia & delayed testing" },
+            { id: 34, catId: "CAT2", term: "Agile Methodology", def: "Iterative and incremental delivery model focused on frequent working software releases, customer feedback, and continuous improvement.", spec: "Benefit: Rapid adaptability" },
+            { id: 35, catId: "CAT2", term: "Scrum Framework", def: "The most popular Agile framework using 1- to 4-week time-boxed iterations (Sprints) managed by cross-functional teams.", spec: "Iterative Cadence: Sprints" },
+            { id: 36, catId: "CAT2", term: "Product Owner", def: "Scrum role responsible for defining user stories, maintaining and prioritizing the Product Backlog, and maximizing business value.", spec: "Focus: Backlog Prioritization" },
+            { id: 37, catId: "CAT2", term: "Scrum Master", def: "Facilitator responsible for enforcing Scrum practices, removing blockers, and coaching the engineering team.", spec: "Focus: Process Facilitation" },
+            { id: 38, catId: "CAT2", term: "Story Points", def: "Relative unit of measure estimating combined effort, complexity, and risk using Fibonacci scale (1, 2, 3, 5, 8, 13, 21).", spec: "Scale: Fibonacci Sequence" },
+            { id: 39, catId: "CAT2", term: "Velocity", def: "Total story points completed by an engineering team within a single Sprint; used to forecast future capacity.", spec: "Metric: Points per Sprint" },
+            { id: 40, catId: "CAT2", term: "Definition of Done (DoD)", def: "Formally agreed checklist required before code is deemed finished (e.g., code reviewed, unit tests passed, UAT signed off, docs updated).", spec: "Quality Gate" },
+            { id: 41, catId: "CAT2", term: "DORA Metrics", def: "4 industry-standard DevOps metrics: 1) Deployment Frequency; 2) Lead Time for Changes; 3) Change Failure Rate; 4) Mean Time to Restore (MTTR).", spec: "Framework: Velocity & Reliability" },
+
+            // CATEGORY 3
+            { id: 42, catId: "CAT3", term: "Software Architecture", def: "High-level structural organization of a system defining components, communication protocols, data flows, and scalability boundaries.", spec: "Blueprint of System" },
+            { id: 43, catId: "CAT3", term: "Monolithic Architecture", def: "Architecture where all application logic, UI, and database interactions are bundled into a single unified code base and deployment unit.", spec: "Risk: Deployment Coupling" },
+            { id: 44, catId: "CAT3", term: "Microservices Architecture", def: "Architecture decomposing an application into small, loosely-coupled, independently deployable services organized around business domains.", spec: "Benefit: Independent Scaling" },
+            { id: 45, catId: "CAT3", term: "REST (Representational State Transfer)", def: "Lightweight, stateless API architectural style utilizing standard HTTP methods (GET, POST, PUT, DELETE) and JSON data payloads.", spec: "Standard: HTTP + JSON" },
+            { id: 46, catId: "CAT3", term: "SOAP (Simple Object Access Protocol)", def: "Legacy, highly structured XML-based API protocol enforcing strict security and transactional compliance standards.", spec: "Standard: XML Enterprise Protocol" },
+            { id: 47, catId: "CAT3", term: "API Gateway", def: "Entry point proxy managing, routing, authenticating, rate-limiting, and monitoring incoming client API traffic (e.g., Kong, Apigee, AWS API Gateway).", spec: "Pattern: Centralized Ingress" },
+            { id: 48, catId: "CAT3", term: "Container", def: "Lightweight, portable executable package containing code, runtime, libraries, and settings isolated from the host OS (e.g., Docker).", spec: "Tech: Docker / OCI" },
+            { id: 49, catId: "CAT3", term: "Kubernetes (K8s)", def: "Open-source container orchestration platform automating deployment, auto-scaling, networking, and self-healing of containerized applications.", spec: "Tech: Container Orchestration" },
+            { id: 50, catId: "CAT3", term: "Single Point of Failure (SPOF)", def: "Critical hardware or software component whose failure halts the entire application.", spec: "Diligence Finding: High Risk" },
+            { id: 51, catId: "CAT3", term: "Technical Debt", def: "Cost of future rework created by choosing easy, temporary, or suboptimal engineering solutions instead of sustainable architectures.", spec: "Diligence Metric: R&D KTLO Drag" },
+
+            // CATEGORY 4
+            { id: 52, catId: "CAT4", term: "Public Cloud", def: "Infrastructure owned and operated by multi-tenant third-party cloud providers (AWS, Azure, GCP).", spec: "Provider: AWS / Azure / GCP" },
+            { id: 53, catId: "CAT4", term: "Multi-Cloud", def: "Strategic usage of multiple public cloud providers simultaneously to avoid vendor lock-in and leverage specialized services.", spec: "Strategy: Vendor Resilience" },
+            { id: 54, catId: "CAT4", term: "CDN (Content Delivery Network)", def: "Geographically distributed network of edge servers caching static media content close to users to reduce latency (e.g., CloudFront).", spec: "Benefit: Sub-50ms Latency" },
+            { id: 55, catId: "CAT4", term: "RTO (Recovery Time Objective)", def: "Targeted maximum acceptable duration of system downtime after a disaster (e.g., RTO < 2 hours).", spec: "Target: Max Downtime" },
+            { id: 56, catId: "CAT4", term: "RPO (Recovery Point Objective)", def: "Maximum acceptable threshold of transactional data loss measured in time (e.g., RPO < 15 minutes of lost data).", spec: "Target: Max Data Loss" },
+            { id: 57, catId: "CAT4", term: "DevOps", def: "Cultural philosophy and engineering methodology combining Development and Operations to automate software delivery pipelines.", spec: "Practice: CI/CD + Automation" },
+            { id: 58, catId: "CAT4", term: "Infrastructure as Code (IaC)", def: "Provisioning and managing cloud infrastructure declaratively through machine-readable code scripts rather than manual configuration (e.g., Terraform, CloudFormation).", spec: "Tool: Terraform / Bicep" },
+            { id: 59, catId: "CAT4", term: "FinOps (Cloud Financial Management)", def: "Operational discipline optimizing cloud spend through rightsizing, reserved instances, spot instances, and elimination of idle resources.", spec: "Focus: Cloud EBITDA Synergies" },
+
+            // CATEGORY 5
+            { id: 60, catId: "CAT5", term: "Relational Database (SQL)", def: "Structured database organizing data into tables with predefined schemas and foreign key relationships.", spec: "Tech: PostgreSQL, Oracle, MySQL" },
+            { id: 61, catId: "CAT5", term: "NoSQL Database", def: "Non-relational database optimized for horizontal scaling, flexible schemas, and high-throughput unstructured/semi-structured data (e.g., MongoDB, DynamoDB).", spec: "Tech: MongoDB, DynamoDB, Cassandra" },
+            { id: 62, catId: "CAT5", term: "ACID Properties", def: "Set of guarantees in relational databases: Atomicity, Consistency, Isolation, Durability.", spec: "Standard: Relational Integrity" },
+            { id: 63, catId: "CAT5", term: "Data Warehouse", def: "Centralized analytics repository storing structured historical business data aggregated from operational applications for reporting (e.g., Snowflake, Redshift).", spec: "Tech: Snowflake, Redshift, BigQuery" },
+            { id: 64, catId: "CAT5", term: "Data Lakehouse", def: "Modern architecture combining the analytical performance and ACID transactions of a Data Warehouse with the cheap storage flexibility of a Data Lake (e.g., Databricks).", spec: "Tech: Databricks, Microsoft Fabric" },
+            { id: 65, catId: "CAT5", term: "Caching", def: "High-speed in-memory data storage layer serving frequent queries rapidly to relieve database processing pressure (e.g., Redis, Memcached).", spec: "Tech: Redis, Memcached" },
+
+            // CATEGORY 6
+            { id: 66, catId: "CAT6", term: "CIA Triad", def: "Core information security framework: Confidentiality, Integrity, Availability.", spec: "Framework: Security Baseline" },
+            { id: 67, catId: "CAT6", term: "Principle of Least Privilege", def: "Security best practice granting users and applications only the absolute minimum permissions necessary to perform their work.", spec: "IAM Standard" },
+            { id: 68, catId: "CAT6", term: "Zero Trust Architecture", def: "Security model operating on the mandate: 'Never trust, always verify', enforcing continuous authentication and micro-segmentation for every request.", spec: "Modern Security Paradigm" },
+            { id: 69, catId: "CAT6", term: "OWASP Top 10", def: "Standard awareness document listing the top 10 web application security risks (e.g., Injection, Broken Access Control, Cryptographic Failures).", spec: "Benchmark: App Sec Risks" },
+            { id: 70, catId: "CAT6", term: "GDPR", def: "Strict European Union data protection law mandating data privacy, user consent, data residency, and the 'Right to be Forgotten.'", spec: "Compliance: EU Privacy" },
+            { id: 71, catId: "CAT6", term: "SOC 2 Type II Report", def: "Comprehensive audit testing the operational effectiveness of security controls over an extended 6- to 12-month evaluation window; mandated by enterprise B2B SaaS buyers.", spec: "Required for B2B Enterprise SaaS" },
+            { id: 72, catId: "CAT6", term: "GPL / AGPL Copyleft Contamination", def: "Open-source licenses requiring proprietary software linking to them to open-source its entire proprietary codebase; catastrophic IP risk in M&A.", spec: "Catastrophic Diligence Red Flag" },
+
+            // CATEGORY 7
+            { id: 73, catId: "CAT7", term: "Enterprise Architecture (EA)", def: "Strategic blueprint aligning business strategy, capabilities, application portfolios, data flows, and infrastructure technology.", spec: "Framework: TOGAF" },
+            { id: 74, catId: "CAT7", term: "Application Portfolio Rationalization (APR)", def: "Strategic practice of evaluating application portfolios to eliminate duplicate applications, consolidate vendors, and reduce license costs.", spec: "Tool: TIME Framework" },
+            { id: 75, catId: "CAT7", term: "TIME Framework", def: "Application rationalization scoring model: Tolerate, Invest, Migrate, Eliminate.", spec: "Matrix: Value vs Tech Quality" },
+            { id: 76, catId: "CAT7", term: "Target Operating Model (TOM)", def: "Blueprint defining how the future technology organization will operate across Organization, Governance, Processes, Technology, People, and Vendors.", spec: "Post-Close Blueprint" },
+            { id: 77, catId: "CAT7", term: "Build vs. Buy Decision", def: "Strategic assessment evaluating whether to custom-build proprietary software or purchase commercial off-the-shelf (COTS)/SaaS solutions based on TCO, time-to-market, and competitive moat.", spec: "Focus: Moat vs Commodity" },
+            { id: 78, catId: "CAT7", term: "Shadow IT", def: "Software, cloud services, or hardware deployed by business departments without explicit IT department knowledge or security oversight.", spec: "Risk: Unmanaged SaaS & Sec Ops" },
+
+            // CATEGORY 8
+            { id: 79, catId: "CAT8", term: "ARR (Annual Recurring Revenue)", def: "Normalized annual value of recurring subscription revenue from SaaS customers.", spec: "Formula: MRR x 12" },
+            { id: 80, catId: "CAT8", term: "MRR (Monthly Recurring Revenue)", def: "Total predictable recurring revenue generated by a SaaS business in a single month.", spec: "Core SaaS Metric" },
+            { id: 81, catId: "CAT8", term: "Net Revenue Retention (NRR)", def: "Percentage of recurring revenue retained from existing customers over a period: NRR = (Start ARR + Expansion - Contraction - Churn) / Start ARR. Benchmark: > 110% for Enterprise B2B.", spec: "Formula: (Start + Exp - Cont - Churn)/Start | Target > 110%" },
+            { id: 82, catId: "CAT8", term: "Gross Revenue Retention (GRR)", def: "Percentage of recurring revenue retained excluding expansion revenue; measures core customer retention strength.", spec: "Target: > 85-90%" },
+            { id: 83, catId: "CAT8", term: "Rule of 40", def: "SaaS performance metric balancing top-line growth against cash profitability: YoY Revenue Growth Rate % + EBITDA Margin % >= 40%.", spec: "Formula: Growth% + EBITDA% >= 40%" },
+            { id: 84, catId: "CAT8", term: "CAC Payback Period", def: "Number of months required for a customer to generate sufficient gross profit to recover their CAC. Benchmark: < 12 months.", spec: "Target: < 12 Months" },
+            { id: 85, catId: "CAT8", term: "LTV / CAC Ratio", def: "Metric evaluating customer acquisition efficiency. Benchmark: >= 3.0x.", spec: "Target: >= 3.0x" },
+            { id: 86, catId: "CAT8", term: "RICE Prioritization", def: "Scoring framework evaluating features based on: RICE Score = (Reach x Impact x Confidence) / Effort.", spec: "Formula: (R x I x C) / E" },
+
+            // CATEGORY 9
+            { id: 87, catId: "CAT9", term: "IDD (Integrated Due Diligence)", def: "EY-Parthenon multi-disciplinary transaction advisory model providing PE clients with a unified assessment across Financial (FDD), Commercial (CDD), Operational (ODD), and Technology (TDD).", spec: "Advisory Model: EY-P Unified DD" },
+            { id: 88, catId: "CAT9", term: "Buy-Side ITDD", def: "Diligence executed for prospective buyers to discover red flags, estimate post-close CapEx/OpEx, and inform purchase price adjustments.", spec: "Focus: Risk & CapEx Schedule" },
+            { id: 89, catId: "CAT9", term: "Sell-Side ITDD (Vendor DD)", def: "Diligence executed for sellers to audit software assets prior to going to market, addressing red flags proactively to defend company valuation.", spec: "Focus: Valuation Defense" },
+            { id: 90, catId: "CAT9", term: "10-Pillar ITDD Framework", def: "Standard EY-P assessment matrix evaluating Business Context, Product, Architecture, Tech Stack, Engineering Velocity, Cloud FinOps, Cybersecurity, Data/AI, Financials, and Value Creation.", spec: "Matrix: EY-P 10 Pillars" },
+            { id: 91, catId: "CAT9", term: "Red Flag Memorandum", def: "Urgent interim deliverable sent to deal teams during diligence highlighting deal-breaking risks (e.g., GPL contamination, single-person key risk, fake multi-tenancy).", spec: "Deliverable: Interim Deal Alert" },
+            { id: 92, catId: "CAT9", term: "CapEx / OpEx Remediation Schedule", def: "Financial schedule quantifying capital and operating expenditures required post-close to fix technical debt, re-platform, or patch security gaps.", spec: "Deliverable: Valuation Adjustment Input" },
+
+            // CATEGORY 10
+            { id: 101, catId: "CAT10", term: "EBITDA", def: "Earnings Before Interest, Taxes, Depreciation, and Amortization; fundamental PE measure of operating cash profitability.", spec: "Metric: Operating Cash Profit" },
+            { id: 102, catId: "CAT10", term: "Multiple Expansion", def: "Generating value by selling an acquired company at a higher Enterprise Value / EBITDA valuation multiple upon exit than paid at purchase.", spec: "PE Value Driver" },
+            { id: 103, catId: "CAT10", term: "Cost Synergies", def: "Expense reductions realized post-merger by eliminating redundant application licenses, consolidating cloud accounts, and merging engineering/IT support teams.", spec: "Diligence Focus: Ops Savings" },
+            { id: 104, catId: "CAT10", term: "Day 1 Readiness", def: "Critical M&A operational objective guaranteeing uninterrupted business continuity on the first official day of joint ownership.", spec: "M&A Benchmark: Zero Downtime" },
+            { id: 105, catId: "CAT10", term: "100-Day Plan", def: "Post-acquisition execution roadmap prioritizing quick wins, operational stabilization, cloud FinOps savings, and security fixes within the first 100 days.", spec: "Deliverable: Execution Roadmap" },
+            { id: 106, catId: "CAT10", term: "Transition Service Agreement (TSA)", def: "Temporary contract where the seller continues providing operational IT/infrastructure services to the carved-out entity post-close while buyer builds standalone capabilities.", spec: "Risk: Uncapped Escalate Fees" },
+            { id: 107, catId: "CAT10", term: "Key-Person Dependency / Bus Factor", def: "Risk created when critical software knowledge, infrastructure credentials, or architecture code resides with 1-2 key employees.", spec: "Diligence Assessment: High Risk" },
+
+            // CATEGORY 11
+            { id: 108, catId: "CAT11", term: "Retrieval-Augmented Generation (RAG)", def: "Enterprise AI architecture connecting a pre-trained LLM to a private enterprise database/Vector DB to provide context-aware, accurate answers without expensive model retraining.", spec: "Pattern: LLM + Private Enterprise Data" },
+            { id: 109, catId: "CAT11", term: "Vector Database", def: "Specialized database storing mathematical vector embeddings of unstructured text/media to enable sub-second semantic search and RAG applications (e.g., Pinecone, Qdrant).", spec: "Tech: Pinecone, Qdrant, Milvus" },
+            { id: 110, catId: "CAT11", term: "AI Agent", def: "Autonomous software system capable of planning multi-step workflows, calling external APIs, executing tasks in ERP/CRM systems, and making bounded decisions.", spec: "Pattern: Autonomous Workflow Execution" },
+            { id: 111, catId: "CAT11", term: "MLOps", def: "Operational discipline applying DevOps practices to machine learning pipelines, governing model training, deployment, monitoring, versioning, and drift prevention.", spec: "Practice: ML Lifecycle Ops" },
+            { id: 112, catId: "CAT11", term: "Platform Engineering", def: "Internal practice building self-service developer platforms to simplify toolchains, standardize deployment pipelines, and improve engineering velocity.", spec: "Trend: Internal Developer Platform (IDP)" },
+
+            // CATEGORY 12
+            { id: 113, catId: "CAT12", term: "Pyramid Principle", def: "Executive communication standard starting directly with the core recommendation or answer first, followed by supporting key arguments and underlying evidence.", spec: "Communication: Answer First" },
+            { id: 114, catId: "CAT12", term: "SAF Framework", def: "Structured response format for case interviews: Situation (Context & thesis), Assessment (Tools/Data), Findings (Risks/Levers), Recommendation (100-day plan), Business Impact (Quantified EBITDA).", spec: "Interview Structure: S-A-F-R-B" },
+            { id: 115, catId: "CAT12", term: "KTLO vs. Innovation Ratio", def: "R&D budget allocation metric; evaluates percentage of engineering budget spent on Keep the Lights On (maintenance) versus strategic product innovation. Target: > 60-70% Innovation.", spec: "Target: > 60-70% Innovation" },
+            { id: 116, catId: "CAT12", term: "CIM (Confidential Information Memorandum)", def: "Pitch book prepared by investment bankers summarizing a company's financials, product features, and operations for potential buyers.", spec: "M&A Document: Banker Pitch Book" },
+            { id: 117, catId: "CAT12", term: "Investment Committee (IC) Deck", def: "Final executive presentation deck delivered to Private Equity deal partners detailing diligence findings, valuation impacts, and post-close plans before voting on deal closure.", spec: "Deliverable: Final PE Voting Deck" }
+        ];
+
+        // MOCK QUIZ QUESTION BANK
+        const QUIZ_QUESTIONS = [
+            {
+                q: "What is the industry-standard benchmark for Net Revenue Retention (NRR) in Enterprise B2B SaaS?",
+                options: ["> 80%", "> 100%", "> 110%", "> 140%"],
+                ans: 2,
+                exp: "For enterprise B2B SaaS, an NRR > 110% indicates healthy land-and-expand dynamics where existing customer expansion exceeds churn."
+            },
+            {
+                q: "Which open-source license poses a catastrophic IP contamination risk in M&A due to its restrictive copyleft mandate?",
+                options: ["MIT License", "Apache 2.0", "GPL / AGPL", "BSD 3-Clause"],
+                ans: 2,
+                exp: "GPL/AGPL licenses require proprietary code that links to them to open-source its entire codebase, threatening proprietary IP value."
+            },
+            {
+                q: "How is the Rule of 40 metric calculated for SaaS businesses?",
+                options: [
+                    "ARR Growth Rate % + Gross Margin %",
+                    "YoY Revenue Growth Rate % + EBITDA Margin %",
+                    "NRR % - Churn Rate %",
+                    "CAC Payback Period in Months x 3.0"
+                ],
+                ans: 1,
+                exp: "Rule of 40 = YoY Revenue Growth Rate % + EBITDA Margin %. A combined sum >= 40% indicates strong operational health."
+            },
+            {
+                q: "In a PE Carve-Out transaction, what risk arises if the buyer fails to build standalone systems before initial TSA terms expire?",
+                options: [
+                    "Uncapped escalating monthly penalty fees paid to the seller",
+                    "Immediate invalidation of the Stock Purchase Agreement",
+                    "Forfeiture of all customer ARR subscriptions",
+                    "Automatic conversion of SaaS into On-Premise software"
+                ],
+                ans: 0,
+                exp: "Failing to exit a Transition Service Agreement (TSA) on time results in escalating penalty fees charged by the seller."
+            },
+            {
+                q: "What target ratio is typically expected for R&D budget allocation regarding Keep The Lights On (KTLO) vs. Product Innovation?",
+                options: [
+                    "> 80% KTLO / < 20% Innovation",
+                    "> 60-70% Product Innovation / < 30-40% KTLO",
+                    "50% KTLO / 50% Innovation",
+                    "100% Innovation / 0% Maintenance"
+                ],
+                ans: 1,
+                exp: "High-performing product orgs spend > 60-70% of R&D budget on strategic innovation and new feature velocity rather than maintenance drag."
+            },
+            {
+                q: "In the TIME Portfolio Rationalization framework, how should an application with High Business Value but Low Technical Quality be scored?",
+                options: ["Eliminate", "Invest", "Migrate", "Tolerate"],
+                ans: 3,
+                exp: "High Business Value + Low Technical Quality = Tolerate. Keep it operational short-term while planning technical debt remediation."
+            },
+            {
+                q: "What architectural pattern connects a pre-trained LLM to a private enterprise database via a Vector DB without retraining the baseline model?",
+                options: ["Model Fine-Tuning", "Retrieval-Augmented Generation (RAG)", "ETL Batch Pipeline", "Zero-Shot Prompting"],
+                ans: 1,
+                exp: "RAG retrieves context from private vector databases and feeds it into the LLM prompt window, providing grounded domain answers."
+            },
+            {
+                q: "Which DORA metric measures the average duration required for an engineering team to restore service following a production outage?",
+                options: ["Deployment Frequency", "Lead Time for Changes", "Change Failure Rate", "Mean Time to Restore (MTTR)"],
+                ans: 3,
+                exp: "Mean Time to Restore (MTTR) measures how quickly an organization recovers from a production degradation or failure."
+            }
+        ];
+
+        // SAF SCENARIO DATASET
+        const SAF_SCENARIOS = {
+            gpl: {
+                title: "Scenario: GPL License Contamination in Core SaaS Engine",
+                tag: "Critical IP Red Flag",
+                tagClass: "bg-red-950 text-red-300 border-red-800",
+                s: "Target is a $20M ARR SaaS platform providing logistics routing software being acquired by a Private Equity sponsor for a bolt-on expansion.",
+                a: "Performed automated Black Duck open-source code composition analysis (SCA) across the core routing engine repository and audited developer git logs.",
+                f: "Identified GPL v3.0 copyleft library directly linked inside proprietary algorithm code, creating catastrophic risk of IP contamination requiring source code disclosure.",
+                r: "Mandate seller re-write of infected algorithm prior to close, escrow $1.5M of purchase price, and isolate code module into an independent service API during 100-Day Plan.",
+                b: "Protects proprietary moat, defends target's 12x EBITDA valuation multiple, and eliminates post-acquisition litigation liability."
+            },
+            tsa: {
+                title: "Scenario: Carve-Out with 18-Month Legacy ERP Dependency",
+                tag: "Carve-Out M&A Risk",
+                tagClass: "bg-amber-950 text-amber-300 border-amber-800",
+                s: "Carving out an industrial software division ($45M Revenue) from a global conglomerate parent entity.",
+                a: "Audited parent IT shared services infrastructure, ERP database couplings, and active vendor contracts.",
+                f: "Division relies 100% on parent SAP ERP and central data center. TSA period is capped at 12 months with 200% monthly penalty escalators thereafter.",
+                r: "Execute rapid Cloud ERP (Oracle/NetSuite) migration blueprint, stand up isolated cloud network in Month 1-3, and achieve Day 1 operational independence.",
+                b: "Avoids $3.2M in potential TSA penalty fees and unlocks $1.8M post-close IT cost synergies."
+            },
+            ktlo: {
+                title: "Scenario: High Technical Debt Drag (80% KTLO Spend)",
+                tag: "Engineering Velocity Drag",
+                tagClass: "bg-cyan-950 text-cyan-300 border-cyan-800",
+                s: "Growth-stage PE target ($35M ARR) experiencing declining feature release velocity and rising customer churn.",
+                a: "Analyzed JIRA ticket distribution, git commit history, and interviewed engineering leadership on sprint allocations.",
+                f: "80% of R&D capacity is consumed by bug fixes, manual DB scripts, and legacy patch maintenance (KTLO), leaving only 20% for new features.",
+                r: "Invest $2.0M CapEx over 100 days to refactor monolithic core into microservices, introduce CI/CD automation, and re-balance spend to 65% Innovation.",
+                b: "Accelerates roadmap velocity by 2.5x, lowers churn from 14% to 6%, and expands NRR to >115%."
+            },
+            multitenant: {
+                title: "Scenario: 'Fake Multi-Tenancy' Cloud Architecture",
+                tag: "Scalability Red Flag",
+                tagClass: "bg-purple-950 text-purple-300 border-purple-800",
+                s: "B2B SaaS platform claiming modern cloud-native scalability with 100+ enterprise clients.",
+                a: "Audited AWS infrastructure setup, Terraform deployment scripts, and RDS database configurations.",
+                f: "Architecture is 'Fake Multi-Tenancy': each new customer requires manually spinning up a dedicated EC2 instance and isolated SQL database, driving hosting costs through the roof.",
+                r: "Re-architect tenant isolation layer to true multi-tenant shared infrastructure with row-level security during Year 1 post-close.",
+                b: "Reduces cloud hosting cost per customer by 68%, expanding EBITDA margin by 420 bps."
+            }
+        };
+
+        // GLOBAL APP STATE
+        let currentTab = 'flashcards';
+        let currentCardIndex = 0;
+        let isFlipped = false;
+        let filteredCards = [...TERMS_DATA];
+        let cardRatings = JSON.parse(localStorage.getItem('eyp_card_ratings') || '{}');
+
+        window.onload = function() {
+            lucide.createIcons();
+            populateCategoryDropdowns();
+            filterFlashcards();
+            renderGlossary();
+            calcNRR();
+            calcR40();
+            calcLTV();
+            calcRICE();
+            updateProgress();
+
+            // Keyboard shortcut support
+            document.addEventListener('keydown', function(e) {
+                if (currentTab === 'flashcards') {
+                    if (e.code === 'Space') {
+                        e.preventDefault();
+                        toggleCardFlip();
+                    } else if (e.code === 'ArrowRight') {
+                        nextCard();
+                    } else if (e.code === 'ArrowLeft') {
+                        prevCard();
+                    }
+                }
+            });
+        };
+
+        // NAVIGATION LOGIC
+        function switchTab(tabId) {
+            currentTab = tabId;
+            document.querySelectorAll('.tab-view').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-amber-400', 'bg-slate-800', 'border', 'border-slate-700');
+                btn.classList.add('text-slate-400');
+            });
+
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'text-amber-400', 'bg-slate-800', 'border', 'border-slate-700');
+                activeBtn.classList.remove('text-slate-400');
+            }
+
+            // Mobile nav syncing
+            document.querySelectorAll('.mob-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-amber-400/10', 'text-amber-400', 'border', 'border-amber-400/30');
+                btn.classList.add('text-slate-400', 'bg-slate-800');
+            });
+            const mobActiveBtn = document.getElementById(`mob-tab-${tabId}`);
+            if (mobActiveBtn) {
+                mobActiveBtn.classList.add('bg-amber-400/10', 'text-amber-400', 'border', 'border-amber-400/30');
+                mobActiveBtn.classList.remove('text-slate-400', 'bg-slate-800');
+            }
+
+            lucide.createIcons();
+        }
+
+        function populateCategoryDropdowns() {
+            const fcSelect = document.getElementById('flashcardCatSelect');
+            const glSelect = document.getElementById('glossaryCatSelect');
+
+            ALL_CATEGORIES.forEach(cat => {
+                const opt1 = document.createElement('option');
+                opt1.value = cat.id;
+                opt1.textContent = `${cat.name}`;
+                fcSelect.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = cat.id;
+                opt2.textContent = `${cat.name}`;
+                glSelect.appendChild(opt2);
+            });
+        }
+
+        // FLASHCARD ENGINE
+        function filterFlashcards() {
+            const cat = document.getElementById('flashcardCatSelect').value;
+            if (cat === 'ALL') {
+                filteredCards = [...TERMS_DATA];
+            } else {
+                filteredCards = TERMS_DATA.filter(t => t.catId === cat);
+            }
+            currentCardIndex = 0;
+            isFlipped = false;
+            renderCurrentCard();
+        }
+
+        function renderCurrentCard() {
+            if (filteredCards.length === 0) return;
+            const card = filteredCards[currentCardIndex];
+            const catObj = ALL_CATEGORIES.find(c => c.id === card.catId);
+
+            document.getElementById('cardCatTag').textContent = catObj ? catObj.name : card.catId;
+            document.getElementById('cardTerm').textContent = card.term;
+            document.getElementById('cardBackTerm').textContent = card.term;
+            document.getElementById('cardDefinition').textContent = card.def;
+            document.getElementById('flashcardCount').textContent = `Card ${currentCardIndex + 1} of ${filteredCards.length}`;
+
+            // Status badge
+            const rating = cardRatings[card.id] || 'unreviewed';
+            const badgeEl = document.getElementById('cardStatusBadge');
+            if (rating === 'mastered') {
+                badgeEl.textContent = 'Mastered';
+                badgeEl.className = 'text-xs px-2.5 py-1 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-medium';
+            } else if (rating === 'reviewing') {
+                badgeEl.textContent = 'Reviewing';
+                badgeEl.className = 'text-xs px-2.5 py-1 rounded bg-amber-950 text-amber-300 border border-amber-800 font-medium';
+            } else if (rating === 'needs-work') {
+                badgeEl.textContent = 'Hard';
+                badgeEl.className = 'text-xs px-2.5 py-1 rounded bg-red-950 text-red-300 border border-red-800 font-medium';
+            } else {
+                badgeEl.textContent = 'Unreviewed';
+                badgeEl.className = 'text-xs px-2.5 py-1 rounded bg-slate-800 text-slate-400 border border-slate-700 font-medium';
+            }
+
+            // Specs / Details
+            const extraEl = document.getElementById('cardExtraDetails');
+            if (card.spec) {
+                extraEl.classList.remove('hidden');
+                extraEl.innerHTML = `<span class="font-bold text-amber-400">Key Spec / Benchmark:</span> ${card.spec}`;
+                document.getElementById('cardFormulaHint').classList.remove('hidden');
+                document.getElementById('cardFormulaHint').textContent = card.spec;
+            } else {
+                extraEl.classList.add('hidden');
+                document.getElementById('cardFormulaHint').classList.add('hidden');
+            }
+
+            // Reset Flip State
+            const fcEl = document.getElementById('flashcard');
+            if (isFlipped) {
+                fcEl.classList.add('rotate-y-180');
+            } else {
+                fcEl.classList.remove('rotate-y-180');
+            }
+        }
+
+        function toggleCardFlip() {
+            isFlipped = !isFlipped;
+            const fcEl = document.getElementById('flashcard');
+            if (isFlipped) {
+                fcEl.classList.add('rotate-y-180');
+            } else {
+                fcEl.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextCard() {
+            if (filteredCards.length === 0) return;
+            isFlipped = false;
+            currentCardIndex = (currentCardIndex + 1) % filteredCards.length;
+            renderCurrentCard();
+        }
+
+        function prevCard() {
+            if (filteredCards.length === 0) return;
+            isFlipped = false;
+            currentCardIndex = (currentCardIndex - 1 + filteredCards.length) % filteredCards.length;
+            renderCurrentCard();
+        }
+
+        function shuffleFlashcards() {
+            for (let i = filteredCards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [filteredCards[i], filteredCards[j]] = [filteredCards[j], filteredCards[i]];
+            }
+            currentCardIndex = 0;
+            isFlipped = false;
+            renderCurrentCard();
+        }
+
+        function rateCard(status) {
+            if (filteredCards.length === 0) return;
+            const card = filteredCards[currentCardIndex];
+            cardRatings[card.id] = status;
+            localStorage.setItem('eyp_card_ratings', JSON.stringify(cardRatings));
+            updateProgress();
+            nextCard();
+        }
+
+        function resetCardStats() {
+            cardRatings = {};
+            localStorage.removeItem('eyp_card_ratings');
+            updateProgress();
+            renderCurrentCard();
+        }
+
+        function updateProgress() {
+            const total = TERMS_DATA.length;
+            const mastered = Object.values(cardRatings).filter(r => r === 'mastered').length;
+            const pct = Math.round((mastered / total) * 100);
+
+            document.getElementById('topProgressText').textContent = `${mastered} / ${total} (${pct}%)`;
+            document.getElementById('topProgressBar').style.width = `${pct}%`;
+        }
+
+        // GLOSSARY ENGINE
+        function renderGlossary() {
+            const query = document.getElementById('glossarySearch').value.toLowerCase();
+            const cat = document.getElementById('glossaryCatSelect').value;
+            const container = document.getElementById('glossaryGrid');
+
+            const filtered = TERMS_DATA.filter(item => {
+                const matchesCat = (cat === 'ALL' || item.catId === cat);
+                const matchesQuery = item.term.toLowerCase().includes(query) || item.def.toLowerCase().includes(query) || (item.spec && item.spec.toLowerCase().includes(query));
+                return matchesCat && matchesQuery;
+            });
+
+            document.getElementById('glossaryCount').textContent = filtered.length;
+            container.innerHTML = '';
+
+            filtered.forEach(item => {
+                const catObj = ALL_CATEGORIES.find(c => c.id === item.catId);
+                const card = document.createElement('div');
+                card.className = "bg-slate-900 hover:bg-slate-800/80 p-5 rounded-xl border border-slate-800 hover:border-amber-400/50 transition cursor-pointer flex flex-col justify-between group";
+                card.onclick = () => copyText(`${item.term}: ${item.def}`);
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-2">
+                            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-400/10 text-amber-400 border border-amber-400/20">${catObj ? catObj.name : item.catId}</span>
+                            <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-500 group-hover:text-amber-400 transition"></i>
+                        </div>
+                        <h4 class="font-bold text-white text-base mb-2 group-hover:text-amber-300 transition">${item.term}</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">${item.def}</p>
+                    </div>
+                    ${item.spec ? `<div class="mt-3 pt-3 border-t border-slate-800/80 text-[11px] font-mono text-cyan-400">${item.spec}</div>` : ''}
+                `;
+                container.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        function copyText(text) {
+            const temp = document.createElement('textarea');
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            
+            // Notification toast
+            const toast = document.createElement('div');
+            toast.className = 'fixed bottom-5 right-5 z-50 bg-amber-400 text-slate-950 px-4 py-2 rounded-lg font-bold text-xs shadow-xl animate-bounce';
+            toast.textContent = 'Copied to clipboard!';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 2000);
+        }
+
+        // SAAS CALCULATOR LOGIC
+        function calcNRR() {
+            const start = parseFloat(document.getElementById('nrrStart').value) || 0;
+            const exp = parseFloat(document.getElementById('nrrExpansion').value) || 0;
+            const cont = parseFloat(document.getElementById('nrrContraction').value) || 0;
+            const churn = parseFloat(document.getElementById('nrrChurn').value) || 0;
+
+            if (start <= 0) return;
+            const nrr = ((start + exp - cont - churn) / start) * 100;
+            const nrrValEl = document.getElementById('nrrVal');
+            const badgeEl = document.getElementById('nrrBadge');
+
+            nrrValEl.textContent = `${nrr.toFixed(1)}%`;
+
+            if (nrr >= 110) {
+                badgeEl.textContent = 'Healthy Enterprise (>110%)';
+                badgeEl.className = 'text-xs font-semibold px-3 py-1.5 rounded bg-emerald-900/40 text-emerald-300 border border-emerald-700/50';
+                nrrValEl.className = 'text-2xl font-bold font-mono text-emerald-400';
+            } else if (nrr >= 100) {
+                badgeEl.textContent = 'Moderate Retention (100-110%)';
+                badgeEl.className = 'text-xs font-semibold px-3 py-1.5 rounded bg-amber-900/40 text-amber-300 border border-amber-700/50';
+                nrrValEl.className = 'text-2xl font-bold font-mono text-amber-400';
+            } else {
+                badgeEl.textContent = 'High Net Churn Risk (<100%)';
+                badgeEl.className = 'text-xs font-semibold px-3 py-1.5 rounded bg-red-900/40 text-red-300 border border-red-700/50';
+                nrrValEl.className = 'text-2xl font-bold font-mono text-red-400';
+            }
+        }
+
+        function calcR40() {
+            const growth = parseFloat(document.getElementById('r40Growth').value) || 0;
+            const ebitda = parseFloat(document.getElementById('r40Ebitda').value) || 0;
+            const score = growth + ebitda;
+
+            const valEl = document.getElementById('r40Val');
+            const badgeEl = document.getElementById('r40Badge');
+
+            valEl.textContent = `${score.toFixed(1)}%`;
+
+            if (score >= 40) {
+                badgeEl.textContent = 'Passes Rule of 40';
+                badgeEl.className = 'text-xs font-semibold px-3 py-1.5 rounded bg-emerald-900/40 text-emerald-300 border border-emerald-700/50';
+                valEl.className = 'text-2xl font-bold font-mono text-emerald-400';
+            } else {
+                badgeEl.textContent = 'Fails Rule of 40 (<40%)';
+                badgeEl.className = 'text-xs font-semibold px-3 py-1.5 rounded bg-red-900/40 text-red-300 border border-red-700/50';
+                valEl.className = 'text-2xl font-bold font-mono text-red-400';
+            }
+        }
+
+        function calcLTV() {
+            const cac = parseFloat(document.getElementById('ltvCac').value) || 1;
+            const ltv = parseFloat(document.getElementById('ltvLtv').value) || 0;
+            const arpu = parseFloat(document.getElementById('ltvArpu').value) || 1;
+
+            const ratio = ltv / cac;
+            const payback = cac / arpu;
+
+            const ltvValEl = document.getElementById('ltvVal');
+            const paybackValEl = document.getElementById('paybackVal');
+
+            ltvValEl.textContent = `${ratio.toFixed(1)}x`;
+            paybackValEl.textContent = `${payback.toFixed(1)} Mos`;
+
+            if (ratio >= 3.0) {
+                ltvValEl.className = 'text-xl font-bold font-mono text-emerald-400';
+            } else {
+                ltvValEl.className = 'text-xl font-bold font-mono text-red-400';
+            }
+
+            if (payback <= 12) {
+                paybackValEl.className = 'text-xl font-bold font-mono text-emerald-400';
+            } else {
+                paybackValEl.className = 'text-xl font-bold font-mono text-amber-400';
+            }
+        }
+
+        function calcRICE() {
+            const r = parseFloat(document.getElementById('riceR').value) || 0;
+            const i = parseFloat(document.getElementById('riceI').value) || 0;
+            const c = (parseFloat(document.getElementById('riceC').value) || 0) / 100;
+            const e = parseFloat(document.getElementById('riceE').value) || 1;
+
+            const score = (r * i * c) / e;
+            document.getElementById('riceVal').textContent = Math.round(score).toLocaleString();
+        }
+
+        // FRAMEWORK TAB TOGGLE
+        function showFwTab(fwId) {
+            document.querySelectorAll('.fw-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`fw-content-${fwId}`).classList.remove('hidden');
+
+            document.querySelectorAll('[id^="fw-tab-"]').forEach(btn => {
+                btn.className = 'px-4 py-2 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 border border-slate-700';
+            });
+            document.getElementById(`fw-tab-${fwId}`).className = 'px-4 py-2 rounded-lg text-xs font-semibold bg-amber-400/10 text-amber-400 border border-amber-400/30';
+        }
+
+        // SAF SCENARIO LOADER
+        function loadSafScenario(key) {
+            const scen = SAF_SCENARIOS[key];
+            if (!scen) return;
+
+            document.getElementById('safScenarioTitle').textContent = scen.title;
+            const tagEl = document.getElementById('safScenarioTag');
+            tagEl.textContent = scen.tag;
+            tagEl.className = `text-xs px-2.5 py-1 rounded border font-medium ${scen.tagClass}`;
+
+            document.getElementById('safS').textContent = scen.s;
+            document.getElementById('safA').textContent = scen.a;
+            document.getElementById('safF').textContent = scen.f;
+            document.getElementById('safR').textContent = scen.r;
+            document.getElementById('safB').textContent = scen.b;
+
+            document.querySelectorAll('.saf-scen-btn').forEach(btn => btn.classList.remove('border-amber-400', 'bg-slate-800'));
+            document.getElementById(`saf-btn-${key}`).classList.add('border-amber-400', 'bg-slate-800');
+        }
+
+        // MOCK INTERVIEW QUIZ ENGINE
+        let quizQuestions = [];
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        function startQuiz() {
+            quizQuestions = [...QUIZ_QUESTIONS].sort(() => 0.5 - Math.random()).slice(0, 5);
+            currentQuizIndex = 0;
+            quizScore = 0;
+            renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+            const container = document.getElementById('quizContainer');
+            if (currentQuizIndex >= quizQuestions.length) {
+                // Quiz Complete Screen
+                const pct = Math.round((quizScore / quizQuestions.length) * 100);
+                container.innerHTML = `
+                    <div class="text-center py-10 space-y-4">
+                        <div class="inline-flex p-4 rounded-full bg-amber-400/10 border border-amber-400/30 text-amber-400 text-3xl font-mono font-bold">
+                            ${quizScore} / ${quizQuestions.length}
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Drill Complete! (${pct}%)</h3>
+                        <p class="text-xs text-slate-400 max-w-sm mx-auto">
+                            ${pct >= 80 ? 'Exceptional recall! You are fully prepped for technical PE case questions.' : 'Good effort! Review hard cards in the Flashcard section to solidify definitions.'}
+                        </p>
+                        <button onclick="startQuiz()" class="mt-4 px-6 py-2.5 bg-amber-400 text-slate-950 font-bold rounded-lg text-xs uppercase tracking-wider">
+                            Try Another Drill
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            const q = quizQuestions[currentQuizIndex];
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="flex items-center justify-between text-xs text-slate-400 border-b border-slate-800 pb-3">
+                        <span>Question ${currentQuizIndex + 1} of ${quizQuestions.length}</span>
+                        <span class="font-mono text-amber-400">Score: ${quizScore}</span>
+                    </div>
+
+                    <h3 class="text-base sm:text-lg font-bold text-white leading-snug">${q.q}</h3>
+
+                    <div class="space-y-2.5" id="quizOptions">
+                        ${q.options.map((opt, i) => `
+                            <button onclick="checkQuizAnswer(${i})" class="w-full text-left p-3.5 rounded-xl bg-slate-950 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 text-xs sm:text-sm text-slate-200 transition flex items-center justify-between group">
+                                <span>${opt}</span>
+                                <i data-lucide="circle" class="w-4 h-4 text-slate-600 group-hover:text-amber-400"></i>
+                            </button>
+                        `).join('')}
+                    </div>
+
+                    <div id="quizFeedback" class="hidden p-4 rounded-xl text-xs space-y-1"></div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function checkQuizAnswer(selectedIdx) {
+            const q = quizQuestions[currentQuizIndex];
+            const feedbackEl = document.getElementById('quizFeedback');
+            const optionsContainer = document.getElementById('quizOptions');
+
+            optionsContainer.querySelectorAll('button').forEach((btn, idx) => {
+                btn.disabled = true;
+                if (idx === q.ans) {
+                    btn.className = "w-full text-left p-3.5 rounded-xl bg-emerald-950/60 border border-emerald-700 text-emerald-200 text-xs sm:text-sm font-semibold flex justify-between items-center";
+                } else if (idx === selectedIdx) {
+                    btn.className = "w-full text-left p-3.5 rounded-xl bg-red-950/60 border border-red-700 text-red-200 text-xs sm:text-sm flex justify-between items-center";
+                }
+            });
+
+            feedbackEl.classList.remove('hidden');
+            if (selectedIdx === q.ans) {
+                quizScore++;
+                feedbackEl.className = "p-4 rounded-xl bg-emerald-950/40 border border-emerald-800 text-emerald-300 text-xs space-y-1";
+                feedbackEl.innerHTML = `<strong>Correct!</strong> ${q.exp}`;
+            } else {
+                feedbackEl.className = "p-4 rounded-xl bg-red-950/40 border border-red-800 text-red-300 text-xs space-y-1";
+                feedbackEl.innerHTML = `<strong>Incorrect.</strong> ${q.exp}`;
+            }
+
+            const nextBtn = document.createElement('button');
+            nextBtn.className = "mt-4 w-full py-2.5 bg-amber-400 text-slate-950 font-bold rounded-lg text-xs uppercase tracking-wider";
+            nextBtn.textContent = currentQuizIndex + 1 < quizQuestions.length ? "Next Question →" : "Finish Drill";
+            nextBtn.onclick = () => {
+                currentQuizIndex++;
+                renderQuizQuestion();
+            };
+            feedbackEl.appendChild(nextBtn);
+        }
+    </script>
+</body>
+</html>
