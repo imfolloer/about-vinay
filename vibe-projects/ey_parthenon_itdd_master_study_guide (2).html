@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EY-Parthenon SSG AM - ITDD Master Study Guide & Playbook</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        ey: {
+                            yellow: '#FFE600',
+                            dark: '#121218',
+                            panel: '#1E1E2A',
+                            card: '#272738',
+                            border: '#37374F',
+                            accent: '#3B82F6',
+                            purple: '#8B5CF6',
+                            emerald: '#10B981',
+                            rose: '#F43F5E',
+                            amber: '#F59E0B'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0D0D12;
+            color: #E2E8F0;
+            font-family: 'Inter', sans-serif;
+        }
+        .glass-panel {
+            background: rgba(30, 30, 42, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(39, 39, 56, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.2s ease-in-out;
+        }
+        .glass-card:hover {
+            border-color: rgba(255, 230, 0, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(18, 18, 24, 0.5);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 230, 0, 0.3);
+            border-radius: 3px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 230, 0, 0.6);
+        }
+        .flip-card {
+            perspective: 1000px;
+        }
+        .flip-card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
+            backface-visibility: hidden;
+        }
+        .flip-card-back {
+            transform: rotateY(180deg);
+        }
+        .modal-blur {
+            backdrop-filter: blur(16px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between custom-scrollbar bg-[#0D0D12] text-slate-200">
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-ey-border bg-[#121218]/90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- EY-Parthenon Brand -->
+                <div class="flex items-center gap-3">
+                    <div class="bg-ey-yellow text-black font-extrabold px-3 py-1 rounded text-lg tracking-tighter flex items-center gap-1.5 shadow-lg shadow-ey-yellow/10">
+                        <span>EY</span>
+                        <span class="text-xs font-semibold px-1.5 py-0.5 bg-black text-white rounded">Parthenon</span>
+                    </div>
+                    <div>
+                        <div class="text-xs font-mono text-ey-yellow font-bold tracking-wider uppercase">Software Strategy Group (SSG)</div>
+                        <div class="text-sm font-bold text-white tracking-tight">Associate Manager (GDS) — Master Interview Prep</div>
+                    </div>
+                </div>
+
+                <!-- Global Search & Req ID -->
+                <div class="flex items-center gap-3">
+                    <div class="relative hidden sm:block w-64 md:w-80">
+                        <input type="text" id="global-search" onkeyup="filterContent()" placeholder="Search terms, red flags, deal stages, metrics..." 
+                            class="w-full bg-slate-900/90 text-xs text-white placeholder-slate-400 rounded-lg pl-9 pr-3 py-2 border border-ey-border focus:outline-none focus:border-ey-yellow transition-colors">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+                    </div>
+                    <span class="bg-ey-yellow/10 text-ey-yellow text-[11px] font-mono px-2.5 py-1 rounded border border-ey-yellow/30 font-semibold hidden md:inline-block">
+                        Req ID: 1723744
+                    </span>
+                </div>
+            </div>
+
+            <!-- Tab Navigation Bar -->
+            <nav class="flex space-x-1 mt-1 overflow-x-auto pb-2 no-scrollbar border-t border-ey-border/50 pt-2 text-xs font-medium">
+                <button onclick="switchTab('hiringmanager')" id="tab-hiringmanager" class="tab-btn px-3 py-2 rounded-lg flex items-center gap-2 bg-ey-yellow text-black font-bold transition-all whitespace-nowrap shadow-md shadow-ey-yellow/20">
+                    <i class="fa-solid fa-user-tie"></i> Hiring Manager Playbook
+                </button>
+                <button onclick="switchTab('dealprocess')" id="tab-dealprocess" class="tab-btn px-3 py-2 rounded-lg flex items-center gap-2 bg-slate-800 text-slate-300 hover:text-white transition-all whitespace-nowrap">
+                    <i class="fa-solid fa-briefcase"></i> Deal Lifecycle & Deliverables
+                </button>
+                <button onclick="switchTab('processmap')" id="tab-processmap" class="tab-btn px-3 py-2 rounded-lg flex items-center gap-2 bg-slate-800 text-slate-300 hover:text-white transition-all whitespace-nowrap">
+                    <i class="fa-solid fa-sitemap"></i> Interconnection Map
+                </button>
+                <button onclick="switchTab('conceptbank')" id="tab-conceptbank" class="tab-btn px-3 py-2 rounded-lg flex items-center gap-2 bg-slate-800 text-slate-300 hover:text-white transition-all whitespace-nowrap">
+                    <i class="fa-solid fa-book-bookmark"></i> Concept Bank (30+ Deep Dives)
+                </button>
+                <button onclick="switchTab('modules')" id="tab-modules" class="tab-btn px-3 py-2 rounded-lg flex items-center gap-2 bg-slate-800 text-slate-300 hover:text-white transition-all whitespace-nowrap">
+                    <i class="fa-solid fa-cubes"></i> 12 Modules (Interactive Notes)
+                </button>
+                <button onclick="switchTab('matrix')" id="tab-matrix" class="tab-btn px-3 py-2 rounded-lg flex items-center gap-2 bg-slate-800 text-slate-300 hover:text-white transition-all whitespace-nowrap">
+                    <i class="fa-solid fa-chart-pie"></i> Diagnostic & Health Calculator
+                </button>
+                <button onclick="switchTab('flashcards')" id="tab-flashcards" class="tab-btn px-3 py-2 rounded-lg flex items-center gap-2 bg-slate-800 text-slate-300 hover:text-white transition-all whitespace-nowrap">
+                    <i class="fa-solid fa-brain"></i> Flashcards & Exam
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+
+        <!-- ==================================================================== -->
+        <!-- TAB 1: HIRING MANAGER'S PLAYBOOK & INSIDER GUIDE -->
+        <!-- ==================================================================== -->
+        <section id="hiringmanager" class="tab-content space-y-8">
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-ey-yellow relative overflow-hidden">
+                <div class="relative z-10">
+                    <div class="flex items-center gap-2 text-ey-yellow font-mono text-xs uppercase font-bold tracking-wider mb-1">
+                        <i class="fa-solid fa-user-shield"></i> Elite Hiring Manager's Insider Perspective
+                    </div>
+                    <h1 class="text-2xl md:text-3xl font-extrabold text-white">EY-Parthenon SSG Associate Manager — Playbook & Evaluation Blueprint</h1>
+                    <p class="text-slate-300 text-sm mt-2 max-w-5xl">
+                        Synthesized specifically for the <strong>Bengaluru GDS SSG Associate Manager</strong> role (Req ID: 1723744). This tab breaks down what hiring managers actually evaluate during interviews: delivery ownership, bridge from technology to EBITDA, regional case team engagement, deliverable quality, and deal-critical risk identification.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Core Role DNA & Expectations -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-panel p-5 rounded-xl border border-ey-border space-y-3 searchable-item">
+                    <div class="flex items-center gap-2 text-blue-400 font-bold text-sm">
+                        <i class="fa-solid fa-handshake"></i> Regional Case Team & Partner Dynamics
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        As a GDS AM, you act as the primary operational engine for regional Case Team Leaders (CTLs) and Partners across the US/Europe. You must demonstrate <strong>high ownership</strong>, running daily workstreams, anticipating client questions, and translating raw VDR data into polished executive slides.
+                    </p>
+                </div>
+                <div class="glass-panel p-5 rounded-xl border border-ey-border space-y-3 searchable-item">
+                    <div class="flex items-center gap-2 text-emerald-400 font-bold text-sm">
+                        <i class="fa-solid fa-people-roof"></i> Quality Control & Mentorship
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Hiring managers need leaders who can <strong>mentor 2–4 junior analysts/senior analysts</strong>, enforcing strict QA standards on Excel financial models and PPT decks, ensuring zero errors reach the CTL or PE Investment Committee.
+                    </p>
+                </div>
+                <div class="glass-panel p-5 rounded-xl border border-ey-border space-y-3 searchable-item">
+                    <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
+                        <i class="fa-solid fa-scale-balanced"></i> Tech-to-Commercial Translation
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Pure engineering knowledge gets candidates rejected. The winning AM candidate seamlessly connects <strong>technical debt, microservices migration, or cloud overspend to EBITDA, valuation multiples, and purchase price adjustments</strong>.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 5 Critical Interview Evaluation Pillars -->
+            <div class="glass-panel p-6 rounded-xl border border-ey-border space-y-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-list-check text-ey-yellow"></i> The 5 Pillars Hiring Managers Grade You On
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4 text-xs">
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
+                        <span class="text-ey-yellow font-mono font-bold text-[11px]">PILLAR 1 (30%)</span>
+                        <h4 class="font-bold text-white text-sm">ITDD & Commercial Acumen</h4>
+                        <p class="text-slate-400">Ability to analyze software targets in the context of PE deal thesis (Growth, Buy-and-Build, Carve-out, Cost-cut).</p>
+                    </div>
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
+                        <span class="text-blue-400 font-mono font-bold text-[11px]">PILLAR 2 (25%)</span>
+                        <h4 class="font-bold text-white text-sm">SDLC & Architecture Depth</h4>
+                        <p class="text-slate-400">Evaluating R&D org efficiency, release velocity, DORA metrics, monolith vs. microservices, and hosting maturity.</p>
+                    </div>
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
+                        <span class="text-purple-400 font-mono font-bold text-[11px]">PILLAR 3 (20%)</span>
+                        <h4 class="font-bold text-white text-sm">Product Strategy & SaaS Metrics</h4>
+                        <p class="text-slate-400">Auditing product roadmap feasibility, PMF, ARR, NRR, Churn, LTV/CAC, and Rule of 40 benchmarks.</p>
+                    </div>
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
+                        <span class="text-emerald-400 font-mono font-bold text-[11px]">PILLAR 4 (15%)</span>
+                        <h4 class="font-bold text-white text-sm">Structure & Communication</h4>
+                        <p class="text-slate-400">Top-down executive synthesis (Pyramid Principle), clear verbal delivery, and C-suite report generation.</p>
+                    </div>
+                    <div class="bg-slate-900/90 p-4 rounded-xl border border-slate-800 space-y-2">
+                        <span class="text-amber-400 font-mono font-bold text-[11px]">PILLAR 5 (10%)</span>
+                        <h4 class="font-bold text-white text-sm">Project & Team Leadership</h4>
+                        <p class="text-slate-400">Managing tight 2–3 week deal timelines, multi-tasking across engagements, and coaching GDS analysts.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hiring Manager Interview Trap Questions & Model Responses -->
+            <div class="glass-panel p-6 rounded-xl border border-ey-border space-y-4 searchable-item">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-headset text-ey-yellow"></i> Hiring Manager Interview Traps & Elite Response Frameworks
+                </h3>
+
+                <div class="space-y-4 text-xs">
+                    <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                        <div class="text-ey-yellow font-bold font-mono text-sm">
+                            Trap Q1: "If you discover that the target company's AWS cloud costs are 40% higher than industry benchmarks, what is your immediate recommendation?"
+                        </div>
+                        <div class="text-slate-300 space-y-1">
+                            <span class="text-red-400 font-bold">Candidate Mistake:</span> Recommending an immediate complete architectural rewrite or migration to another cloud provider.
+                            <br>
+                            <span class="text-emerald-400 font-bold">Elite AM Response:</span> "First, I wouldn't recommend a costly cloud migration. I would structure this through a 2-phase value creation lens:
+                            <br>1. <strong>Quick Wins (0-90 Days):</strong> Implement FinOps hygiene—right-size overprovisioned EC2 instances, delete unattached EBS volumes, shift non-prod workloads to spot instances, and buy 1-3 year Savings Plans for baseline traffic. This typically cuts cloud spend by 15-25% almost immediately, lifting EBITDA dollar-for-dollar.
+                            <br>2. <strong>Medium-Term (Months 3-12):</strong> Evaluate architectural drivers (e.g., inefficient database queries, lack of multi-tenancy) and prioritize refactoring only if the ROI justifies the engineering CapEx."
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                        <div class="text-ey-yellow font-bold font-mono text-sm">
+                            Trap Q2: "How do you manage an engagement where the regional Case Team Leader (CTL) asks for a full ITDD deliverable in 7 days with incomplete data room access?"
+                        </div>
+                        <div class="text-slate-300 space-y-1">
+                            <span class="text-red-400 font-bold">Candidate Mistake:</span> Complaining about lack of data or promising impossible complete findings.
+                            <br>
+                            <span class="text-emerald-400 font-bold">Elite AM Response:</span> "I take proactive ownership of both client expectations and GDS execution:
+                            <br>1. <strong>Hypothesis-Driven Prioritization:</strong> Focus analysis strictly on the 3 critical deal-breakers tied to the PE thesis (e.g., Architecture Scalability, Key-Person Risk, IP Compliance) rather than deep-diving into minor operational areas.
+                            <br>2. <strong>Transparent Risk Flagging & Assumptions:</strong> Clearly document key assumptions in the report, highlight data gaps in the Executive Summary, and propose targeted management interview questions to plug high-priority gaps.
+                            <br>3. <strong>Resource Mobilization:</strong> Re-allocate GDS analyst bandwidth to run automated code/architecture scans while I synthesize high-level strategic findings."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- TAB 2: OVERALL DEAL PROCESS STAGES & FINAL REPORT DELIVERABLES -->
+        <!-- ==================================================================== -->
+        <section id="dealprocess" class="tab-content hidden space-y-8">
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-emerald-500">
+                <div class="flex items-center gap-2 text-emerald-400 font-mono text-xs uppercase font-bold tracking-wider mb-1">
+                    <i class="fa-solid fa-briefcase"></i> M&A Deal Lifecycle & Deliverables Masterclass
+                </div>
+                <h2 class="text-2xl font-bold text-white">Stage-by-Stage Deal Workflow & Final ITDD Deliverable Elements</h2>
+                <p class="text-slate-300 text-xs mt-1">
+                    Understand exactly how a Private Equity software deal progresses from initial teaser to exit, what deliverables an Associate Manager is responsible for creating at each stage, and the full anatomy of the C-suite final report.
+                </p>
+            </div>
+
+            <!-- Stage-by-Stage Deal Lifecycle Grid -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-arrows-spin text-ey-yellow"></i> The 6 PE Deal Stages & GDS Associate Manager Role
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <!-- Stage 1 -->
+                    <div class="glass-panel p-4 rounded-xl border-t-2 border-blue-500 space-y-2 searchable-item">
+                        <div class="flex items-center justify-between font-mono">
+                            <span class="text-blue-400 font-bold">STAGE 1</span>
+                            <span class="text-slate-400">Pre-LOI / Sourcing</span>
+                        </div>
+                        <h4 class="font-bold text-white text-sm">Preliminary Tech Screening</h4>
+                        <p class="text-slate-300 leading-relaxed">
+                            Analyze Confidential Information Memorandum (CIM) & Teaser. Draft initial Request for Information (RFI) index. Formulate preliminary technology hypotheses aligned to PE thesis.
+                        </p>
+                        <div class="pt-2 border-t border-slate-800 text-[11px] font-mono text-ey-yellow">
+                            <strong>Key Deliverable:</strong> Tech DD RFI & Initial Risk Heatmap.
+                        </div>
+                    </div>
+
+                    <!-- Stage 2 -->
+                    <div class="glass-panel p-4 rounded-xl border-t-2 border-purple-500 space-y-2 searchable-item">
+                        <div class="flex items-center justify-between font-mono">
+                            <span class="text-purple-400 font-bold">STAGE 2</span>
+                            <span class="text-slate-400">Phase 1 DD (Wk 1-2)</span>
+                        </div>
+                        <h4 class="font-bold text-white text-sm">Confirmatory VDR Audit</h4>
+                        <p class="text-slate-300 leading-relaxed">
+                            Review architecture diagrams, SOC2 reports, AWS bills, Git commit logs. Conduct CTO/CPO interviews. Identify deal-breaker red flags (e.g., GPL licenses, key person risk).
+                        </p>
+                        <div class="pt-2 border-t border-slate-800 text-[11px] font-mono text-ey-yellow">
+                            <strong>Key Deliverable:</strong> Red Flag Memorandum & QA Matrix.
+                        </div>
+                    </div>
+
+                    <!-- Stage 3 -->
+                    <div class="glass-panel p-4 rounded-xl border-t-2 border-emerald-500 space-y-2 searchable-item">
+                        <div class="flex items-center justify-between font-mono">
+                            <span class="text-emerald-400 font-bold">STAGE 3</span>
+                            <span class="text-slate-400">Phase 2 DD (Wk 2-3)</span>
+                        </div>
+                        <h4 class="font-bold text-white text-sm">Deep-Dive Synthesis & Modeling</h4>
+                        <p class="text-slate-300 leading-relaxed">
+                            Quantify technical debt remediation costs, FinOps cloud savings, and R&D headcount needs. Finalize Executive IC presentation deck with Pyramid Principle synthesis.
+                        </p>
+                        <div class="pt-2 border-t border-slate-800 text-[11px] font-mono text-ey-yellow">
+                            <strong>Key Deliverable:</strong> Final ITDD Master Executive Report.
+                        </div>
+                    </div>
+
+                    <!-- Stage 4 -->
+                    <div class="glass-panel p-4 rounded-xl border-t-2 border-amber-500 space-y-2 searchable-item">
+                        <div class="flex items-center justify-between font-mono">
+                            <span class="text-amber-400 font-bold">STAGE 4</span>
+                            <span class="text-slate-400">Signing / SPA Phase</span>
+                        </div>
+                        <h4 class="font-bold text-white text-sm">SPA Support & TSA Structuring</h4>
+                        <p class="text-slate-300 leading-relaxed">
+                            Assist legal team with Technology Representations & Warranties, IP indemnities, escrow terms, and drafting Transition Service Agreement (TSA) schedules for carve-outs.
+                        </p>
+                        <div class="pt-2 border-t border-slate-800 text-[11px] font-mono text-ey-yellow">
+                            <strong>Key Deliverable:</strong> TSA Schedule & SPA Tech Reps Matrix.
+                        </div>
+                    </div>
+
+                    <!-- Stage 5 -->
+                    <div class="glass-panel p-4 rounded-xl border-t-2 border-rose-500 space-y-2 searchable-item">
+                        <div class="flex items-center justify-between font-mono">
+                            <span class="text-rose-400 font-bold">STAGE 5</span>
+                            <span class="text-slate-400">Day 1 & First 100 Days</span>
+                        </div>
+                        <h4 class="font-bold text-white text-sm">100-Day Plan Execution</h4>
+                        <p class="text-slate-300 leading-relaxed">
+                            Ensure Day 1 business continuity (payroll, SSO, credentials). Execute quick-win FinOps reductions, security MFA rollout, and initiate CI/CD pipeline automation.
+                        </p>
+                        <div class="pt-2 border-t border-slate-800 text-[11px] font-mono text-ey-yellow">
+                            <strong>Key Deliverable:</strong> 100-Day Value Creation Roadmap.
+                        </div>
+                    </div>
+
+                    <!-- Stage 6 -->
+                    <div class="glass-panel p-4 rounded-xl border-t-2 border-cyan-500 space-y-2 searchable-item">
+                        <div class="flex items-center justify-between font-mono">
+                            <span class="text-cyan-400 font-bold">STAGE 6</span>
+                            <span class="text-slate-400">Holding & Exit (Y1-5)</span>
+                        </div>
+                        <h4 class="font-bold text-white text-sm">Value Creation & Exit Readiness</h4>
+                        <p class="text-slate-300 leading-relaxed">
+                            Drive post-merger integration (PMI) cost/revenue synergies, platform modernization, AI feature adoption, and conduct Sell-Side VDR preparation for PE exit.
+                        </p>
+                        <div class="pt-2 border-t border-slate-800 text-[11px] font-mono text-ey-yellow">
+                            <strong>Key Deliverable:</strong> Synergy Realization & Exit VDR Deck.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All 9 Elements of the Final ITDD Master Report -->
+            <div class="glass-panel p-6 rounded-xl border border-ey-border space-y-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-file-powerpoint text-ey-yellow"></i> Anatomy of the Final EY-P ITDD C-Suite Master Report (9 Essential Sections)
+                </h3>
+                <p class="text-slate-300 text-xs">
+                    Every final deliverable presented to Private Equity Investment Committees and CTOs follows this rigorous 9-part structure:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                        <span class="text-ey-yellow font-mono font-bold">SECTION 1</span>
+                        <h4 class="font-bold text-white">Executive Summary & Investment Thesis</h4>
+                        <p class="text-slate-400">1-page slide with Overall Rating (Green/Yellow/Red), Top 3 Valued-at-Risk Items, and Top 3 Value Levers using Pyramid Principle.</p>
+                    </div>
+
+                    <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                        <span class="text-blue-400 font-mono font-bold">SECTION 2</span>
+                        <h4 class="font-bold text-white">Product Strategy & PMF Assessment</h4>
+                        <p class="text-slate-400">Feature completeness, user churn, NRR metrics, competitive moat, and feasibility audit of 3-year product roadmap.</p>
+                    </div>
+
+                    <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                        <span class="text-purple-400 font-mono font-bold">SECTION 3</span>
+                        <h4 class="font-bold text-white">Architecture & Technology Stack</h4>
+                        <p class="text-slate-400">Monolith vs Microservices assessment, multi-tenancy model, API design, single points of failure (SPOF), and tech stack lifecycle.</p>
+                    </div>
+
+                    <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                        <span class="text-emerald-400 font-mono font-bold">SECTION 4</span>
+                        <h4 class="font-bold text-white">R&D & SDLC Organizational Efficiency</h4>
+                        <p class="text-slate-400">Headcount distribution (KTLO vs Innovation), DORA metrics, commit frequency, agile maturity, and key-person retention risk.</p>
+                    </div>
+
+                    <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                        <span class="text-amber-400 font-mono font-bold">SECTION 5</span>
+                        <h4 class="font-bold text-white">Cloud, Infrastructure & FinOps</h4>
+                        <p class="text-slate-400">AWS/Azure cost breakdown per customer tenant, unit economics, over-provisioned resources, and quick-win FinOps savings potential.</p>
+                    </div>
+
+                    <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                        <span class="text-rose-400 font-mono font-bold">SECTION 6</span>
+                        <h4 class="font-bold text-white">Cybersecurity & IP Compliance</h4>
+                        <p class="text-slate-400">SOC2 Type II, ISO 27001 audit findings, penetration test results, OWASP vulnerabilities, and Open Source (GPL/AGPL) license risk scan.</p>
+                    </div>
+
+                    <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                        <span class="text-cyan-400 font-mono font-bold">SECTION 7</span>
+                        <h4 class="font-bold text-white">Quantified Technical Debt & Remediation</h4>
+                        <p class="text-slate-400">Financial schedule detailing CapEx and OpEx costs required to re-platform, patch, or refactor code over months 1-12 post-close.</p>
+                    </div>
+
+                    <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                        <span class="text-indigo-400 font-mono font-bold">SECTION 8</span>
+                        <h4 class="font-bold text-white">Post-Acquisition 100-Day Plan</h4>
+                        <p class="text-slate-400">Gantt chart and matrix sequencing Day 1 stabilization, Days 1-30 quick wins, Days 31-60 automation, and Days 61-100 strategic projects.</p>
+                    </div>
+
+                    <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                        <span class="text-ey-yellow font-mono font-bold">SECTION 9</span>
+                        <h4 class="font-bold text-white">EBITDA & Value Creation Playbook</h4>
+                        <p class="text-slate-400">Explicit link between IT initiatives and EBITDA expansion dollar-for-dollar, valuation multiple drivers, and synergy realization.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Sample Deliverable Viewer for Each Stage -->
+            <div class="glass-panel p-6 rounded-xl border border-ey-border space-y-4">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3">
+                    <div>
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-folder-open text-ey-yellow"></i> Interactive Sample Deliverables by Deal Stage
+                        </h3>
+                        <p class="text-slate-400 text-xs">Click a stage below to inspect real-world sample deliverable templates created by SSG Associate Managers.</p>
+                    </div>
+                    <!-- Stage Buttons -->
+                    <div class="flex flex-wrap gap-1.5 font-mono text-xs">
+                        <button onclick="showSampleDeliverable(1)" id="del-btn-1" class="del-nav-btn px-2.5 py-1 rounded bg-ey-yellow text-black font-bold">Stage 1: Heatmap</button>
+                        <button onclick="showSampleDeliverable(2)" id="del-btn-2" class="del-nav-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300">Stage 2: Red Flag Memo</button>
+                        <button onclick="showSampleDeliverable(3)" id="del-btn-3" class="del-nav-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300">Stage 3: CapEx Schedule</button>
+                        <button onclick="showSampleDeliverable(4)" id="del-btn-4" class="del-nav-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300">Stage 4: TSA Matrix</button>
+                        <button onclick="showSampleDeliverable(5)" id="del-btn-5" class="del-nav-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300">Stage 5: 100-Day Plan</button>
+                    </div>
+                </div>
+
+                <!-- Deliverable Preview Display Box -->
+                <div id="sample-deliverable-box" class="p-5 bg-slate-900 rounded-xl border border-slate-800 font-mono text-xs space-y-3">
+                    <!-- Loaded dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- TAB 3: PROCESS MAP & INTERCONNECTION BLUEPRINT -->
+        <!-- ==================================================================== -->
+        <section id="processmap" class="tab-content hidden space-y-8">
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-blue-500">
+                <div class="flex items-center gap-2 text-blue-400 font-mono text-xs uppercase font-bold tracking-wider mb-1">
+                    <i class="fa-solid fa-sitemap"></i> Master Interconnection Architecture
+                </div>
+                <h2 class="text-2xl font-bold text-white">How All 12 Modules Connect Into an End-to-End ITDD Process</h2>
+                <p class="text-slate-300 text-xs mt-1">
+                    This process map links fundamental technical building blocks (Modules 1–5) to Strategic & Product Evaluation (Modules 6–7), ITDD Workstream Execution (Modules 8–9), PE Value Creation & Carve-Outs (Module 10), Emerging Technologies & AI (Module 11), and Capstone Cases & the SAF Framework (Module 12).
+                </p>
+            </div>
+
+            <!-- Visual Flowchart Cards -->
+            <div class="space-y-6 relative">
+                <div class="hidden md:block absolute left-1/2 top-4 bottom-4 w-1 bg-gradient-to-b from-ey-yellow via-blue-500 to-emerald-500 -translate-x-1/2 z-0"></div>
+
+                <!-- Stage 1 -->
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 items-center searchable-item">
+                    <div class="glass-panel p-5 rounded-xl border border-ey-yellow/40 bg-slate-900/90 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-ey-yellow font-mono text-xs font-bold uppercase">STAGE 1: TECHNICAL CORE (MODULES 1 - 5)</span>
+                            <span class="text-[10px] bg-ey-yellow/10 text-ey-yellow px-2 py-0.5 rounded border border-ey-yellow/30 font-mono">Foundations</span>
+                        </div>
+                        <h3 class="font-bold text-white text-sm">Software, Architecture, Cloud, Data & Security</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            Evaluate target's baseline tech stack: Monolith vs. Microservices (Mod 3), SDLC & DevOps maturity (Mod 2), AWS/Azure hosting & FinOps (Mod 4), DB scalability (SQL/NoSQL) and Cybersecurity posture (CIA Triad, SOC2, OWASP) (Mod 5).
+                        </p>
+                        <div class="text-[11px] font-mono text-slate-400 pt-1 border-t border-slate-800">
+                            <strong class="text-ey-yellow">Output:</strong> Tech Debt Register & Security/Hosting Gap Audit.
+                        </div>
+                    </div>
+                    <div class="hidden md:flex justify-start pl-8 text-ey-yellow font-mono text-xs items-center gap-2">
+                        <i class="fa-solid fa-arrow-right-long text-lg"></i> Feeds Technical Constraints into Strategy
+                    </div>
+                </div>
+
+                <!-- Stage 2 -->
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 items-center searchable-item">
+                    <div class="hidden md:flex justify-end pr-8 text-blue-400 font-mono text-xs items-center gap-2 text-right">
+                        Validates Scaling Ability <i class="fa-solid fa-arrow-left-long text-lg"></i>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border border-blue-500/40 bg-slate-900/90 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-blue-400 font-mono text-xs font-bold uppercase">STAGE 2: STRATEGY & PRODUCT (MODULES 6 - 7)</span>
+                            <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded border border-blue-500/30 font-mono">Commercial Bridge</span>
+                        </div>
+                        <h3 class="font-bold text-white text-sm">Enterprise Architecture (EA) & Product Strategy</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            Align technology capabilities with business strategy (Mod 6). Audit Product-Market Fit (PMF), SaaS metrics (ARR, NRR, Churn, Rule of 40), and evaluate if R&D can actually deliver the 3-year feature roadmap (Mod 7).
+                        </p>
+                        <div class="text-[11px] font-mono text-slate-400 pt-1 border-t border-slate-800">
+                            <strong class="text-blue-400">Output:</strong> Product Roadmap Feasibility & R&D Capacity Analysis.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 3 -->
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 items-center searchable-item">
+                    <div class="glass-panel p-5 rounded-xl border border-purple-500/40 bg-slate-900/90 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-purple-400 font-mono text-xs font-bold uppercase">STAGE 3: DILIGENCE EXECUTION (MODULES 8 - 9)</span>
+                            <span class="text-[10px] bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded border border-purple-500/30 font-mono">Deal Execution</span>
+                        </div>
+                        <h3 class="font-bold text-white text-sm">End-to-End ITDD Execution & Target Operating Model</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            Run the 10-pillar ITDD framework (Mod 8), conduct CTO/CPO interviews, audit VDR documents, design Target Operating Model (TOM), and build the Post-Acquisition 100-Day Plan (Mod 9).
+                        </p>
+                        <div class="text-[11px] font-mono text-slate-400 pt-1 border-t border-slate-800">
+                            <strong class="text-purple-400">Output:</strong> ITDD Executive Report & Risk/Remediation Schedule.
+                        </div>
+                    </div>
+                    <div class="hidden md:flex justify-start pl-8 text-purple-400 font-mono text-xs items-center gap-2">
+                        <i class="fa-solid fa-arrow-right-long text-lg"></i> Translates Findings into PE Valuation
+                    </div>
+                </div>
+
+                <!-- Stage 4 -->
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 items-center searchable-item">
+                    <div class="hidden md:flex justify-end pr-8 text-emerald-400 font-mono text-xs items-center gap-2 text-right">
+                        Drives Post-Close EBITDA <i class="fa-solid fa-arrow-left-long text-lg"></i>
+                    </div>
+                    <div class="glass-panel p-5 rounded-xl border border-emerald-500/40 bg-slate-900/90 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-emerald-400 font-mono text-xs font-bold uppercase">STAGE 4: VALUE CREATION & M&A (MODULE 10)</span>
+                            <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30 font-mono">PE Advisory</span>
+                        </div>
+                        <h3 class="font-bold text-white text-sm">PE Technology Value Creation, PMI & Carve-Outs</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            Connect IT recommendations directly to EBITDA expansion. Execute Post-Merger Integration (PMI) cost/revenue synergies or structure complex Carve-Outs with Transition Service Agreements (TSA) and Day 1 Readiness (Mod 10).
+                        </p>
+                        <div class="text-[11px] font-mono text-slate-400 pt-1 border-t border-slate-800">
+                            <strong class="text-emerald-400">Output:</strong> Synergy Quantification & TSA Separation Matrix.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stage 5 -->
+                <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6 items-center searchable-item">
+                    <div class="glass-panel p-5 rounded-xl border border-amber-500/40 bg-slate-900/90 space-y-2">
+                        <div class="flex items-center justify-between">
+                            <span class="text-amber-400 font-mono text-xs font-bold uppercase">STAGE 5: INNOVATION & CAPSTONE (MODULES 11 - 12)</span>
+                            <span class="text-[10px] bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded border border-amber-500/30 font-mono">Mastery</span>
+                        </div>
+                        <h3 class="font-bold text-white text-sm">AI, Digital Transformation & Case Interview Masterclass</h3>
+                        <p class="text-slate-300 text-xs leading-relaxed">
+                            Evaluate AI Readiness, RAG architectures, Vector DBs, and MLOps governance (Mod 11). Apply the SAF (Situation-Assessment-Findings-Recommendation-Business Impact) framework to real PE case studies (Mod 12).
+                        </p>
+                        <div class="text-[11px] font-mono text-slate-400 pt-1 border-t border-slate-800">
+                            <strong class="text-amber-400">Output:</strong> Investment Committee Slide Deck & C-Suite Recommendation.
+                        </div>
+                    </div>
+                    <div class="hidden md:flex justify-start pl-8 text-amber-400 font-mono text-xs items-center gap-2">
+                        <i class="fa-solid fa-flag-checkered text-lg"></i> Interview Excellence Achieved
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- TAB 4: CONCEPT BANK (EXPANDED & INTERACTIVE CHEAT SHEET) -->
+        <!-- ==================================================================== -->
+        <section id="conceptbank" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-ey-yellow flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-book-bookmark text-ey-yellow"></i> Master Concept & Terminology Bank (30+ Interactive Deep Dives)
+                    </h2>
+                    <p class="text-slate-300 text-xs mt-1">
+                        Click on ANY concept card below to open an interactive deep-dive modal containing formulas, PE valuation impact, red flags, and interview tips.
+                    </p>
+                </div>
+                <!-- Category Filter Buttons -->
+                <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+                    <button onclick="filterCategory('all')" class="cat-filter-btn px-2.5 py-1 rounded bg-ey-yellow text-black font-bold">All (30+)</button>
+                    <button onclick="filterCategory('tech')" class="cat-filter-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">Tech Core</button>
+                    <button onclick="filterCategory('product')" class="cat-filter-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">Product & SaaS</button>
+                    <button onclick="filterCategory('itdd')" class="cat-filter-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">ITDD Frameworks</button>
+                    <button onclick="filterCategory('pe')" class="cat-filter-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">PE & M&A</button>
+                    <button onclick="filterCategory('ai')" class="cat-filter-btn px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">AI & Data</button>
+                </div>
+            </div>
+
+            <!-- Concept Bank Grid -->
+            <div id="concept-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Cards rendered dynamically via JS or HTML with onclick handlers -->
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- TAB 5: ALL 12 MODULES (INTERACTIVE FULL NOTES) -->
+        <!-- ==================================================================== -->
+        <section id="modules" class="tab-content hidden space-y-6">
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-ey-yellow">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-cubes text-ey-yellow"></i> Complete 12-Module ITDD Master Curriculum
+                </h2>
+                <p class="text-slate-300 text-xs mt-1">
+                    Click <strong>"Open Full Detailed Module Notes"</strong> on any module card below to launch a comprehensive, full-screen interactive study modal.
+                </p>
+                <!-- Quick Navigation Bar -->
+                <div class="flex flex-wrap gap-1.5 mt-4 text-xs font-mono">
+                    <button onclick="openModuleModal(1)" class="px-2 py-1 rounded bg-ey-yellow text-black font-bold">M1: Software</button>
+                    <button onclick="openModuleModal(2)" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">M2: SDLC</button>
+                    <button onclick="openModuleModal(3)" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">M3: Arch</button>
+                    <button onclick="openModuleModal(4)" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">M4: Cloud</button>
+                    <button onclick="openModuleModal(5)" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">M5: Cyber</button>
+                    <button onclick="openModuleModal(6)" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">M6: EA/TOM</button>
+                    <button onclick="openModuleModal(7)" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">M7: Product</button>
+                    <button onclick="openModuleModal(8)" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">M8: ITDD</button>
+                    <button onclick="openModuleModal(9)" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">M9: Strategy</button>
+                    <button onclick="openModuleModal(10)" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">M10: PE/PMI</button>
+                    <button onclick="openModuleModal(11)" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">M11: AI/Data</button>
+                    <button onclick="openModuleModal(12)" class="px-2 py-1 rounded bg-slate-800 text-slate-300 hover:text-white">M12: Cases</button>
+                </div>
+            </div>
+
+            <!-- Module Cards Grid -->
+            <div id="module-cards-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Module cards rendered with onclick="openModuleModal(N)" -->
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- TAB 6: PRIORITIZATION MATRIX & DIAGNOSTICS -->
+        <!-- ==================================================================== -->
+        <section id="matrix" class="tab-content hidden space-y-8">
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-ey-yellow">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-chart-pie text-ey-yellow"></i> Interactive 2x2 Value Creation Matrix & Target Health Tool
+                </h2>
+                <p class="text-slate-300 text-xs mt-1">
+                    Use this tool during case interviews to prioritize remediation initiatives or evaluate target tech stack health scores.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- 2x2 Matrix Tool -->
+                <div class="glass-panel p-5 rounded-xl border border-ey-border space-y-4">
+                    <h3 class="text-sm font-bold text-white uppercase font-mono flex items-center gap-2">
+                        <i class="fa-solid fa-table-cells-large text-ey-yellow"></i> 2x2 Impact vs Effort Prioritizer
+                    </h3>
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div class="p-3 bg-emerald-900/30 border border-emerald-500/40 rounded-lg space-y-1">
+                            <span class="text-emerald-400 font-bold font-mono text-[11px]">QUICK WINS (High Impact / Low Effort)</span>
+                            <ul class="text-slate-300 space-y-1 list-disc list-inside text-[11px]">
+                                <li>Cloud FinOps Optimization</li>
+                                <li>Enable MFA Across Systems</li>
+                                <li>Delete Unused AWS EBS Volumes</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-blue-900/30 border border-blue-500/40 rounded-lg space-y-1">
+                            <span class="text-blue-400 font-bold font-mono text-[11px]">MAJOR PROJECTS (High Impact / High Effort)</span>
+                            <ul class="text-slate-300 space-y-1 list-disc list-inside text-[11px]">
+                                <li>Monolith to Microservices</li>
+                                <li>ERP Consolidation</li>
+                                <li>Generative AI RAG Deployment</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-slate-800/60 border border-slate-700 rounded-lg space-y-1">
+                            <span class="text-slate-400 font-bold font-mono text-[11px]">FILL-INS (Low Impact / Low Effort)</span>
+                            <ul class="text-slate-300 space-y-1 list-disc list-inside text-[11px]">
+                                <li>Minor UI Touchups</li>
+                                <li>Basic Wiki Documentation</li>
+                            </ul>
+                        </div>
+                        <div class="p-3 bg-rose-900/30 border border-rose-500/40 rounded-lg space-y-1">
+                            <span class="text-rose-400 font-bold font-mono text-[11px]">DE-PRIORITIZE (Low Impact / High Effort)</span>
+                            <ul class="text-slate-300 space-y-1 list-disc list-inside text-[11px]">
+                                <li>Custom Internal Messaging App</li>
+                                <li>On-Prem Infrastructure Refresh</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Target Health Calculator -->
+                <div class="glass-panel p-5 rounded-xl border border-ey-border space-y-4">
+                    <h3 class="text-sm font-bold text-white uppercase font-mono flex items-center gap-2">
+                        <i class="fa-solid fa-calculator text-ey-yellow"></i> ITDD Target Health Score Calculator
+                    </h3>
+                    <div class="space-y-3 text-xs">
+                        <div>
+                            <label class="text-slate-300 flex justify-between font-mono">
+                                <span>Architecture Scalability (Multi-tenant Cloud)</span>
+                                <span id="score-arch-val" class="text-ey-yellow font-bold">7/10</span>
+                            </label>
+                            <input type="range" id="score-arch" min="1" max="10" value="7" oninput="updateHealthScore()" class="w-full accent-ey-yellow">
+                        </div>
+                        <div>
+                            <label class="text-slate-300 flex justify-between font-mono">
+                                <span>SDLC & CI/CD Automation</span>
+                                <span id="score-sdlc-val" class="text-ey-yellow font-bold">6/10</span>
+                            </label>
+                            <input type="range" id="score-sdlc" min="1" max="10" value="6" oninput="updateHealthScore()" class="w-full accent-ey-yellow">
+                        </div>
+                        <div>
+                            <label class="text-slate-300 flex justify-between font-mono">
+                                <span>Cybersecurity & Compliance (SOC2 / ISO)</span>
+                                <span id="score-sec-val" class="text-ey-yellow font-bold">8/10</span>
+                            </label>
+                            <input type="range" id="score-sec" min="1" max="10" value="8" oninput="updateHealthScore()" class="w-full accent-ey-yellow">
+                        </div>
+                        <div>
+                            <label class="text-slate-300 flex justify-between font-mono">
+                                <span>FinOps & Cloud Cost Governance</span>
+                                <span id="score-cost-val" class="text-ey-yellow font-bold">4/10</span>
+                            </label>
+                            <input type="range" id="score-cost" min="1" max="10" value="4" oninput="updateHealthScore()" class="w-full accent-ey-yellow">
+                        </div>
+
+                        <!-- Calculated Result -->
+                        <div class="p-3 bg-slate-900 rounded-lg border border-ey-border flex items-center justify-between">
+                            <div>
+                                <div class="text-[10px] text-slate-400 uppercase font-mono">Overall Tech Maturity Rating</div>
+                                <div id="overall-health-text" class="text-lg font-extrabold text-emerald-400">GOOD (6.25 / 10)</div>
+                            </div>
+                            <span id="overall-badge" class="px-2.5 py-1 rounded text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">PROCEED WITH DD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================================================================== -->
+        <!-- TAB 7: FLASHCARDS & ACTIVE RECALL QUIZ -->
+        <!-- ==================================================================== -->
+        <section id="flashcards" class="tab-content hidden space-y-8">
+            <div class="glass-panel p-6 rounded-2xl border-l-4 border-ey-yellow flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-brain text-ey-yellow"></i> Active Recall Flashcards & Mock Exam Engine
+                    </h2>
+                    <p class="text-slate-300 text-xs mt-1">
+                        Test your readiness across all 12 modules before stepping into the interview room.
+                    </p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="toggleCardMode('flash')" id="btn-mode-flash" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-ey-yellow text-black">Flashcards</button>
+                    <button onclick="toggleCardMode('quiz')" id="btn-mode-quiz" class="px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:text-white">10-Q Mock Exam</button>
+                </div>
+            </div>
+
+            <div id="flashcard-container" class="max-w-xl mx-auto space-y-4">
+                <div id="card-element" onclick="flipCard()" class="flip-card h-64 w-full cursor-pointer">
+                    <div id="card-inner" class="flip-card-inner relative w-full h-full rounded-2xl border border-ey-border glass-panel shadow-2xl p-6 flex items-center justify-center text-center">
+                        <div class="flip-card-front absolute inset-0 p-6 flex flex-col justify-between items-center text-center">
+                            <span id="card-module-tag" class="text-ey-yellow font-mono text-xs uppercase font-bold">MODULE 10 • PE VALUE CREATION</span>
+                            <p id="card-question-text" class="text-lg font-bold text-white my-auto">What is a Transition Service Agreement (TSA) and why is it critical in carve-outs?</p>
+                            <span class="text-slate-400 text-[11px] font-mono"><i class="fa-solid fa-rotate-left mr-1"></i> Click card to reveal answer</span>
+                        </div>
+                        <div class="flip-card-back absolute inset-0 p-6 flex flex-col justify-between items-center text-center bg-slate-900/95 rounded-2xl">
+                            <span class="text-emerald-400 font-mono text-xs uppercase font-bold">ANSWER / ELITE RESPONSE</span>
+                            <p id="card-answer-text" class="text-xs text-slate-200 leading-relaxed my-auto">
+                                A TSA is a temporary contract where seller provides IT/operational services (ERP, email, network) to buyer post-carve-out. It ensures Day 1 operational continuity while buyer builds independent infrastructure. Uncapped TSAs carry severe penalty fees.
+                            </p>
+                            <span class="text-slate-400 text-[11px] font-mono">Click to flip back</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-xs font-mono pt-2">
+                    <button onclick="prevCard()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white flex items-center gap-1">
+                        <i class="fa-solid fa-arrow-left"></i> Previous
+                    </button>
+                    <span id="card-counter" class="text-ey-yellow font-bold">Card 1 / 10</span>
+                    <button onclick="nextCard()" class="px-4 py-2 rounded-lg bg-ey-yellow text-black font-bold flex items-center gap-1">
+                        Next <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Viewer Container (Hidden by default) -->
+            <div id="quiz-container" class="max-w-2xl mx-auto space-y-6 hidden">
+                <div class="glass-panel p-6 rounded-2xl border border-ey-border space-y-4">
+                    <div class="flex justify-between items-center text-xs font-mono">
+                        <span class="text-ey-yellow font-bold">QUESTION <span id="quiz-num">1</span> OF 10</span>
+                        <span id="quiz-score-badge" class="bg-slate-800 text-slate-300 px-2 py-1 rounded">Score: 0</span>
+                    </div>
+                    <h3 id="quiz-question" class="text-base font-bold text-white">Which metric directly evaluates whether a B2B SaaS target achieves healthy balanced growth and EBITDA profitability?</h3>
+                    <div id="quiz-options" class="space-y-2 text-xs">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ==================================================================== -->
+    <!-- INTERACTIVE MODALS FOR MODULES & CONCEPTS -->
+    <!-- ==================================================================== -->
+    <!-- Module Detail Modal -->
+    <div id="module-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 modal-blur hidden">
+        <div class="glass-panel bg-[#121218]/95 border border-ey-yellow/40 rounded-2xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-6 border-b border-ey-border flex justify-between items-center bg-slate-900/80">
+                <div class="flex items-center gap-3">
+                    <span id="modal-mod-tag" class="px-2.5 py-1 rounded font-mono text-xs font-bold bg-ey-yellow text-black">MODULE 1</span>
+                    <h2 id="modal-mod-title" class="text-xl font-bold text-white">Module Title Here</h2>
+                </div>
+                <button onclick="closeModuleModal()" class="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800 text-sm">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div id="modal-mod-body" class="p-6 overflow-y-auto space-y-6 text-xs text-slate-300 custom-scrollbar">
+                <!-- Content injected dynamically -->
+            </div>
+            <div class="p-4 border-t border-ey-border bg-slate-900/80 flex justify-end">
+                <button onclick="closeModuleModal()" class="px-4 py-2 bg-ey-yellow text-black font-bold rounded-lg text-xs">Close Module Notes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Concept Detail Modal -->
+    <div id="concept-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 modal-blur hidden">
+        <div class="glass-panel bg-[#121218]/95 border border-blue-500/40 rounded-2xl max-w-2xl w-full max-h-[85vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-5 border-b border-ey-border flex justify-between items-center bg-slate-900/80">
+                <div class="flex items-center gap-2">
+                    <span id="concept-modal-cat" class="px-2 py-0.5 rounded font-mono text-[10px] font-bold bg-blue-500/20 text-blue-300">CATEGORY</span>
+                    <h2 id="concept-modal-title" class="text-lg font-bold text-white">Concept Title</h2>
+                </div>
+                <button onclick="closeConceptModal()" class="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800 text-xs">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <div id="concept-modal-body" class="p-6 overflow-y-auto space-y-4 text-xs text-slate-300 custom-scrollbar">
+                <!-- Content injected dynamically -->
+            </div>
+            <div class="p-4 border-t border-ey-border bg-slate-900/80 flex justify-end">
+                <button onclick="closeConceptModal()" class="px-4 py-2 bg-blue-500 text-white font-bold rounded-lg text-xs">Close Deep Dive</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-ey-border py-6 mt-12 bg-[#0D0D12] text-slate-400 text-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <span class="text-ey-yellow font-bold">EY-Parthenon SSG</span>
+                <span>• Strategy Software Group Master Prep • Bengaluru GDS</span>
+            </div>
+            <div class="font-mono text-[11px]">
+                Built for High-Impact Associate Manager Interview Readiness
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-ey-yellow', 'text-black', 'font-bold', 'shadow-md');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+
+            const targetSection = document.getElementById(tabId);
+            if(targetSection) targetSection.classList.remove('hidden');
+
+            const activeBtn = document.getElementById('tab-' + tabId);
+            if(activeBtn) {
+                activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+                activeBtn.classList.add('bg-ey-yellow', 'text-black', 'font-bold', 'shadow-md');
+            }
+        }
+
+        // Global Search Filter
+        function filterContent() {
+            const query = document.getElementById('global-search').value.toLowerCase();
+            const items = document.querySelectorAll('.searchable-item');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                if(text.includes(query)) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        // Concept Category Filter
+        function filterCategory(cat) {
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                btn.classList.remove('bg-ey-yellow', 'text-black', 'font-bold');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+            event.target.classList.remove('bg-slate-800', 'text-slate-300');
+            event.target.classList.add('bg-ey-yellow', 'text-black', 'font-bold');
+
+            const items = document.querySelectorAll('.concept-item');
+            items.forEach(item => {
+                if(cat === 'all' || item.getAttribute('data-category') === cat) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        }
+
+        // Target Health Calculator
+        function updateHealthScore() {
+            const arch = parseInt(document.getElementById('score-arch').value);
+            const sdlc = parseInt(document.getElementById('score-sdlc').value);
+            const sec = parseInt(document.getElementById('score-sec').value);
+            const cost = parseInt(document.getElementById('score-cost').value);
+
+            document.getElementById('score-arch-val').innerText = arch + '/10';
+            document.getElementById('score-sdlc-val').innerText = sdlc + '/10';
+            document.getElementById('score-sec-val').innerText = sec + '/10';
+            document.getElementById('score-cost-val').innerText = cost + '/10';
+
+            const avg = ((arch + sdlc + sec + cost) / 4).toFixed(2);
+            const textEl = document.getElementById('overall-health-text');
+            const badgeEl = document.getElementById('overall-badge');
+
+            if(avg >= 7.5) {
+                textEl.className = 'text-lg font-extrabold text-emerald-400';
+                textEl.innerText = 'EXCELLENT (' + avg + ' / 10)';
+                badgeEl.innerText = 'LOW RISK TARGET';
+                badgeEl.className = 'px-2.5 py-1 rounded text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+            } else if(avg >= 5.5) {
+                textEl.className = 'text-lg font-extrabold text-amber-400';
+                textEl.innerText = 'MODERATE RISK (' + avg + ' / 10)';
+                badgeEl.innerText = 'REQUIRES REMEDIATION';
+                badgeEl.className = 'px-2.5 py-1 rounded text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30';
+            } else {
+                textEl.className = 'text-lg font-extrabold text-rose-400';
+                textEl.innerText = 'HIGH RISK (' + avg + ' / 10)';
+                badgeEl.innerText = 'DEAL BREAKER HAZARD';
+                badgeEl.className = 'px-2.5 py-1 rounded text-xs font-mono font-bold bg-rose-500/20 text-rose-300 border border-rose-500/30';
+            }
+        }
+
+        // Expanded Concept Bank Data (30+ concepts)
+        const conceptsData = [
+            {
+                id: "ebitda",
+                cat: "pe",
+                title: "EBITDA & Multiple Expansion",
+                summary: "Earnings Before Interest, Taxes, Depreciation & Amortization. Primary PE profitability metric.",
+                formula: "Revenue - COGS - OpEx (excluding Interest, Taxes, D&A)",
+                impact: "At an 11x exit multiple, every $1M of EBITDA created generates $11M in Enterprise Value upon sale.",
+                redFlag: "Over-capitalized R&D expense inflating short-term EBITDA artificially.",
+                interviewTip: "Always tie technical quick-wins (e.g., FinOps cloud savings) to EBITDA expansion."
+            },
+            {
+                id: "ruleof40",
+                cat: "product",
+                title: "Rule of 40 (SaaS)",
+                summary: "Key efficiency benchmark balancing growth speed against cash profitability.",
+                formula: "YoY Revenue Growth Rate % + EBITDA Margin % ≥ 40%",
+                impact: "SaaS targets meeting Rule of 40 command 2x to 4x higher revenue valuation multiples.",
+                redFlag: "High growth (50%) paired with disastrous EBITDA margin (-30%) = 20% (Fails Rule of 40).",
+                interviewTip: "Mention Rule of 40 when evaluating SaaS unit economics during product DD."
+            },
+            {
+                id: "nrr",
+                cat: "product",
+                title: "Net Revenue Retention (NRR)",
+                summary: "Measures ARR expansion from existing customer cohort after accounting for churn/contraction.",
+                formula: "(Starting ARR + Expansion - Contraction - Churn) / Starting ARR",
+                impact: "Enterprise SaaS target benchmark > 110%. Demonstrates strong product utility.",
+                redFlag: "NRR < 95% indicates a leaking bucket; heavy customer acquisition required just to stay flat.",
+                interviewTip: "Highlight that high NRR proves product-market fit (PMF) and expansion viability."
+            },
+            {
+                id: "multitenancy",
+                cat: "tech",
+                title: "Multi-Tenancy vs Multi-Instance",
+                summary: "Multi-tenant: 1 app/DB serves all customers logically isolated. Multi-instance: Separate VM per user.",
+                formula: "Gross Margin Target: 75% - 85% for True Multi-Tenant SaaS",
+                impact: "Multi-instance ('Fake SaaS') destroys EBITDA because hosting spend grows linearly with users.",
+                redFlag: "Target claims to be modern cloud SaaS but provisions dedicated AWS EC2s per client.",
+                interviewTip: "Flag fake multi-tenancy as a major CapEx/OpEx re-platforming risk."
+            },
+            {
+                id: "tsa",
+                cat: "pe",
+                title: "Transition Service Agreement (TSA)",
+                summary: "Temporary contract where seller provides IT services (ERP, AD, HR) to buyer post carve-out.",
+                formula: "Monthly Fee = Cost + Seller Margin (plus heavy late penalty escalators)",
+                impact: "Failure to exit TSA on schedule results in millions of dollars in monthly penalty fees.",
+                redFlag: "Uncapped TSA duration with no clear Day 1 separation roadmap.",
+                interviewTip: "Structure TSA exit milestones into Day 1, Day 90, and Day 180 targets."
+            },
+            {
+                id: "rag",
+                cat: "ai",
+                title: "Retrieval-Augmented Generation (RAG)",
+                summary: "Combines pre-trained LLM with private Vector DB knowledge base.",
+                formula: "User Prompt → Semantic Retriever → Vector DB Context → LLM Response",
+                impact: "Allows enterprise GenAI features without costly base-model retraining ($MMs saved).",
+                redFlag: "Hallucinations in customer support bots due to missing chunking/retriever logic.",
+                interviewTip: "Recommend RAG over fine-tuning when PE clients want enterprise AI search."
+            },
+            {
+                id: "dora",
+                cat: "tech",
+                title: "DORA Engineering Metrics",
+                summary: "4 metrics evaluating software delivery velocity and reliability.",
+                formula: "1) Deployment Freq, 2) Lead Time, 3) Change Failure Rate, 4) MTTR",
+                impact: "Elite teams deploy multiple times per day with MTTR < 1 hour.",
+                redFlag: "Deployments occur once every 2 months with > 30% change failure rate.",
+                interviewTip: "Use DORA metrics to grade R&D organizational efficiency."
+            },
+            {
+                id: "soc2",
+                cat: "tech",
+                title: "SOC 2 Type I vs Type II",
+                summary: "Type I: Control design at a single point in time. Type II: Operational test over 6-12 months.",
+                formula: "Audit Window = 6 to 12 months for Type II validation",
+                impact: "Enterprise B2B buyers mandate SOC 2 Type II before closing contracts.",
+                redFlag: "Target only has Type I and claims it is fully compliant for enterprise sales.",
+                interviewTip: "Flag missing Type II report as a top sales velocity blocker."
+            },
+            {
+                id: "gpl",
+                cat: "itdd",
+                title: "Copyleft Open Source License (GPL / AGPL)",
+                summary: "Restrictive open-source licenses that compel targets to open-source proprietary code.",
+                formula: "Legal Threat = Compulsory Source Code Disclosure",
+                impact: "Can destroy target's entire IP valuation or require mandatory code refactoring.",
+                redFlag: "Static analysis scans showing AGPL components inside core SaaS microservices.",
+                interviewTip: "Recommend pre-close remediation or price deduction if GPL is detected."
+            },
+            {
+                id: "spof",
+                cat: "itdd",
+                title: "Single Point of Failure (SPOF) & Key-Person Risk",
+                summary: "Critical system reliance on single server or 1-2 core architects holding unwritten knowledge.",
+                formula: "Bus Factor = 1 (If 1 engineer leaves, project fails)",
+                impact: "Post-close employee attrition can stall product roadmap for 6-12 months.",
+                redFlag: "No architecture documentation; CTO reviews every single git pull request manually.",
+                interviewTip: "Propose key-person retention bonuses and mandatory documentation initiatives."
+            },
+            {
+                id: "timeframe",
+                cat: "itdd",
+                title: "TIME Rationalization Framework",
+                summary: "Application Portfolio Rationalization methodology: Tolerate, Invest, Migrate, Eliminate.",
+                formula: "4 Quadrants: Business Value vs Technical Health",
+                impact: "Consolidates duplicate applications post-merger to save 15-30% in IT OpEx.",
+                redFlag: "Operating 3 separate CRM platforms post 3 successive acquisitions.",
+                interviewTip: "Use TIME framework during PMI (Post-Merger Integration) planning."
+            },
+            {
+                id: "vectordb",
+                cat: "ai",
+                title: "Vector Databases & Embeddings",
+                summary: "Databases storing high-dimensional numerical vectors for semantic similarity search.",
+                formula: "Distance Metrics: Cosine Similarity / Euclidean Distance",
+                impact: "Enables sub-second semantic search across unstructured enterprise documents.",
+                redFlag: "Using standard SQL LIKE queries for GenAI document search.",
+                interviewTip: "Evaluate vector database scalability (Pinecone, Qdrant, Milvus) in AI DD."
+            }
+        ];
+
+        function renderConceptGrid() {
+            const grid = document.getElementById('concept-grid');
+            let html = '';
+
+            conceptsData.forEach(c => {
+                let badgeColor = 'bg-blue-500/10 text-blue-400 border-blue-500/30';
+                if(c.cat === 'pe') badgeColor = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30';
+                if(c.cat === 'ai') badgeColor = 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30';
+                if(c.cat === 'product') badgeColor = 'bg-purple-500/10 text-purple-400 border-purple-500/30';
+                if(c.cat === 'itdd') badgeColor = 'bg-amber-500/10 text-amber-400 border-amber-500/30';
+
+                html += `
+                    <div onclick="openConceptModal('${c.id}')" class="glass-card p-4 rounded-xl border border-ey-border space-y-2 concept-item searchable-item cursor-pointer" data-category="${c.cat}">
+                        <div class="flex items-center justify-between">
+                            <span class="text-ey-yellow font-mono text-[10px] font-bold uppercase">${c.cat.toUpperCase()} CORE</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] border font-mono ${badgeColor}">Deep Dive</span>
+                        </div>
+                        <h4 class="font-bold text-white text-sm hover:text-ey-yellow transition-colors">${c.title}</h4>
+                        <p class="text-slate-300 text-xs line-clamp-2">${c.summary}</p>
+                        <div class="pt-2 text-[11px] font-mono text-slate-400 flex justify-between items-center border-t border-slate-800/80">
+                            <span><i class="fa-solid fa-lightbulb text-ey-yellow mr-1"></i> Click to inspect</span>
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+        }
+
+        function openConceptModal(id) {
+            const c = conceptsData.find(item => item.id === id);
+            if(!c) return;
+
+            document.getElementById('concept-modal-cat').innerText = c.cat.toUpperCase() + ' CHEAT SHEET';
+            document.getElementById('concept-modal-title').innerText = c.title;
+
+            const bodyHtml = `
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                    <strong class="text-ey-yellow font-mono">Overview / Definition:</strong>
+                    <p class="text-slate-200">${c.summary}</p>
+                </div>
+
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                    <strong class="text-blue-400 font-mono">Formula / Benchmark / Mechanics:</strong>
+                    <p class="text-slate-200 font-mono">${c.formula}</p>
+                </div>
+
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                    <strong class="text-emerald-400 font-mono">PE Valuation & EBITDA Impact:</strong>
+                    <p class="text-slate-200">${c.impact}</p>
+                </div>
+
+                <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1">
+                    <strong class="text-rose-400 font-mono">Red Flag Hazard to Watch For:</strong>
+                    <p class="text-slate-200">${c.redFlag}</p>
+                </div>
+
+                <div class="p-3 bg-amber-950/30 rounded-lg border border-amber-500/40 space-y-1">
+                    <strong class="text-amber-400 font-mono"><i class="fa-solid fa-headset mr-1"></i> How to Verbalize in Interview:</strong>
+                    <p class="text-slate-200 italic">"${c.interviewTip}"</p>
+                </div>
+            `;
+
+            document.getElementById('concept-modal-body').innerHTML = bodyHtml;
+            document.getElementById('concept-modal').classList.remove('hidden');
+        }
+
+        function closeConceptModal() {
+            document.getElementById('concept-modal').classList.add('hidden');
+        }
+
+        // Comprehensive 12 Modules Data
+        const modulesData = [
+            {
+                num: 1,
+                title: "Software Fundamentals & Enterprise Systems",
+                badge: "Foundations",
+                color: "blue",
+                summary: "Core software categories, enterprise app ecosystem (ERP, CRM, HRMS, SCM, WMS, MES), deployment models (On-Prem, Cloud, Hybrid) and service models (IaaS, PaaS, SaaS).",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. Core Enterprise Application Suite</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-300">
+                                <li><strong>ERP (Enterprise Resource Planning):</strong> SAP S/4HANA, Oracle Cloud ERP. Manages GL, procurement, supply chain, inventory.</li>
+                                <li><strong>CRM (Customer Relationship Management):</strong> Salesforce, Dynamics 365. Handles pipelines, lead scoring, ARR tracking.</li>
+                                <li><strong>HRMS (Human Resource Management System):</strong> Workday, SuccessFactors. Payroll, talent retention, headcount.</li>
+                                <li><strong>WMS / MES:</strong> Manhattan Associates (Warehouse), Siemens Opcenter (Manufacturing execution on shop floor).</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-emerald-400 text-sm font-mono">2. Service Models Comparison (IaaS vs PaaS vs SaaS)</h4>
+                            <p class="text-slate-300">
+                                <strong>IaaS:</strong> AWS EC2. Provider manages hardware; client manages OS, runtime, and app.<br>
+                                <strong>PaaS:</strong> Azure App Service. Provider manages OS/runtime; client focuses on code.<br>
+                                <strong>SaaS:</strong> Salesforce, Workday. Multi-tenant turnkey software; client manages configuration only.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-purple-400 text-sm font-mono">3. ITDD Inspection Checklist</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-300">
+                                <li>Verify legacy on-premise footprint vs modern cloud-native migration readiness.</li>
+                                <li>Check custom integrations between ERP and CRM for brittle point-to-point scripts.</li>
+                                <li>Audit software license compliance and vendor lock-in terms.</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                num: 2,
+                title: "SDLC, Agile & Engineering Delivery Maturity",
+                badge: "Delivery",
+                color: "purple",
+                summary: "SDLC phases, Waterfall vs Agile, Scrum roles/ceremonies, story points, velocity, Definition of Done (DoD), and DORA engineering metrics.",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. Scrum Framework & Artifacts</h4>
+                            <p class="text-slate-300">
+                                <strong>Roles:</strong> Product Owner (Value), Scrum Master (Process), Dev Team.<br>
+                                <strong>Ceremonies:</strong> Sprint Planning (2-week timebox), Daily Standup (15m), Sprint Review, Retrospective.<br>
+                                <strong>Artifacts:</strong> Product Backlog, Sprint Backlog, Working Increment.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-blue-400 text-sm font-mono">2. DORA Metrics & Velocity Tracking</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-300">
+                                <li><strong>Deployment Frequency:</strong> Elite teams deploy multiple times per day.</li>
+                                <li><strong>Lead Time for Changes:</strong> Time from code commit to production release (&lt; 1 day = Elite).</li>
+                                <li><strong>Change Failure Rate:</strong> % of deployments causing production outage (&lt; 15% = Healthy).</li>
+                                <li><strong>Mean Time to Restore (MTTR):</strong> Recovery speed after incident (&lt; 1 hour = Elite).</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                num: 3,
+                title: "Software Architecture, Microservices & APIs",
+                badge: "Architecture",
+                color: "amber",
+                summary: "Monolith vs Microservices, SOA, Event-Driven Architecture, Serverless, REST vs SOAP, Docker containers, Kubernetes, and API Gateways.",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. Monolith vs Microservices Trade-offs</h4>
+                            <p class="text-slate-300">
+                                <strong>Monolith:</strong> Single deployable binary. Easy initially; becomes deployment bottleneck as engineering team grows > 50 devs.<br>
+                                <strong>Microservices:</strong> Decoupled services over REST/gRPC. High independent scalability; requires complex Kubernetes orchestration and distributed tracing.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-emerald-400 text-sm font-mono">2. API Management & Containers</h4>
+                            <p class="text-slate-300">
+                                <strong>REST vs SOAP:</strong> REST uses JSON/HTTP (Standard for SaaS). SOAP uses rigid XML (Legacy Banking).<br>
+                                <strong>Docker & Kubernetes:</strong> Docker containerizes code + dependencies. K8s handles auto-scaling, self-healing pods, and load balancing.
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                num: 4,
+                title: "Cloud Computing, Infrastructure & FinOps",
+                badge: "Cloud & Ops",
+                color: "cyan",
+                summary: "AWS, Azure, GCP, VPC, Subnets, VMs, Object Storage (S3), FinOps cost optimization, CI/CD pipelines, Infrastructure as Code (Terraform), and DR (RTO/RPO).",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. Cloud FinOps Quick-Win Playbook</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-300">
+                                <li>Right-size over-provisioned EC2/VM instances (e.g., 80% CPU idle).</li>
+                                <li>Delete unattached EBS storage volumes and unassociated Elastic IPs.</li>
+                                <li>Purchase 1-year or 3-year Savings Plans / Reserved Instances for steady-state databases (saves 30-50%).</li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-purple-400 text-sm font-mono">2. Disaster Recovery Metrics (RTO vs RPO)</h4>
+                            <p class="text-slate-300">
+                                <strong>RTO (Recovery Time Objective):</strong> Target downtime before business restoration (e.g., &lt; 2 hours).<br>
+                                <strong>RPO (Recovery Point Objective):</strong> Acceptable data loss measured in time (e.g., &lt; 15 minutes of transactional data loss).
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                num: 5,
+                title: "Databases, Data Platforms & Cybersecurity Posture",
+                badge: "Security",
+                color: "rose",
+                summary: "SQL vs NoSQL, ACID vs BASE, Data Warehouses (Snowflake), Data Lakes, Caching (Redis), CIA Triad, IAM, MFA, Zero Trust, SOC 2 Type II, ISO 27001, OWASP Top 10.",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. SQL vs NoSQL vs Data Lakehouse</h4>
+                            <p class="text-slate-300">
+                                <strong>SQL (PostgreSQL):</strong> ACID transactions, relational tables (Financial systems).<br>
+                                <strong>NoSQL (MongoDB, DynamoDB):</strong> Flexible schema, high throughput (IoT, user sessions).<br>
+                                <strong>Data Lakehouse (Snowflake, Databricks):</strong> Unified analytics combining data warehouse performance with raw data lake storage.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-red-400 text-sm font-mono">2. Essential Cybersecurity Diligence</h4>
+                            <p class="text-slate-300">
+                                <strong>SOC 2 Type II:</strong> Validates operational security effectiveness over 6-12 months.<br>
+                                <strong>Zero Trust:</strong> Never trust, always verify every request with IAM + MFA.<br>
+                                <strong>OWASP Top 10:</strong> Audit for SQL Injection, Broken Access Control, and Cryptographic failures.
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                num: 6,
+                title: "Enterprise Architecture & Target Operating Model (TOM)",
+                badge: "EA & Governance",
+                color: "indigo",
+                summary: "4 EA Domains (TOGAF: Business, App, Data, Tech), Application Portfolio Rationalization (TIME Framework), Legacy Systems, Technical Debt Ratio, IT Governance.",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. TIME Application Rationalization Framework</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-300">
+                                <li><strong>Tolerate:</strong> High business value, low technical quality. Keep as-is short term.</li>
+                                <li><strong>Invest:</strong> High business value, high technical quality. Strategic platform.</li>
+                                <li><strong>Migrate:</strong> Low business value, high technical quality. Replace or merge.</li>
+                                <li><strong>Eliminate:</strong> Low business value, low technical quality. Decommission immediately to cut licenses.</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                num: 7,
+                title: "Product Management, Strategy & SaaS Metrics",
+                badge: "Product DD",
+                color: "emerald",
+                summary: "Product Lifecycle, PMF, Roadmaps, Prioritization (RICE, MoSCoW, Kano), SaaS Unit Economics (ARR, NRR, GRR, Churn, Rule of 40, LTV/CAC, CAC Payback).",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. Critical SaaS Unit Economics Metrics</h4>
+                            <ul class="list-disc list-inside space-y-1 text-slate-300">
+                                <li><strong>LTV / CAC Ratio:</strong> Target &ge; 3.0x. Lifetime value must exceed customer acquisition cost.</li>
+                                <li><strong>CAC Payback Period:</strong> Target &lt; 12 Months. Months required to recover acquisition cost.</li>
+                                <li><strong>Net Revenue Retention (NRR):</strong> Target &gt; 110% for Enterprise B2B SaaS.</li>
+                            </ul>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                num: 8,
+                title: "End-to-End Technology Due Diligence (ITDD) Execution",
+                badge: "ITDD Core",
+                color: "amber",
+                summary: "10-Pillar ITDD Framework, Buy-side vs Sell-side, VDR Data Room Auditing, CTO/CPO Interview Strategy, Risk Register, Quantified Remediation Schedule.",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. 10-Pillar ITDD Execution Blueprint</h4>
+                            <p class="text-slate-300">
+                                1) Thesis Alignment &rarr; 2) Product DD &rarr; 3) Architecture &rarr; 4) Tech Stack &rarr; 5) Engineering Org &rarr; 6) Cloud & Ops &rarr; 7) Cybersecurity &rarr; 8) Data Platforms &rarr; 9) Costs/Budget &rarr; 10) Value Creation Levers.
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                num: 9,
+                title: "Technology Strategy & 100-Day Post-Acquisition Plan",
+                badge: "Post-Close",
+                color: "purple",
+                summary: "Technology Strategy alignment, 100-Day Plan sequencing (Days 1-30, 31-60, 61-100), Tech KPIs, Technical Debt management, Technology Roadmaps.",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. 100-Day Plan Phased Execution</h4>
+                            <p class="text-slate-300">
+                                <strong>Days 1–30:</strong> Operational stabilization, MFA rollout, backup validation, key-person retention.<br>
+                                <strong>Days 31–60:</strong> FinOps cloud quick wins, vendor contract renegotiation, CI/CD automation.<br>
+                                <strong>Days 61–100:</strong> Architecture refactoring roadmap, platform modernization kickoff.
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                num: 10,
+                title: "PE Technology Value Creation, PMI & Carve-Out Strategy",
+                badge: "Value Creation",
+                color: "emerald",
+                summary: "PE Investment Lifecycle, Investment Thesis, EBITDA expansion, Cost/Revenue Synergies, Post-Merger Integration (PMI), Carve-outs, TSA management.",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. Carve-Out Disentanglement & TSA Management</h4>
+                            <p class="text-slate-300">
+                                Carve-outs require separating shared ERP, Active Directory, HR, and network hosting from seller. TSA (Transition Service Agreement) provides temporary IT services post-close. Uncapped TSAs carry severe monthly penalty fees.
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                num: 11,
+                title: "AI, Data Maturity & Emerging Technologies",
+                badge: "Emerging Tech",
+                color: "cyan",
+                summary: "AI/ML vs GenAI, LLMs, RAG Architecture, Vector Databases, AI Agents, MLOps, AI Governance, Data Maturity Stages, Process Automation (RPA).",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. RAG Architecture & Vector DBs</h4>
+                            <p class="text-slate-300">
+                                <strong>RAG (Retrieval-Augmented Generation):</strong> Combines LLM with enterprise Vector DB (Pinecone) to provide context-aware, hallucination-free search across private company files without model fine-tuning.
+                            </p>
+                        </div>
+                    </div>
+                `
+            },
+            {
+                num: 12,
+                title: "End-to-End Case Studies & SAF Response Framework",
+                badge: "Capstone",
+                color: "amber",
+                summary: "Complete ITDD engagement lifecycle, Document Request List (RFI), CTO Interview script, Risk Register, SAF Framework (Situation-Assessment-Findings-Recommendation-Impact).",
+                details: `
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 space-y-2">
+                            <h4 class="font-bold text-ey-yellow text-sm font-mono">1. The SAF Response Structure for Case Interviews</h4>
+                            <p class="text-slate-300">
+                                <strong>S</strong>ituation (Deal context & thesis) &rarr; <strong>A</strong>ssessment (Audit method) &rarr; <strong>F</strong>indings (Risks/Red flags) &rarr; <strong>R</strong>ecommendation (Action plan) &rarr; <strong>B</strong>usiness Impact (EBITDA / Valuation).
+                            </p>
+                        </div>
+                    </div>
+                `
+            }
+        ];
+
+        function renderModulesGrid() {
+            const grid = document.getElementById('module-cards-grid');
+            let html = '';
+
+            modulesData.forEach(m => {
+                html += `
+                    <div class="glass-panel p-6 rounded-xl border border-ey-border space-y-4 searchable-item">
+                        <div class="flex items-center justify-between border-b border-ey-border pb-3">
+                            <div>
+                                <span class="text-ey-yellow font-mono text-xs font-bold uppercase">MODULE ${m.num}</span>
+                                <h3 class="text-lg font-bold text-white">${m.title}</h3>
+                            </div>
+                            <span class="bg-slate-800 text-slate-300 border border-slate-700 text-xs px-2.5 py-1 rounded font-mono">${m.badge}</span>
+                        </div>
+                        <p class="text-slate-300 text-xs leading-relaxed">${m.summary}</p>
+                        <div class="pt-2 flex justify-between items-center">
+                            <button onclick="openModuleModal(${m.num})" class="px-3 py-2 bg-ey-yellow text-black font-bold rounded-lg text-xs hover:bg-yellow-400 transition-colors flex items-center gap-1.5">
+                                <i class="fa-solid fa-book-open"></i> Open Full Detailed Module Notes
+                            </button>
+                            <span class="text-[11px] font-mono text-slate-400">Interactive Notes</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            grid.innerHTML = html;
+        }
+
+        function openModuleModal(num) {
+            const m = modulesData.find(item => item.num === num);
+            if(!m) return;
+
+            document.getElementById('modal-mod-tag').innerText = `MODULE ${m.num} • ${m.badge.toUpperCase()}`;
+            document.getElementById('modal-mod-title').innerText = m.title;
+            document.getElementById('modal-mod-body').innerHTML = m.details;
+            document.getElementById('module-modal').classList.remove('hidden');
+        }
+
+        function closeModuleModal() {
+            document.getElementById('module-modal').classList.add('hidden');
+        }
+
+        // Sample Deliverables Data
+        const sampleDeliverablesData = {
+            1: `
+                <div class="space-y-2">
+                    <div class="text-ey-yellow font-bold text-sm border-b border-slate-800 pb-1">
+                        STAGE 1 DELIVERABLE: Preliminary ITDD Risk Heatmap & RFI Index (Target: SaaS Co X)
+                    </div>
+                    <div class="text-slate-300 space-y-1">
+                        <div><strong>RFI Item #1 (Architecture):</strong> Request multi-tenancy schema & AWS cloud infrastructure diagram.</div>
+                        <div><strong>RFI Item #2 (IP Compliance):</strong> Automated Black Duck / FOSSID open-source license scan report.</div>
+                        <div><strong>RFI Item #3 (R&D Headcount):</strong> Headcount breakdown (Dev, QA, DevOps, Product) & key-person dependencies.</div>
+                        <div class="p-2 bg-red-950/40 border border-red-500/30 rounded text-red-300">
+                            <strong>Initial Flag:</strong> 35% of dev spend tagged under 'Uncategorized Contractors' in preliminary CIM.
+                        </div>
+                    </div>
+                </div>
+            `,
+            2: `
+                <div class="space-y-2">
+                    <div class="text-ey-yellow font-bold text-sm border-b border-slate-800 pb-1">
+                        STAGE 2 DELIVERABLE: Red Flag Memorandum for Case Team Leader (CTL)
+                    </div>
+                    <div class="text-slate-300 space-y-1">
+                        <div><strong>MEMO SUBJECT:</strong> Critical Open-Source GPL v3 Risk & Key-Person Dependency</div>
+                        <div><strong>FINDING 1:</strong> Core analytics module imports AGPL-licensed libraries. Disclosure compelled if distributed on-prem.</div>
+                        <div><strong>FINDING 2:</strong> Single Chief Architect holds all database encryption keys and unwritten deployment scripts.</div>
+                        <div class="p-2 bg-amber-950/40 border border-amber-500/30 rounded text-amber-300">
+                            <strong>RECOMMENDATION:</strong> Mandate pre-close code refactoring ($150k CapEx) & key-person retention agreement in SPA.
+                        </div>
+                    </div>
+                </div>
+            `,
+            3: `
+                <div class="space-y-2">
+                    <div class="text-ey-yellow font-bold text-sm border-b border-slate-800 pb-1">
+                        STAGE 3 DELIVERABLE: Quantified Technical Debt & Remediation CapEx Schedule
+                    </div>
+                    <div class="text-slate-300 space-y-1">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-700 text-ey-yellow">
+                                    <th class="p-1">Initiative</th>
+                                    <th class="p-1">Timing</th>
+                                    <th class="p-1">CapEx</th>
+                                    <th class="p-1">OpEx Savings / Impact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b border-slate-800">
+                                    <td class="p-1">FinOps AWS Savings Plan</td>
+                                    <td class="p-1">Days 1-30</td>
+                                    <td class="p-1">$10k</td>
+                                    <td class="p-1 text-emerald-400">+$240k EBITDA / yr</td>
+                                </tr>
+                                <tr class="border-b border-slate-800">
+                                    <td class="p-1">CI/CD Pipeline Automation</td>
+                                    <td class="p-1">Months 2-4</td>
+                                    <td class="p-1">$85k</td>
+                                    <td class="p-1 text-blue-400">Velocity +40%</td>
+                                </tr>
+                                <tr>
+                                    <td class="p-1">Monolith Microservices Refactoring</td>
+                                    <td class="p-1">Months 6-12</td>
+                                    <td class="p-1">$450k</td>
+                                    <td class="p-1 text-purple-400">Scalability to 3x ARR</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `,
+            4: `
+                <div class="space-y-2">
+                    <div class="text-ey-yellow font-bold text-sm border-b border-slate-800 pb-1">
+                        STAGE 4 DELIVERABLE: Carve-Out TSA Separation Matrix & SPA Reps
+                    </div>
+                    <div class="text-slate-300 space-y-1">
+                        <div><strong>TSA Service 1:</strong> SAP ERP Hosting (Seller provided for 6 months @ $45k/mo).</div>
+                        <div><strong>TSA Service 2:</strong> Active Directory & Network Identity ($15k/mo).</div>
+                        <div class="p-2 bg-emerald-950/40 border border-emerald-500/30 rounded text-emerald-300">
+                            <strong>DAY 1 SEPARATION ROADMAP:</strong> Stand up independent AWS tenant & Okta SSO by Day 90 to eliminate TSA fees.
+                        </div>
+                    </div>
+                </div>
+            `,
+            5: `
+                <div class="space-y-2">
+                    <div class="text-ey-yellow font-bold text-sm border-b border-slate-800 pb-1">
+                        STAGE 5 DELIVERABLE: 100-Day Post-Acquisition Execution Playbook
+                    </div>
+                    <div class="text-slate-300 space-y-1">
+                        <div><strong>DAYS 1-30:</strong> Enforce mandatory MFA across all systems; lock down AWS IAM root credentials; execute FinOps quick wins.</div>
+                        <div><strong>DAYS 31-60:</strong> Consolidate duplicate monitoring tools (DataDog vs New Relic); automate testing in CI/CD.</div>
+                        <div><strong>DAYS 61-100:</strong> Complete architecture redesign for microservices; launch AI RAG prototype for customer support.</div>
+                    </div>
+                </div>
+            `
+        };
+
+        function showSampleDeliverable(num) {
+            document.querySelectorAll('.del-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-ey-yellow', 'text-black', 'font-bold');
+                btn.classList.add('bg-slate-800', 'text-slate-300');
+            });
+
+            const activeBtn = document.getElementById('del-btn-' + num);
+            if(activeBtn) {
+                activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+                activeBtn.classList.add('bg-ey-yellow', 'text-black', 'font-bold');
+            }
+
+            document.getElementById('sample-deliverable-box').innerHTML = sampleDeliverablesData[num] || 'Select a deliverable stage.';
+        }
+
+        const flashcardsData = [
+            {
+                mod: "MODULE 10 • CARVE-OUT STRATEGY",
+                q: "What is a Transition Service Agreement (TSA) and why is it critical in carve-outs?",
+                a: "A TSA is a temporary contract where seller provides IT/operational services (ERP, email, network) to buyer post-carve-out. It ensures Day 1 operational continuity while buyer builds independent infrastructure. Uncapped TSAs carry severe penalty fees."
+            },
+            {
+                mod: "MODULE 7 • SAAS BENCHMARKS",
+                q: "What is the Rule of 40 in software due diligence?",
+                a: "YoY Revenue Growth Rate % + EBITDA Margin % ≥ 40%. It measures whether a SaaS target strikes an optimal balance between rapid top-line growth and cash profitability."
+            },
+            {
+                mod: "MODULE 5 • CYBERSECURITY",
+                q: "What is the key difference between SOC 2 Type I and Type II reports?",
+                a: "Type I assesses control design at a single point in time. Type II assesses operational effectiveness of controls over a 6 to 12-month period. Enterprise buyers mandate Type II."
+            },
+            {
+                mod: "MODULE 3 • ARCHITECTURE",
+                q: "Why is fake multi-tenancy (multi-instance) a major red flag in SaaS diligence?",
+                a: "It provisions separate VMs/databases per customer. This destroys gross margins (hosting spend scales linearly with users) and creates an operational maintenance nightmare during upgrades."
+            },
+            {
+                mod: "MODULE 4 • FINOPS",
+                q: "What are 3 immediate quick-win actions to reduce cloud spend during 100-Day Plan?",
+                a: "1) Right-size overprovisioned EC2 instances, 2) Delete unattached EBS volumes & unassociated Elastic IPs, 3) Purchase 1–3 year Savings Plans for baseline workloads."
+            }
+        ];
+
+        let cardIndex = 0;
+        function updateCardDisplay() {
+            const data = flashcardsData[cardIndex];
+            document.getElementById('card-module-tag').innerText = data.mod;
+            document.getElementById('card-question-text').innerText = data.q;
+            document.getElementById('card-answer-text').innerText = data.a;
+            document.getElementById('card-counter').innerText = `Card ${cardIndex + 1} / ${flashcardsData.length}`;
+            document.getElementById('card-element').classList.remove('flipped');
+        }
+
+        function flipCard() {
+            document.getElementById('card-element').classList.toggle('flipped');
+        }
+
+        function nextCard() {
+            cardIndex = (cardIndex + 1) % flashcardsData.length;
+            updateCardDisplay();
+        }
+
+        function prevCard() {
+            cardIndex = (cardIndex - 1 + flashcardsData.length) % flashcardsData.length;
+            updateCardDisplay();
+        }
+
+        const quizData = [
+            {
+                q: "Which metric directly evaluates whether a B2B SaaS target achieves healthy balanced growth and EBITDA profitability?",
+                options: ["LTV/CAC ratio", "Rule of 40", "Net Retention Rate", "Churn Rate"],
+                correct: 1
+            },
+            {
+                q: "In a Carve-Out transaction, what is the primary risk of an uncapped Transition Service Agreement (TSA)?",
+                options: ["Loss of IP rights", "High monthly penalty fees paid to seller", "Immediate system crash on Day 1", "Employee attrition"],
+                correct: 1
+            },
+            {
+                q: "Which open-source software license type forces a proprietary software target to release its full source code?",
+                options: ["MIT License", "Apache 2.0", "GPL v3 / AGPL", "BSD License"],
+                correct: 2
+            },
+            {
+                q: "What is the primary benefit of deploying RAG (Retrieval-Augmented Generation) in enterprise GenAI software?",
+                options: ["Retrains the base LLM model daily", "Eliminates all cloud hosting costs", "Grounds responses in private company data without model retraining", "Replaces SQL databases"],
+                correct: 2
+            },
+            {
+                q: "Which DORA metric measures the percentage of releases that cause an outage or bug requiring a hotfix?",
+                options: ["Deployment Frequency", "Lead Time for Changes", "Change Failure Rate", "Mean Time to Restore (MTTR)"],
+                correct: 2
+            }
+        ];
+
+        let quizIdx = 0;
+        let quizScore = 0;
+
+        function loadQuizQuestion() {
+            if(quizIdx >= quizData.length) {
+                document.getElementById('quiz-container').innerHTML = `
+                    <div class="glass-panel p-6 rounded-2xl text-center space-y-4">
+                        <h3 class="text-xl font-bold text-white">Quiz Completed!</h3>
+                        <p class="text-ey-yellow text-2xl font-mono font-bold">Your Score: ${quizScore} / ${quizData.length}</p>
+                        <button onclick="resetQuiz()" class="px-4 py-2 bg-ey-yellow text-black font-bold rounded-lg text-xs">Restart Quiz</button>
+                    </div>
+                `;
+                return;
+            }
+
+            const q = quizData[quizIdx];
+            document.getElementById('quiz-num').innerText = quizIdx + 1;
+            document.getElementById('quiz-question').innerText = q.q;
+            
+            let html = '';
+            q.options.forEach((opt, idx) => {
+                html += `<button onclick="answerQuiz(${idx})" class="w-full text-left p-3 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 transition-colors">${opt}</button>`;
+            });
+            document.getElementById('quiz-options').innerHTML = html;
+        }
+
+        function answerQuiz(idx) {
+            if(idx === quizData[quizIdx].correct) {
+                quizScore++;
+            }
+            quizIdx++;
+            document.getElementById('quiz-score-badge').innerText = `Score: ${quizScore}`;
+            loadQuizQuestion();
+        }
+
+        function resetQuiz() {
+            quizIdx = 0;
+            quizScore = 0;
+            loadQuizQuestion();
+        }
+
+        function toggleCardMode(mode) {
+            if(mode === 'flash') {
+                document.getElementById('flashcard-container').classList.remove('hidden');
+                document.getElementById('quiz-container').classList.add('hidden');
+                document.getElementById('btn-mode-flash').className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-ey-yellow text-black';
+                document.getElementById('btn-mode-quiz').className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:text-white';
+            } else {
+                document.getElementById('flashcard-container').classList.add('hidden');
+                document.getElementById('quiz-container').classList.remove('hidden');
+                document.getElementById('btn-mode-quiz').className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-ey-yellow text-black';
+                document.getElementById('btn-mode-flash').className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-bold bg-slate-800 text-slate-300 hover:text-white';
+                loadQuizQuestion();
+            }
+        }
+
+        // Initialize application on load
+        window.onload = function() {
+            renderConceptGrid();
+            renderModulesGrid();
+            showSampleDeliverable(1);
+            updateCardDisplay();
+            updateHealthScore();
+        };
+    </script>
+</body>
+</html>
