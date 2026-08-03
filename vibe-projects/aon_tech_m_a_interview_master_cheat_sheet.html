@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aon Tech M&A Interview Master Cheat Sheet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        aon: {
+                            red: '#E31837',
+                            darkred: '#B80F28',
+                            lightred: '#FF4D6D',
+                            dark: '#0F172A',
+                            card: '#1E293B',
+                            border: '#334155'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-red {
+            box-shadow: 0 0 20px rgba(227, 24, 55, 0.25);
+        }
+        .card-flip {
+            perspective: 1000px;
+        }
+        .card-inner {
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-flip.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            backface-visibility: hidden;
+        }
+        .card-back {
+            transform: rotateY(180deg);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e31837;
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col font-sans overflow-x-hidden antialiased">
+
+    <!-- Header Section -->
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-lg bg-aon-red flex items-center justify-center font-bold text-white shadow-lg glow-red text-xl tracking-tighter">
+                    AON
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
+                        Tech M&A Manager <span class="text-xs bg-aon-red/20 text-aon-lightred px-2 py-0.5 rounded border border-aon-red/30">Interview Cheat Sheet</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Aon M&A & Transaction Solutions (M&ATS) Strategic Playbook</p>
+                </div>
+            </div>
+
+            <!-- Global Search Bar -->
+            <div class="relative flex-1 max-w-xs min-w-[200px]">
+                <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
+                <input type="text" id="searchInput" onkeyup="filterContent()" placeholder="Search terms, frameworks, formulas..." 
+                       class="w-full pl-9 pr-4 py-1.5 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-aon-red transition-colors">
+            </div>
+
+            <div class="flex items-center space-x-2 text-xs">
+                <span class="inline-flex items-center px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 animate-pulse"></span> Interview Ready
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row gap-6">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="w-full md:w-64 flex-shrink-0">
+            <nav class="space-y-1 sticky top-20 glass-panel p-3 rounded-xl">
+                <p class="px-3 py-2 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Cheat Sheet Sections</p>
+                
+                <button onclick="switchTab('overview')" id="nav-overview" class="tab-btn active text-xs font-medium w-full text-left px-3 py-2.5 rounded-lg flex items-center space-x-2.5 transition-all text-white bg-aon-red/20 border border-aon-red/40">
+                    <i data-lucide="network" class="w-4 h-4 text-aon-lightred"></i>
+                    <span>1. Ecosystem & Architecture</span>
+                </button>
+                
+                <button onclick="switchTab('capabilities')" id="nav-capabilities" class="tab-btn text-xs font-medium w-full text-left px-3 py-2.5 rounded-lg flex items-center space-x-2.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i data-lucide="layers" class="w-4 h-4 text-blue-400"></i>
+                    <span>2. Core Tech M&A Offerings</span>
+                </button>
+
+                <button onclick="switchTab('frameworks')" id="nav-frameworks" class="tab-btn text-xs font-medium w-full text-left px-3 py-2.5 rounded-lg flex items-center space-x-2.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i data-lucide="git-fork" class="w-4 h-4 text-cyan-400"></i>
+                    <span>3. M&A Frameworks</span>
+                </button>
+
+                <button onclick="switchTab('quantification')" id="nav-quantification" class="tab-btn text-xs font-medium w-full text-left px-3 py-2.5 rounded-lg flex items-center space-x-2.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i data-lucide="calculator" class="w-4 h-4 text-emerald-400"></i>
+                    <span>4. Risk Quantification Engine</span>
+                </button>
+
+                <button onclick="switchTab('trends')" id="nav-trends" class="tab-btn text-xs font-medium w-full text-left px-3 py-2.5 rounded-lg flex items-center space-x-2.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i data-lucide="trending-up" class="w-4 h-4 text-teal-400"></i>
+                    <span>5. 2025/2026 Trends & GenAI</span>
+                </button>
+
+                <button onclick="switchTab('swot')" id="nav-swot" class="tab-btn text-xs font-medium w-full text-left px-3 py-2.5 rounded-lg flex items-center space-x-2.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i data-lucide="compass" class="w-4 h-4 text-amber-400"></i>
+                    <span>6. SWOT & Positioning</span>
+                </button>
+
+                <button onclick="switchTab('playbook')" id="nav-playbook" class="tab-btn text-xs font-medium w-full text-left px-3 py-2.5 rounded-lg flex items-center space-x-2.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i data-lucide="target" class="w-4 h-4 text-purple-400"></i>
+                    <span>7. Interview Q&A & Pitch</span>
+                </button>
+
+                <button onclick="switchTab('flashcards')" id="nav-flashcards" class="tab-btn text-xs font-medium w-full text-left px-3 py-2.5 rounded-lg flex items-center space-x-2.5 transition-all text-slate-400 hover:text-white hover:bg-slate-800">
+                    <i data-lucide="zap" class="w-4 h-4 text-yellow-400"></i>
+                    <span>8. Rapid Drill Flashcards</span>
+                </button>
+
+                <div class="pt-4 border-t border-slate-800 mt-4 px-3">
+                    <div class="p-3 bg-slate-900/80 rounded-lg border border-slate-800">
+                        <span class="text-[11px] font-semibold text-slate-300 block mb-1">🎯 Candidate Pitch Motto</span>
+                        <p class="text-[11px] text-slate-400 leading-tight italic">
+                            "Connecting Risk Capital with Human Capital to quantify tech debt, monetize IP, and de-risk deal value."
+                        </p>
+                    </div>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 min-w-0">
+
+            <!-- TAB 1: AON ARCHITECTURE & M&ATS ECOSYSTEM -->
+            <section id="tab-overview" class="tab-content space-y-6">
+                <div class="glass-panel p-6 rounded-2xl relative overflow-hidden">
+                    <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-aon-red/10 rounded-full blur-3xl pointer-events-none"></div>
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold text-aon-lightred uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="building" class="w-4 h-4"></i> Corporate Structure Map
+                        </span>
+                        <span class="text-xs text-slate-400">Aon (NYSE: AON) • ~$13B+ Revenue</span>
+                    </div>
+                    <h2 class="text-2xl font-extrabold text-white mb-2">How Aon Operates: Risk Capital + Human Capital</h2>
+                    <p class="text-sm text-slate-300 leading-relaxed mb-6">
+                        Aon reorganized its global operations around two synergistic pillars. The <strong class="text-white">M&A and Transaction Solutions (M&ATS)</strong> practice bridges both pillars to deliver full-lifecycle deal advisory, insurance, and talent retention solutions.
+                    </p>
+
+                    <!-- Interactive Diagram -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <!-- Pillar 1 -->
+                        <div class="p-4 bg-slate-900/90 border border-slate-800 rounded-xl hover:border-aon-red/50 transition-all">
+                            <div class="flex items-center gap-2 mb-2 text-aon-lightred font-bold text-base">
+                                <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                                <span>1. Risk Capital</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-3">Quantifying, mitigating, and transferring enterprise risks to enable growth.</p>
+                            <ul class="text-xs space-y-2 text-slate-300">
+                                <li class="flex items-start gap-1.5">
+                                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-aon-lightred flex-shrink-0 mt-0.5"></i>
+                                    <span><strong>Commercial Risk Solutions:</strong> Reps & Warranties (R&W), Cyber Risk, Tax Indemnity.</span>
+                                </li>
+                                <li class="flex items-start gap-1.5">
+                                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-aon-lightred flex-shrink-0 mt-0.5"></i>
+                                    <span><strong>IP Solutions:</strong> IP Portfolio Valuation, Patent Infringement Liability Insurance, IP-backed Financing.</span>
+                                </li>
+                                <li class="flex items-start gap-1.5">
+                                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-aon-lightred flex-shrink-0 mt-0.5"></i>
+                                    <span><strong>Reinsurance:</strong> Structuring complex risk transfer mechanisms.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Pillar 2 -->
+                        <div class="p-4 bg-slate-900/90 border border-slate-800 rounded-xl hover:border-blue-500/50 transition-all">
+                            <div class="flex items-center gap-2 mb-2 text-blue-400 font-bold text-base">
+                                <i data-lucide="users" class="w-5 h-5"></i>
+                                <span>2. Human Capital</span>
+                            </div>
+                            <p class="text-xs text-slate-400 mb-3">Maximizing tech talent performance, retention, and organizational health post-deal.</p>
+                            <ul class="text-xs space-y-2 text-slate-300">
+                                <li class="flex items-start gap-1.5">
+                                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0 mt-0.5"></i>
+                                    <span><strong>Health & Wealth:</strong> Total rewards benchmarking, retirement, healthcare benefits integration.</span>
+                                </li>
+                                <li class="flex items-start gap-1.5">
+                                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0 mt-0.5"></i>
+                                    <span><strong>Talent Solutions:</strong> Key engineer/founder retention agreements, equity pool structuring, leadership diagnostics.</span>
+                                </li>
+                                <li class="flex items-start gap-1.5">
+                                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-blue-400 flex-shrink-0 mt-0.5"></i>
+                                    <span><strong>Org Alignment:</strong> Post-Merger Integration (PMI) compensation harmonizing.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- M&ATS Intersection Box -->
+                    <div class="p-4 bg-gradient-to-r from-aon-red/10 via-slate-900 to-blue-900/20 border border-aon-red/30 rounded-xl">
+                        <div class="flex items-center gap-2 text-white font-bold text-sm mb-1">
+                            <i data-lucide="crosshair" class="w-4 h-4 text-aon-lightred"></i>
+                            <span>The M&ATS Practice Differentiation</span>
+                        </div>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            While Big 4 / Strategy firms evaluate high-level business models and IT integration, <strong>Aon M&ATS uniquely quantifies, prices, and transfers technical risk</strong> via insurance and capital solutions while safeguarding the human assets that generate software enterprise value.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Deal Lifecycle Map -->
+                <div class="glass-panel p-6 rounded-2xl">
+                    <h3 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                        <i data-lucide="git-commit" class="w-5 h-5 text-aon-lightred"></i>
+                        Aon's Tech M&A Engagement Across the Deal Lifecycle
+                    </h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                            <span class="text-[10px] font-bold text-aon-lightred uppercase tracking-wider block mb-1">1. Pre-LOI / Sourcing</span>
+                            <h4 class="text-xs font-semibold text-white mb-1">IP & Landscape Scoping</h4>
+                            <p class="text-[11px] text-slate-400">AI/Patent portfolio valuation, initial freedom-to-operate reviews, target talent benchmarking.</p>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                            <span class="text-[10px] font-bold text-blue-400 uppercase tracking-wider block mb-1">2. Due Diligence</span>
+                            <h4 class="text-xs font-semibold text-white mb-1">Deep Tech & Cyber DD</h4>
+                            <p class="text-[11px] text-slate-400">Source code auditing (OSS/debt), cyber threat intelligence, key developer retention risk profiling.</p>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                            <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider block mb-1">3. Deal Structuring</span>
+                            <h4 class="text-xs font-semibold text-white mb-1">Risk Transfer & R&W</h4>
+                            <p class="text-[11px] text-slate-400">Structuring R&W insurance, ring-fencing known IP litigation liabilities, tax indemnity policies.</p>
+                        </div>
+                        <div class="p-3 bg-slate-900 rounded-lg border border-slate-800">
+                            <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider block mb-1">4. Post-Close / PMI</span>
+                            <h4 class="text-xs font-semibold text-white mb-1">Synergy & Talent Execution</h4>
+                            <p class="text-[11px] text-slate-400">Implementing key developer retention plans, tech platform consolidation, cyber posture hardening.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: CORE TECH M&A OFFERINGS -->
+            <section id="tab-capabilities" class="tab-content space-y-6 hidden">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold text-blue-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="cpu" class="w-4 h-4"></i> Deep Dive Technical Offerings
+                        </span>
+                        <span class="text-xs text-slate-400">5 Pillars of Aon Tech M&A</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-white mb-6">Core Capabilities in Tech Due Diligence & Structuring</h2>
+
+                    <div class="space-y-4">
+                        <!-- Capability Item 1 -->
+                        <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 hover:border-aon-red/40 transition-all">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 rounded-lg bg-aon-red/20 text-aon-lightred font-bold">
+                                        <i data-lucide="code" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-white">1. Tech & Software Due Diligence</h3>
+                                        <p class="text-xs text-slate-400">Evaluating codebase quality, architecture, open-source risk, and maintainability.</p>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-mono bg-slate-800 text-slate-300 px-2 py-1 rounded">Tech DD</span>
+                            </div>
+                            <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-slate-300 pt-3 border-t border-slate-800/80">
+                                <div><strong class="text-slate-100">Open Source Software (OSS):</strong> Detecting GPL/Copyleft licensing breaches that threaten IP secrecy.</div>
+                                <div><strong class="text-slate-100">Technical Debt Quantification:</strong> Monetizing refactoring costs & legacy infrastructure drag.</div>
+                                <div><strong class="text-slate-100">Scalability Assessment:</strong> Verifying microservices, cloud infrastructure, and API extensibility.</div>
+                            </div>
+                        </div>
+
+                        <!-- Capability Item 2 -->
+                        <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 hover:border-purple-500/40 transition-all">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 rounded-lg bg-purple-500/20 text-purple-400 font-bold">
+                                        <i data-lucide="lightbulb" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-white">2. Intellectual Property (IP) Solutions</h3>
+                                        <p class="text-xs text-slate-400">Valuing, protecting, and monetizing target algorithms, patents, and trade secrets.</p>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-mono bg-slate-800 text-slate-300 px-2 py-1 rounded">IP Advisory</span>
+                            </div>
+                            <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-slate-300 pt-3 border-t border-slate-800/80">
+                                <div><strong class="text-slate-100">IP Valuation & Scoring:</strong> Applying proprietary algorithms to value patent quality & freedom to operate.</div>
+                                <div><strong class="text-slate-100">IP Liability Ring-Fencing:</strong> Structuring insurance policies for pending patent litigation.</div>
+                                <div><strong class="text-slate-100">IP-Backed Debt:</strong> Unlocking growth capital backed by software patent portfolios.</div>
+                            </div>
+                        </div>
+
+                        <!-- Capability Item 3 -->
+                        <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 hover:border-emerald-500/40 transition-all">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 rounded-lg bg-emerald-500/20 text-emerald-400 font-bold">
+                                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-white">3. Cyber Risk & Threat Intelligence</h3>
+                                        <p class="text-xs text-slate-400">Rapid 10-day threat assessment and pre-close breach detection.</p>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-mono bg-slate-800 text-slate-300 px-2 py-1 rounded">Cyber M&A</span>
+                            </div>
+                            <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-slate-300 pt-3 border-t border-slate-800/80">
+                                <div><strong class="text-slate-100">Non-Invasive Penetration Scans:</strong> Rapid external attack surface mapping before exclusivity.</div>
+                                <div><strong class="text-slate-100">Data Privacy Compliance:</strong> Auditing GDPR, CCPA, and cross-border data transfer liabilities.</div>
+                                <div><strong class="text-slate-100">Post-Close Cyber Hardening:</strong> Integrating target cloud security into acquirer’s SOC.</div>
+                            </div>
+                        </div>
+
+                        <!-- Capability Item 4 -->
+                        <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 hover:border-amber-500/40 transition-all">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 rounded-lg bg-amber-500/20 text-amber-400 font-bold">
+                                        <i data-lucide="user-check" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-white">4. Tech Talent & Retention Strategy</h3>
+                                        <p class="text-xs text-slate-400">Preventing the "talent cliff" where key software architects exit post-close.</p>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-mono bg-slate-800 text-slate-300 px-2 py-1 rounded">Human Capital</span>
+                            </div>
+                            <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-slate-300 pt-3 border-t border-slate-800/80">
+                                <div><strong class="text-slate-100">Developer Retention Modeling:</strong> Structuring earn-outs, milestone bonuses, and equity vests.</div>
+                                <div><strong class="text-slate-100">Culture & Productivity Diagnostic:</strong> Assessing engineering velocity and turnover risk.</div>
+                                <div><strong class="text-slate-100">Total Rewards Harmonization:</strong> Aligning tech team compensation across merging entities.</div>
+                            </div>
+                        </div>
+
+                        <!-- Capability Item 5 -->
+                        <div class="p-4 bg-slate-900/90 rounded-xl border border-slate-800 hover:border-aon-red/40 transition-all">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2.5 rounded-lg bg-aon-red/20 text-aon-lightred font-bold">
+                                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-sm font-bold text-white">5. Transaction Risk & M&A Insurance</h3>
+                                        <p class="text-xs text-slate-400">Global market leadership in Reps & Warranties (R&W) and specialized indemnity.</p>
+                                    </div>
+                                </div>
+                                <span class="text-[10px] font-mono bg-slate-800 text-slate-300 px-2 py-1 rounded">Risk Transfer</span>
+                            </div>
+                            <div class="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs text-slate-300 pt-3 border-t border-slate-800/80">
+                                <div><strong class="text-slate-100">R&W / W&I Insurance:</strong> Shifting tech warranty breach risks to insurance capital markets.</div>
+                                <div><strong class="text-slate-100">Tax Liability Insurance:</strong> Ring-fencing IP transfer pricing and cross-border tax risks.</div>
+                                <div><strong class="text-slate-100">Specific Litigation Policies:</strong> Insuring ongoing IP or tech breach lawsuits during deal close.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: FRAMEWORKS & METHODOLOGIES (INDUSTRY + AON PROPRIETARY) -->
+            <section id="tab-frameworks" class="tab-content space-y-6 hidden">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold text-cyan-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="git-fork" class="w-4 h-4"></i> Industry Standards & Proprietary IP
+                        </span>
+                        <span class="text-xs text-slate-400">Methodology Toolkit</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-white mb-2">Tech M&A Frameworks & Methodologies</h2>
+                    <p class="text-xs text-slate-300 mb-6">
+                        Demonstrating knowledge of standard technical frameworks alongside Aon’s proprietary methodologies proves you can bridge high-level deal structuring with granular engineering execution.
+                    </p>
+
+                    <!-- Industry Standard Frameworks -->
+                    <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="globe" class="w-4 h-4 text-cyan-400"></i>
+                        Core Industry Technical & Strategic Frameworks
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-xs font-bold text-cyan-300">1. NIST Cybersecurity Framework (CSF 2.0)</h4>
+                                <span class="text-[10px] font-mono bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Cyber DD</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Standard benchmark for evaluating target security maturity across 6 core functions: <strong>Govern, Identify, Protect, Detect, Respond, and Recover</strong>. Used in DD to benchmark cyber readiness against peers.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-xs font-bold text-cyan-300">2. FAIR Model (Factor Analysis of Info Risk)</h4>
+                                <span class="text-[10px] font-mono bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Risk Quant</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                The international standard quantitative model for cybersecurity and operational risk. Translates qualitative security gaps into dollar values: <strong>Loss Event Frequency (LEF) × Loss Magnitude (LM) = Risk Exposure ($)</strong>.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-xs font-bold text-cyan-300">3. Gartner / AWS "6 Rs" Migration Framework</h4>
+                                <span class="text-[10px] font-mono bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Cloud PMI</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Framework for post-close tech platform consolidation: <strong>Rehost</strong> (lift-and-shift), <strong>Replatform</strong>, <strong>Refactor</strong> (re-architect), <strong>Repurchase</strong>, <strong>Retire</strong>, or <strong>Retain</strong>. Essential for estimating post-deal cloud synergy timelines.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-xs font-bold text-cyan-300">4. Open Source Licensing Matrix (Black Duck / Snyk)</h4>
+                                <span class="text-[10px] font-mono bg-slate-800 text-slate-400 px-2 py-0.5 rounded">IP Contamination</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Categorizes codebase components by legal risk: <strong>Permissive</strong> (MIT, Apache 2.0 - Low Risk) vs. <strong>Strong Copyleft/GPL</strong> (GPLv2/v3, AGPL - High Risk of compelling proprietary source code disclosure).
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2 md:col-span-2">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-xs font-bold text-cyan-300">5. SaaS Rule of 40 & Technical Unit Economics Alignment</h4>
+                                <span class="text-[10px] font-mono bg-slate-800 text-slate-400 px-2 py-0.5 rounded">Valuation DD</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Evaluates whether technical architecture supports the business's <strong>Revenue Growth Rate + Free Cash Flow Margin (&ge; 40%)</strong>. Checks if Hosting Gross Margin (% of revenue spent on AWS/Azure infrastructure) is scalable (&gt; 75-80%).
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Aon Proprietary Frameworks -->
+                    <h3 class="text-sm font-bold text-white mb-3 flex items-center gap-2">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-aon-lightred"></i>
+                        Aon Proprietary Tech M&A Methodologies
+                    </h3>
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900/90 border border-aon-red/40 rounded-xl">
+                            <div class="flex items-center gap-2 text-aon-lightred font-bold text-xs mb-1 uppercase tracking-wider">
+                                <i data-lucide="check-square" class="w-4 h-4"></i> Aon Quality of Technology (QoT) 5-Pillar Scorecard
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed mb-3">
+                                Aon's standardized framework for evaluating target codebases, infrastructure, and engineering maturity to inform EV adjustments:
+                            </p>
+                            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-[11px]">
+                                <div class="p-2 bg-slate-950 rounded border border-slate-800"><span class="font-bold text-white block">1. Code Health</span>Maintainability, modularity, test coverage</div>
+                                <div class="p-2 bg-slate-950 rounded border border-slate-800"><span class="font-bold text-white block">2. Tech Debt</span>Refactoring cost vs EV impact</div>
+                                <div class="p-2 bg-slate-950 rounded border border-slate-800"><span class="font-bold text-white block">3. Cyber/SecOps</span>Attack surface & vulnerability index</div>
+                                <div class="p-2 bg-slate-950 rounded border border-slate-800"><span class="font-bold text-white block">4. IP / OSS</span>Copyleft compliance & patent strength</div>
+                                <div class="p-2 bg-slate-950 rounded border border-slate-800"><span class="font-bold text-white block">5. Talent Flight</span>Key engineer retention hazard score</div>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-900/90 border border-purple-500/40 rounded-xl">
+                            <div class="flex items-center gap-2 text-purple-400 font-bold text-xs mb-1 uppercase tracking-wider">
+                                <i data-lucide="award" class="w-4 h-4"></i> Aon IP Quality Index & IP-VaR Framework
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Combines AI algorithms and proprietary database benchmarking to assign an <strong>IP Quality Index Score</strong> based on patent claim breadth, market coverage, and freedom-to-operate (FTO). Calculates <strong>IP Value at Risk (IP-VaR)</strong> to determine required patent litigation indemnity policies.
+                            </p>
+                        </div>
+
+                        <div class="p-4 bg-slate-900/90 border border-amber-500/40 rounded-xl">
+                            <div class="flex items-center gap-2 text-amber-400 font-bold text-xs mb-1 uppercase tracking-wider">
+                                <i data-lucide="user-minus" class="w-4 h-4"></i> Aon Human Capital Radical Retention Model
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Diagnostic tool that evaluates key software architects' attrition risk post-acquisition. Combines market benchmark compensation analysis with unvested equity valuation to structure targeted <strong>Retention Pools, Earn-outs, and Milestone-based Equity Grants</strong>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: RISK QUANTIFICATION ENGINE -->
+            <section id="tab-quantification" class="tab-content space-y-6 hidden">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="calculator" class="w-4 h-4"></i> Core Aon Differentiator
+                        </span>
+                        <span class="text-xs text-slate-400">Risk Capital Metrics</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-white mb-2">Aon Tech M&A Risk Quantification Engine</h2>
+                    <p class="text-xs text-slate-300 mb-6">
+                        Aon's primary competitive advantage is turning soft technical liabilities into <strong>hard dollar values</strong> for valuation models, negotiation leverage, and insurance underwriting.
+                    </p>
+
+                    <div class="space-y-6">
+                        <!-- Metric 1: Tech Debt Haircut -->
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+                                    <i data-lucide="wrench" class="w-4 h-4"></i>
+                                    1. Technical Debt Valuation & Haircut Formula
+                                </h3>
+                                <span class="text-[10px] font-mono bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded border border-emerald-500/30">Valuation Adjustment</span>
+                            </div>
+                            <p class="text-xs text-slate-300 mb-3 leading-relaxed">
+                                Instead of giving vague feedback like "the codebase needs improvement," Aon quantifies the cost to refactor legacy architecture and subtracts it directly from Enterprise Value (EV).
+                            </p>
+                            <div class="p-3 bg-slate-950 rounded-lg font-mono text-xs text-emerald-300 border border-slate-800 mb-3 space-y-1">
+                                <p><strong>Tech Debt Haircut ($)</strong> = Refactoring Cost + Infrastructure Drag + Delay Penalty</p>
+                                <p class="text-[11px] text-slate-400 font-sans mt-1">
+                                    Where: <br>
+                                    • Refactoring Cost = (Developer Hours Required to Modernize Code) × Blended Developer Hourly Rate<br>
+                                    • Infrastructure Drag = Excess Cloud Hosting Spend ($/year) due to un-optimized code × Multiplier<br>
+                                    • Delay Penalty = Projected Lost Revenue ($) from delayed product release milestones
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Metric 2: Cyber VaR -->
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-sm font-bold text-blue-400 flex items-center gap-2">
+                                    <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                                    2. Cybersecurity Value at Risk (Cyber VaR)
+                                </h3>
+                                <span class="text-[10px] font-mono bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded border border-blue-500/30">Loss Expectancy</span>
+                            </div>
+                            <p class="text-xs text-slate-300 mb-3 leading-relaxed">
+                                Quantifies the maximum expected financial loss from a cyber breach over a given timeframe at a specific confidence level (e.g., 95% confidence).
+                            </p>
+                            <div class="p-3 bg-slate-950 rounded-lg font-mono text-xs text-blue-300 border border-slate-800 mb-3 space-y-1">
+                                <p><strong>Cyber ALE ($)</strong> = Loss Event Frequency (LEF) × Probable Loss Magnitude (PLM)</p>
+                                <p class="text-[11px] text-slate-400 font-sans mt-1">
+                                    Where: <br>
+                                    • Loss Magnitude = Regulatory Fines (GDPR up to 4% global revenue) + Notification/Legal Costs + Forensic Remediation + Brand Equity Loss
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Metric 3: IP Value at Risk -->
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-sm font-bold text-purple-400 flex items-center gap-2">
+                                    <i data-lucide="file-spreadsheets" class="w-4 h-4"></i>
+                                    3. Intellectual Property (IP) Risk & Litigation Exposure
+                                </h3>
+                                <span class="text-[10px] font-mono bg-purple-500/10 text-purple-400 px-2 py-0.5 rounded border border-purple-500/30">IP Structuring</span>
+                            </div>
+                            <p class="text-xs text-slate-300 mb-3 leading-relaxed">
+                                Calculates the expected legal defense and settlement costs if target proprietary software infringes competitor patents or uses copyleft (GPL) code.
+                            </p>
+                            <div class="p-3 bg-slate-950 rounded-lg font-mono text-xs text-purple-300 border border-slate-800 mb-3 space-y-1">
+                                <p><strong>IP Litigation Exposure ($)</strong> = Litigation Probability (%) × (Defense Cost + Royalties/Damages)</p>
+                                <p class="text-[11px] text-slate-400 font-sans mt-1">
+                                    • Used by Aon to price <strong>Specialty IP Litigation Insurance</strong>, allowing deals to proceed by transferring patent suit liabilities off the target balance sheet.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Metric 4: Talent Attrition Cost -->
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl">
+                            <div class="flex items-center justify-between mb-2">
+                                <h3 class="text-sm font-bold text-amber-400 flex items-center gap-2">
+                                    <i data-lucide="users" class="w-4 h-4"></i>
+                                    4. Key Engineer Attrition & Replacement Cost
+                                </h3>
+                                <span class="text-[10px] font-mono bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded border border-amber-500/30">Human Capital Risk</span>
+                            </div>
+                            <p class="text-xs text-slate-300 mb-3 leading-relaxed">
+                                Evaluates the total cost of key developer departures to determine the required size of post-close retention pools.
+                            </p>
+                            <div class="p-3 bg-slate-950 rounded-lg font-mono text-xs text-amber-300 border border-slate-800 mb-3 space-y-1">
+                                <p><strong>Talent Attrition Risk ($)</strong> = Key Person Count × [ (Recruiting Cost + Sign-on Bonus) + (Ramp-up Drag) ] + Product Delay Impact</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: 2025/2026 TRENDS & GENAI -->
+            <section id="tab-trends" class="tab-content space-y-6 hidden">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold text-teal-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i> Market Dynamics
+                        </span>
+                        <span class="text-xs text-slate-400">Key Drivers Shaping Deals</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-white mb-2">Tech M&A Trends & The GenAI Imperative</h2>
+                    <p class="text-xs text-slate-300 leading-relaxed mb-6">
+                        Demonstrating fluency in these macro dynamics positions you as an industry insider who anticipates client challenges before they emerge.
+                    </p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Trend 1 -->
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                            <div class="flex items-center gap-2 text-teal-400 font-bold text-sm">
+                                <i data-lucide="bot" class="w-4 h-4"></i>
+                                <span>1. The GenAI Due Diligence Revolution</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                AI deals require auditing <strong>training data provenance</strong> (copyright infringement risks), <strong>algorithmic bias</strong>, <strong>hallucination exposure</strong>, and compliance with strict regulations like the <strong>EU AI Act</strong>.
+                            </p>
+                            <div class="p-2 bg-slate-950 rounded border border-slate-800 text-[11px] text-aon-lightred font-mono">
+                                💡 Aon Opportunity: Developing standardized GenAI Risk Frameworks combining code, data copyright, & liability transfer.
+                            </div>
+                        </div>
+
+                        <!-- Trend 2 -->
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                            <div class="flex items-center gap-2 text-blue-400 font-bold text-sm">
+                                <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                                <span>2. Cyber Breach Value Destruction</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                Over 20% of post-deal value is eroded when hidden pre-close cyber breaches surface post-acquisition. Buyers demand 1–2 week rapid threat scanning without altering target operations.
+                            </p>
+                            <div class="p-2 bg-slate-950 rounded border border-slate-800 text-[11px] text-blue-400 font-mono">
+                                💡 Aon Opportunity: Combining Cyber DD directly with tailored Cyber M&A Warranty Insurance.
+                            </div>
+                        </div>
+
+                        <!-- Trend 3 -->
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                            <div class="flex items-center gap-2 text-amber-400 font-bold text-sm">
+                                <i data-lucide="trending-down" class="w-4 h-4"></i>
+                                <span>3. EBITDA Focus & Technical Debt Haircuts</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                The era of "growth at all costs" has ended. Dealmakers focus heavily on EBITDA realization. Undiscovered legacy technical debt delays post-merger synergies, prompting buyers to demand EBITDA valuation haircuts.
+                            </p>
+                            <div class="p-2 bg-slate-950 rounded border border-slate-800 text-[11px] text-amber-400 font-mono">
+                                💡 Aon Opportunity: Quantifying tech debt refactoring costs early in DD to adjust valuation models.
+                            </div>
+                        </div>
+
+                        <!-- Trend 4 -->
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                            <div class="flex items-center gap-2 text-purple-400 font-bold text-sm">
+                                <i data-lucide="pie-chart" class="w-4 h-4"></i>
+                                <span>4. PE Platform Add-ons & Carve-Outs</span>
+                            </div>
+                            <p class="text-xs text-slate-300 leading-relaxed">
+                                PE sponsors are executing buy-and-build strategies and software carve-outs. Unextricating proprietary target software from parent company infrastructure creates massive operational disutility if unmanaged.
+                            </p>
+                            <div class="p-2 bg-slate-950 rounded border border-slate-800 text-[11px] text-purple-400 font-mono">
+                                💡 Aon Opportunity: Structuring Transition Services Agreements (TSA) alongside tech separation roadmaps.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 6: SWOT & POSITIONING -->
+            <section id="tab-swot" class="tab-content space-y-6 hidden">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="compass" class="w-4 h-4"></i> Competitive Strategy
+                        </span>
+                        <span class="text-xs text-slate-400">Objective Insights</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-white mb-6">Aon Tech M&A: SWOT & Strategic Positioning</h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <!-- Strengths -->
+                        <div class="p-4 bg-slate-900 border-l-4 border-emerald-500 rounded-r-xl">
+                            <h3 class="text-sm font-bold text-emerald-400 mb-2 flex items-center gap-1.5">
+                                <i data-lucide="thumbs-up" class="w-4 h-4"></i> STRENGTHS
+                            </h3>
+                            <ul class="text-xs space-y-2 text-slate-300">
+                                <li>• <strong>Dominance in Transaction Risk:</strong> Undisputed global leader in R&W and W&I insurance brokerage.</li>
+                                <li>• <strong>Integrated Human + Risk Capital:</strong> Unique cross-disciplinary approach connecting compensation data with risk management.</li>
+                                <li>• <strong>Proprietary IP Data:</strong> Deep benchmark datasets for patent valuation and trade secret indexing.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Weaknesses -->
+                        <div class="p-4 bg-slate-900 border-l-4 border-aon-red rounded-r-xl">
+                            <h3 class="text-sm font-bold text-aon-lightred mb-2 flex items-center gap-1.5">
+                                <i data-lucide="alert-triangle" class="w-4 h-4"></i> WEAKNESSES / PERCEPTION GAPS
+                            </h3>
+                            <ul class="text-xs space-y-2 text-slate-300">
+                                <li>• <strong>Brand Perception:</strong> Corporates sometimes view Aon primarily as an insurance broker rather than a strategic tech advisory firm compared to Bain or Big 4.</li>
+                                <li>• <strong>PMI Execution Depth:</strong> Need to continuously expand hands-on post-close technical transformation capabilities.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Opportunities -->
+                        <div class="p-4 bg-slate-900 border-l-4 border-blue-500 rounded-r-xl">
+                            <h3 class="text-sm font-bold text-blue-400 mb-2 flex items-center gap-1.5">
+                                <i data-lucide="zap" class="w-4 h-4"></i> OPPORTUNITIES
+                            </h3>
+                            <ul class="text-xs space-y-2 text-slate-300">
+                                <li>• <strong>GenAI Due Diligence Lead:</strong> Establish the industry benchmark for AI training data and model valuation DD.</li>
+                                <li>• <strong>Upstream Move:</strong> Move from execution risk insurance into earlier strategic transaction planning.</li>
+                                <li>• <strong>IP-Backed Lending Growth:</strong> Monetize non-dilutive capital options for high-growth tech firms.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Threats -->
+                        <div class="p-4 bg-slate-900 border-l-4 border-purple-500 rounded-r-xl">
+                            <h3 class="text-sm font-bold text-purple-400 mb-2 flex items-center gap-1.5">
+                                <i data-lucide="shield" class="w-4 h-4"></i> THREATS / COMPETITION
+                            </h3>
+                            <ul class="text-xs space-y-2 text-slate-300">
+                                <li>• <strong>Big 4 Expansion:</strong> PwC, EY, Deloitte expanding risk advisory and tech DD practices.</li>
+                                <li>• <strong>Niche Boutique DD Firms:</strong> Specialized tech boutiques capturing early-stage source code auditing.</li>
+                                <li>• <strong>Macro Volatility:</strong> Fluctuations in PE deal volume directly impact deal advisory revenue.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- How Candidate Fills the Gap -->
+                    <div class="p-4 bg-slate-900/90 border border-aon-red/40 rounded-xl">
+                        <h4 class="text-xs font-bold text-aon-lightred uppercase tracking-wider mb-2">How Your Expertise Becomes Aon's Strategic Asset</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            "You bridge the gap between high-level transaction strategy and deep technical execution. While Aon excels at structuring risk transfer, your background in <strong>technology architecture, digital transformation, and cross-functional PMI execution</strong> enables you to evaluate codebases, calculate quantifiable tech debt haircuts, and articulate technical risks directly to C-suite dealmakers."
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 7: INTERVIEW PLAYBOOK & Q&A -->
+            <section id="tab-playbook" class="tab-content space-y-6 hidden">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="mic" class="w-4 h-4"></i> Strategic Pitch & Interview Q&A
+                        </span>
+                        <span class="text-xs text-slate-400">High-Impact Scripting</span>
+                    </div>
+
+                    <!-- 60-second Elevator Pitch -->
+                    <div class="mb-6 p-4 bg-gradient-to-r from-aon-red/20 via-slate-900 to-purple-900/20 border border-aon-red/40 rounded-xl">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                                <i data-lucide="volume-2" class="w-4 h-4 text-aon-lightred"></i>
+                                The 60-Second Elevating Elevator Pitch
+                            </h3>
+                            <button onclick="copyPitch()" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded flex items-center gap-1">
+                                <i data-lucide="copy" class="w-3 h-3"></i> Copy
+                            </button>
+                        </div>
+                        <p id="pitchText" class="text-xs text-slate-200 leading-relaxed italic">
+                            "I view Tech M&A not just as an asset purchase, but as an execution of risk management and value creation. What excites me about Aon's M&A and Transaction Solutions practice is its unique ability to combine Risk Capital and Human Capital—uniting technical source code diligence, cyber risk, and IP valuation with talent strategy and risk transfer. With my background in technology transaction strategy and digital transformation, I bridge the gap between technical architecture and strategic deal value, helping clients quantify tech debt, de-risk deals, and execute seamless post-close integration."
+                        </p>
+                    </div>
+
+                    <!-- Key Questions & High-Score Answers -->
+                    <h3 class="text-sm font-bold text-white mb-4">High-Yield Strategic Interview Scenarios</h3>
+
+                    <div class="space-y-4">
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                            <h4 class="text-xs font-bold text-aon-lightred">Q1: "How do you evaluate technology risks during pre-deal diligence under tight 2-week timelines?"</h4>
+                            <div class="text-xs text-slate-300 space-y-1.5 leading-relaxed">
+                                <p><strong>Framework:</strong> Use a 3-Layer Rapid Scoping Model:</p>
+                                <ul class="list-disc pl-4 space-y-1 text-slate-400">
+                                    <li><strong class="text-slate-200">1. Codebase & Licensing:</strong> Run automated source code scans to identify GPL/Open Source copyleft violations and security vulnerabilities.</li>
+                                    <li><strong class="text-slate-200">2. Architecture & Tech Debt:</strong> Assess cloud infrastructure scalability, microservice modularity, and estimate the cost to refactor legacy code.</li>
+                                    <li><strong class="text-slate-200">3. Cyber & Human Capital:</strong> Review external attack surface, data privacy compliance (GDPR), and identify top 5 key software architects requiring retention bonuses.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                            <h4 class="text-xs font-bold text-aon-lightred">Q2: "Where do dealmakers fail most often in Tech acquisitions?"</h4>
+                            <div class="text-xs text-slate-300 leading-relaxed">
+                                <p>
+                                    "Dealmakers fail when they treat technology purely as a financial asset rather than an operational engine. Value gets destroyed in two main areas: <strong>1) Neglecting Technical Debt</strong>, which delays synergy realization and inflates post-close capital expenditure; and <strong>2) Ignoring Key Developer Retention</strong>, where core talent exits post-close because incentives weren't structured around engineering culture and equity alignment."
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-slate-900 border border-slate-800 rounded-xl space-y-2">
+                            <h4 class="text-xs font-bold text-aon-lightred">Q3: "How does Aon’s R&W insurance interact with technical due diligence?"</h4>
+                            <div class="text-xs text-slate-300 leading-relaxed">
+                                <p>
+                                    "R&W underwriters will exclude known risks or inadequately diligenced areas. High-quality Tech DD directly informs the insurance policy: by thoroughly auditing source code, IP ownership, and data privacy compliance during DD, we allow underwriters to provide comprehensive coverage with minimal exclusions, giving buyers maximum downside protection."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 8: RAPID FLASHCARDS -->
+            <section id="tab-flashcards" class="tab-content space-y-6 hidden">
+                <div class="glass-panel p-6 rounded-2xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="text-xs font-bold text-yellow-400 uppercase tracking-wider flex items-center gap-1.5">
+                            <i data-lucide="zap" class="w-4 h-4"></i> Pre-Interview Memory Drill
+                        </span>
+                        <span class="text-xs text-slate-400">Click Cards to Flip</span>
+                    </div>
+                    <h2 class="text-xl font-bold text-white mb-2">Rapid Revision Flashcards</h2>
+                    <p class="text-xs text-slate-300 mb-6">Master these key terms and concepts right before stepping into your interview.</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="flashcardGrid">
+                        <!-- Card 1 -->
+                        <div class="card-flip h-40 cursor-pointer" onclick="this.classList.toggle('flipped')">
+                            <div class="card-inner w-full h-full relative rounded-xl border border-slate-800 bg-slate-900 p-4 flex flex-col justify-between">
+                                <div class="card-front absolute inset-0 p-4 flex flex-col justify-between bg-slate-900 rounded-xl border border-slate-800">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[10px] font-bold text-aon-lightred uppercase">Term</span>
+                                        <i data-lucide="rotate-cw" class="w-3.5 h-3.5 text-slate-500"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-white">Reps & Warranties (R&W) Insurance</h3>
+                                    <p class="text-[11px] text-slate-400">Click to flip definition & Aon relevance</p>
+                                </div>
+                                <div class="card-back absolute inset-0 p-4 flex flex-col justify-between bg-slate-950 rounded-xl border border-aon-red/40">
+                                    <span class="text-[10px] font-bold text-emerald-400 uppercase">Aon Insight</span>
+                                    <p class="text-xs text-slate-200 leading-snug">
+                                        Protects buyers/sellers from financial losses resulting from breaches of target representations (e.g., undisclosed IP infringement or tech debt). Aon is the global market leader in placing these policies.
+                                    </p>
+                                    <span class="text-[10px] text-slate-500">Tap to flip back</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="card-flip h-40 cursor-pointer" onclick="this.classList.toggle('flipped')">
+                            <div class="card-inner w-full h-full relative rounded-xl border border-slate-800 bg-slate-900 p-4 flex flex-col justify-between">
+                                <div class="card-front absolute inset-0 p-4 flex flex-col justify-between bg-slate-900 rounded-xl border border-slate-800">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[10px] font-bold text-blue-400 uppercase">Term</span>
+                                        <i data-lucide="rotate-cw" class="w-3.5 h-3.5 text-slate-500"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-white">GPL / Copyleft Licensing Risk</h3>
+                                    <p class="text-[11px] text-slate-400">Click to flip definition & Aon relevance</p>
+                                </div>
+                                <div class="card-back absolute inset-0 p-4 flex flex-col justify-between bg-slate-950 rounded-xl border border-blue-500/40">
+                                    <span class="text-[10px] font-bold text-blue-400 uppercase">Aon Insight</span>
+                                    <p class="text-xs text-slate-200 leading-snug">
+                                        Open-source licenses (like GPL) that require derivative software to be made publicly open-source. Identifying GPL contamination in target proprietary code is a key Tech DD deliverable to prevent IP erosion.
+                                    </p>
+                                    <span class="text-[10px] text-slate-500">Tap to flip back</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="card-flip h-40 cursor-pointer" onclick="this.classList.toggle('flipped')">
+                            <div class="card-inner w-full h-full relative rounded-xl border border-slate-800 bg-slate-900 p-4 flex flex-col justify-between">
+                                <div class="card-front absolute inset-0 p-4 flex flex-col justify-between bg-slate-900 rounded-xl border border-slate-800">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[10px] font-bold text-purple-400 uppercase">Term</span>
+                                        <i data-lucide="rotate-cw" class="w-3.5 h-3.5 text-slate-500"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-white">FAIR Framework & Cyber VaR</h3>
+                                    <p class="text-[11px] text-slate-400">Click to flip definition & Aon relevance</p>
+                                </div>
+                                <div class="card-back absolute inset-0 p-4 flex flex-col justify-between bg-slate-950 rounded-xl border border-purple-500/40">
+                                    <span class="text-[10px] font-bold text-purple-400 uppercase">Aon Insight</span>
+                                    <p class="text-xs text-slate-200 leading-snug">
+                                        Factor Analysis of Information Risk. Translates technical vulnerability scans into dollar Loss Event Frequency and Probable Loss Magnitude, allowing deal teams to quantify maximum expected cyber breach loss.
+                                    </p>
+                                    <span class="text-[10px] text-slate-500">Tap to flip back</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="card-flip h-40 cursor-pointer" onclick="this.classList.toggle('flipped')">
+                            <div class="card-inner w-full h-full relative rounded-xl border border-slate-800 bg-slate-900 p-4 flex flex-col justify-between">
+                                <div class="card-front absolute inset-0 p-4 flex flex-col justify-between bg-slate-900 rounded-xl border border-slate-800">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-[10px] font-bold text-emerald-400 uppercase">Term</span>
+                                        <i data-lucide="rotate-cw" class="w-3.5 h-3.5 text-slate-500"></i>
+                                    </div>
+                                    <h3 class="text-base font-bold text-white">Tech Debt EV Haircut</h3>
+                                    <p class="text-[11px] text-slate-400">Click to flip definition & Aon relevance</p>
+                                </div>
+                                <div class="card-back absolute inset-0 p-4 flex flex-col justify-between bg-slate-950 rounded-xl border border-emerald-500/40">
+                                    <span class="text-[10px] font-bold text-emerald-400 uppercase">Aon Insight</span>
+                                    <p class="text-xs text-slate-200 leading-snug">
+                                        Calculating developer hours + hourly rates + cloud hosting drag to quantify refactoring costs, subtracting that dollar figure directly from Enterprise Value during deal negotiations.
+                                    </p>
+                                    <span class="text-[10px] text-slate-500">Tap to flip back</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- JavaScript Interactions -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Switch Tabs Functionality
+        function switchTab(tabId) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Show selected tab
+            const targetTab = document.getElementById('tab-' + tabId);
+            if (targetTab) {
+                targetTab.classList.remove('hidden');
+            }
+
+            // Reset navigation styles
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-aon-red/20', 'border', 'border-aon-red/40', 'text-white');
+                btn.classList.add('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            });
+
+            // Set active button
+            const activeNav = document.getElementById('nav-' + tabId);
+            if (activeNav) {
+                activeNav.classList.add('active', 'bg-aon-red/20', 'border', 'border-aon-red/40', 'text-white');
+                activeNav.classList.remove('text-slate-400', 'hover:text-white', 'hover:bg-slate-800');
+            }
+        }
+
+        // Global Search Filter
+        function filterContent() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            if (!input) return;
+
+            // Search through text across sections and highlight matching elements
+            const sections = document.querySelectorAll('.tab-content');
+            sections.forEach(sec => {
+                const text = sec.innerText.toLowerCase();
+                if (text.includes(input)) {
+                    sec.classList.remove('hidden');
+                }
+            });
+        }
+
+        // Copy Pitch Function
+        function copyPitch() {
+            const pitchText = document.getElementById('pitchText').innerText;
+            const tempInput = document.createElement('textarea');
+            tempInput.value = pitchText;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            
+            alert('Elevator Pitch copied to clipboard!');
+        }
+    </script>
+</body>
+</html>
